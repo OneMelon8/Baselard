@@ -14,6 +14,7 @@ import JProjects.BaseInfoBot.commands.admin.Gamemode;
 import JProjects.BaseInfoBot.commands.admin.RegisterDB;
 import JProjects.BaseInfoBot.commands.admin.Test;
 import JProjects.BaseInfoBot.commands.admin.Update;
+import JProjects.BaseInfoBot.tools.EnviroHandler;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -26,8 +27,7 @@ public class Bot {
 	public static ArrayList<String> admins = new ArrayList<String>(); // A list of ID's
 
 	public Bot() throws LoginException {
-		JDABuilder builder = new JDABuilder(AccountType.BOT)
-				.setToken("NTQ4OTczNDM0NDM3MTA3NzUx.D1NH0g.MTUxuL9o3pEvWWnf10HtXJ_mp74");
+		JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(EnviroHandler.getBotToken());
 		this.api = builder.build();
 	}
 

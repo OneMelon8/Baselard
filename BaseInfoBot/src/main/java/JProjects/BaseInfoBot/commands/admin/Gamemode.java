@@ -1,12 +1,12 @@
 package JProjects.BaseInfoBot.commands.admin;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 import JProjects.BaseInfoBot.Bot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
+import JProjects.BaseInfoBot.tools.EnviroHandler;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -21,8 +21,7 @@ public class Gamemode extends Command {
 	}
 
 	// Me Tkon Tater
-	ArrayList<String> admins = new ArrayList<String>(
-			Arrays.asList("233735408737976320", "288658178147745792", "163543999104155649"));
+	ArrayList<String> admins = EnviroHandler.getAdministrators();
 	String[] deathMessages = new String[] { " tried to swim in lava", " attempted to hug a creeper",
 			" was obliterated by Baselard's lasors. Ehehee rekt!", " fell out of the world" };
 
