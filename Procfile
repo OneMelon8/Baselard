@@ -1,1 +1,1 @@
-worker: java -cp target/classes:target/dependency/* App
+worker: java -jar target/.jar
