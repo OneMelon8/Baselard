@@ -1,1 +1,1 @@
-worker: java src/main/java/JProjects/BaseInfoBot/App.java
+worker: java -cp target/classes:target/dependency/* App
