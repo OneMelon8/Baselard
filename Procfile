@@ -1,1 +1,1 @@
-worker: javac src/main/java/JProjects/BaseInfoBot/App.java
+worker: java src/main/java/JProjects/BaseInfoBot/App.java
