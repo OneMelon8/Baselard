@@ -9,6 +9,7 @@ import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.database.Suit;
 import JProjects.BaseInfoBot.database.SuitType;
 import JProjects.BaseInfoBot.database.files.CacheFileEditor;
+import JProjects.BaseInfoBot.database.files.HangarFileEditor;
 import JProjects.BaseInfoBot.database.files.SuitFileEditor;
 import JProjects.BaseInfoBot.spider.Spider;
 import JProjects.BaseInfoBot.tools.GeneralTools;
@@ -26,7 +27,7 @@ public class SuitStats extends Command {
 	@Override
 	public void fire(MessageReceivedEvent e) {
 		String[] args = e.getMessage().getContentRaw().split(" ");
-		if (args.length != 2 && args.length != 3) {
+		if (args.length != 2 && args.length != 3 && args.length != 4) {
 			bot.sendMessage(getHelpEmbeded(), e.getChannel());
 			return;
 		}
@@ -48,7 +49,7 @@ public class SuitStats extends Command {
 			Suit suit;
 
 			int level = 41;
-			if (args.length == 3) {
+			if (args.length >= 3) {
 				try {
 					level = Integer.parseInt(args[2]);
 					if (level != 1 && level != 31 && level != 41 && level != 51)
@@ -60,7 +61,7 @@ public class SuitStats extends Command {
 			}
 
 			String cache = url.toLowerCase();
-			suit = CacheFileEditor.getSuit(cache);
+			suit = CacheFileEditor.getSuit(cache, e.getAuthor());
 			if (suit == null) {
 				HashMap<String, String> results = Spider.query(url, type, Grade.US);
 				suit = new Suit(e.getAuthor().getName(), e.getAuthor().getId(), results);
@@ -70,6 +71,13 @@ public class SuitStats extends Command {
 				suit.levelChange(level);
 
 			bot.sendMessage(suit.toEmbededMessage(false, null), e.getChannel());
+
+			if (args.length == 4 && args[3].equalsIgnoreCase("y")) {
+				// Save suit
+				HangarFileEditor.write(e.getAuthor().getId(), suit.toString());
+				bot.sendMessage(e.getAuthor().getAsMention() + " Successfully saved the suit in the hangar!",
+						e.getChannel());
+			}
 		} catch (Exception ex) {
 			bot.sendMessage(e.getAuthor().getAsMention()
 					+ " Seems like I cannot get the statistics right now. (I can only get the statistics of suits whose grade are US or higher)",
@@ -84,14 +92,14 @@ public class SuitStats extends Command {
 		builder.setAuthor("Suit Statistics Query Template");
 		builder.setDescription("Use the following template to run the suit query and potentially save the suit");
 		builder.addField(new Field("Copy & Paste:",
-				"```" + Messages.prefix + "suitstats <name> [lv = 1/31/41/51]" + "```", false));
+				"```" + Messages.prefix + "suitstats <name> [lv = 1/31/41/51] [save? Y/N]" + "```", false));
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");
 		sb.deleteCharAt(sb.length() - 1);
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
-		builder.addField(new Field("Example:", "```" + Messages.prefix + "suitstat Zenka 31```", false));
+		builder.addField(new Field("Example:", "```" + Messages.prefix + "suitstat Zenka 31 y```", false));
 		return builder.build();
 	}
 }

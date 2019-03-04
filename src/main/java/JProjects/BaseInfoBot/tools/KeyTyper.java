@@ -3,21 +3,38 @@ package JProjects.BaseInfoBot.tools;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class KeyTyper {
 
-	private Robot bot;
-
-	public KeyTyper() {
+	public static void main(String[] args) {
 		try {
-			bot = new Robot();
+			final Robot bot = new Robot();
+			new Timer().scheduleAtFixedRate(new TimerTask() {
+				int count = 0;
+
+				@Override
+				public void run() {
+					if (count < 10)
+						type(bot, "$w\n");
+					else if (count < 13)
+						type(bot, "$wg\n");
+					else {
+						this.cancel();
+						System.exit(0);
+						return;
+					}
+					count++;
+				}
+			}, 0, 1500);
 		} catch (AWTException e) {
 			e.printStackTrace();
 			return;
 		}
 	}
 
-	public void type(String msg) {
+	public static void type(Robot bot, String msg) {
 		for (char c : msg.toCharArray()) {
 			int code = KeyEvent.getExtendedKeyCodeForChar(c);
 			if (c == '$')
@@ -30,8 +47,5 @@ public class KeyTyper {
 				bot.keyRelease(KeyEvent.VK_SHIFT);
 		}
 
-	}
-
-	public void dummy() {
 	}
 }

@@ -46,8 +46,8 @@ public class SuitComp extends Command {
 			}
 
 			Suit suit1, suit2;
-			suit1 = CacheFileEditor.getSuit(url1.toLowerCase());
-			suit2 = CacheFileEditor.getSuit(url2.toLowerCase());
+			suit1 = CacheFileEditor.getSuit(url1.toLowerCase(), e.getAuthor());
+			suit2 = CacheFileEditor.getSuit(url2.toLowerCase(), e.getAuthor());
 
 			if (suit1 == null) {
 				HashMap<String, String> resultsS1 = Spider.query(url1, SuitType.ASSAULT, Grade.US);

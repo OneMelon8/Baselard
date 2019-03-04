@@ -87,7 +87,7 @@ public class StatTop extends Command {
 			for (Object obj : urlList) {
 				String url = Suit.rebuildName((String) obj);
 				Suit s;
-				s = CacheFileEditor.getSuit(url.toLowerCase());
+				s = CacheFileEditor.getSuit(url.toLowerCase(), author);
 				if (s == null) {
 					s = new Suit(name, id, Spider.query(url, type, Grade.US));
 					CacheFileEditor.write(s);

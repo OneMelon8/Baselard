@@ -5,6 +5,7 @@ import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -19,6 +20,14 @@ public class Hangar extends Command {
 
 	@Override
 	public void fire(MessageReceivedEvent e) {
+		User author = e.getAuthor();
+		if (!Bot.admins.contains(author.getId())) {
+			bot.sendMessage(
+					e.getAuthor().getAsMention()
+							+ " permission denied :x: (This is beta feature, it will be released soon)",
+					e.getChannel());
+			return;
+		}
 		String[] args = e.getMessage().getContentRaw().split(" ");
 		if (args.length == 1
 				|| (args.length == 2 && (args[1].equalsIgnoreCase("view") || args[1].equalsIgnoreCase("display")))) {
@@ -27,7 +36,7 @@ public class Hangar extends Command {
 		} else if (args.length >= 2 && args[1].equalsIgnoreCase("import")) {
 			// Import
 			HangarImport.fire(e, bot);
-		} else if (args.length == 2 && args[1].equalsIgnoreCase("export")) {
+		} else if (args.length >= 2 && args[1].equalsIgnoreCase("export")) {
 			// Export
 			HangarExport.fire(e, bot);
 		} else {

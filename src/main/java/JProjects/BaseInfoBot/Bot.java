@@ -6,6 +6,7 @@ import javax.security.auth.login.LoginException;
 
 import JProjects.BaseInfoBot.commands.Help;
 import JProjects.BaseInfoBot.commands.Ping;
+import JProjects.BaseInfoBot.commands.Register;
 import JProjects.BaseInfoBot.commands.StatTop;
 import JProjects.BaseInfoBot.commands.SuitComp;
 import JProjects.BaseInfoBot.commands.SuitStats;
@@ -14,6 +15,7 @@ import JProjects.BaseInfoBot.commands.admin.Gamemode;
 import JProjects.BaseInfoBot.commands.admin.RegisterDB;
 import JProjects.BaseInfoBot.commands.admin.Test;
 import JProjects.BaseInfoBot.commands.admin.Update;
+import JProjects.BaseInfoBot.commands.hangar.Hangar;
 import JProjects.BaseInfoBot.tools.EnviroHandler;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -43,8 +45,8 @@ public class Bot {
 		 * part calculator? predict estimated damage and or estimated damage taken
 		 */
 
-//		new Register(this);
-//		new Hangar(this);
+		new Register(this);
+		new Hangar(this);
 
 		new SuitStats(this);
 		new SuitComp(this);

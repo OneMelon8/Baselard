@@ -10,6 +10,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import JProjects.BaseInfoBot.database.Suit;
+import net.dv8tion.jda.core.entities.User;
 
 public class CacheFileEditor {
 
@@ -94,11 +95,13 @@ public class CacheFileEditor {
 		return (JSONObject) read().get(name);
 	}
 
-	public static Suit getSuit(String name) throws IOException, ParseException {
+	public static Suit getSuit(String name, User owner) throws IOException, ParseException {
 		JSONObject map = getSuitMap(name);
 		if (map == null || map.get("suit") == null
 				|| Long.parseLong(String.valueOf(map.get("expire"))) < System.currentTimeMillis())
 			return null;
-		return Suit.fromString((String) map.get("suit"));
+		Suit suit = Suit.fromString((String) map.get("suit"));
+		suit.changeOwner(owner);
+		return suit;
 	}
 }
