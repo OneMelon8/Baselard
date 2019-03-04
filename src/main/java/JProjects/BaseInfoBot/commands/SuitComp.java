@@ -10,7 +10,6 @@ import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Grade;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.database.Suit;
-import JProjects.BaseInfoBot.database.SuitType;
 import JProjects.BaseInfoBot.database.files.CacheFileEditor;
 import JProjects.BaseInfoBot.database.files.SuitFileEditor;
 import JProjects.BaseInfoBot.spider.Spider;
@@ -50,12 +49,14 @@ public class SuitComp extends Command {
 			suit2 = CacheFileEditor.getSuit(url2.toLowerCase(), e.getAuthor());
 
 			if (suit1 == null) {
-				HashMap<String, String> resultsS1 = Spider.query(url1, SuitType.ASSAULT, Grade.US);
+				HashMap<String, String> resultsS1 = Spider.query(url1, SuitFileEditor.getSuitType(url1.toLowerCase()),
+						Grade.US);
 				suit1 = new Suit(e.getAuthor().getName(), e.getAuthor().getId(), resultsS1);
 				CacheFileEditor.write(suit1);
 			}
 			if (suit2 == null) {
-				HashMap<String, String> resultsS2 = Spider.query(url2, SuitType.ASSAULT, Grade.US);
+				HashMap<String, String> resultsS2 = Spider.query(url2, SuitFileEditor.getSuitType(url2.toLowerCase()),
+						Grade.US);
 				suit2 = new Suit(e.getAuthor().getName(), e.getAuthor().getId(), resultsS2);
 				CacheFileEditor.write(suit2);
 			}

@@ -27,7 +27,7 @@ public class KeyTyper {
 					}
 					count++;
 				}
-			}, 0, 1500);
+			}, 0, 1200);
 		} catch (AWTException e) {
 			e.printStackTrace();
 			return;
