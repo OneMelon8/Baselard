@@ -36,12 +36,12 @@ public class SuitStats extends Command {
 		try {
 			Object[] objArr = SuitFileEditor.suggestSuit(suitName);
 			String url = (String) objArr[0];
-			double sim = (Double) objArr[1];
-			if (sim < 0.6) {
-				bot.sendMessage(e.getAuthor().getAsMention() + " Hmm, I don't recognise that suit. Do you mean by **"
-						+ Suit.rebuildName(url).replace("_", " ") + "**?", e.getChannel());
-				return;
-			}
+//			double sim = (Double) objArr[1];
+//			if (sim < 0.6) {
+//				bot.sendMessage(e.getAuthor().getAsMention() + " Hmm, I don't recognise that suit. Do you mean by **"
+//						+ Suit.rebuildName(url).replace("_", " ") + "**?", e.getChannel());
+//				return;
+//			}
 			SuitType type = SuitFileEditor.getSuitType(url.toLowerCase());
 			if (type == null)
 				type = SuitType.ASSAULT;

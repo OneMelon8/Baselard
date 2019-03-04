@@ -13,7 +13,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class Help extends Command {
 
 	public Help(Bot bot) {
-		super(bot, "help", "List of commands and usage");
+		super(bot, "help", new String[] { "?" }, "List of commands and usage");
 	}
 
 	@Override

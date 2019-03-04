@@ -73,9 +73,9 @@ public class SuitComp extends Command {
 	private String suggestName(String suitName) throws IOException, ParseException {
 		Object[] objArr = SuitFileEditor.suggestSuit(suitName);
 		String suggestion = (String) objArr[0];
-		double sim = (Double) objArr[1];
-		if (sim < 0.6)
-			return null;
+//		double sim = (Double) objArr[1];
+//		if (sim < 0.6)
+//			return null;
 		return suggestion;
 	}
 

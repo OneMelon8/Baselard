@@ -86,5 +86,6 @@ public class GeneralTools {
 
 	public static void logError(Exception ex) {
 		System.out.println(getTime() + " >> " + ex.getClass().getSimpleName() + " : " + ex.getMessage());
+		ex.printStackTrace();
 	}
 }

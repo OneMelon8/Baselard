@@ -54,14 +54,14 @@ public class StatTop extends Command {
 			try {
 				Object[] objArr = SuitFileEditor.suggestSuit(args[2]);
 				String suggestion = (String) objArr[0];
-				double sim = (Double) objArr[1];
-				if (sim < 0.6) {
-					bot.sendMessage(
-							e.getAuthor().getAsMention() + " Hmm, I don't recognise that suit. Do you mean by **"
-									+ Suit.rebuildName(suggestion).replace("_", " ") + "**?",
-							e.getChannel());
-					return;
-				}
+//				double sim = (Double) objArr[1];
+//				if (sim < 0.6) {
+//					bot.sendMessage(
+//							e.getAuthor().getAsMention() + " Hmm, I don't recognise that suit. Do you mean by **"
+//									+ Suit.rebuildName(suggestion).replace("_", " ") + "**?",
+//							e.getChannel());
+//					return;
+//				}
 				type = SuitFileEditor.getSuitType(suggestion.toLowerCase());
 				suitName = suggestion;
 			} catch (Exception ex) {
