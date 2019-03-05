@@ -2,7 +2,6 @@ package JProjects.BaseInfoBot.commands.fun;
 
 import JProjects.BaseInfoBot.Bot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.Messages;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -17,7 +16,7 @@ public class TableFlip extends Command {
 
 	@Override
 	public void fire(MessageReceivedEvent e) {
-		bot.sendMessage(Emotes.rodyBeat + "(╯°□°）╯︵ ┻━┻", e.getChannel());
+		bot.sendMessage("(╯°□°）╯︵ ┻━┻", e.getChannel());
 	}
 
 	@Override
