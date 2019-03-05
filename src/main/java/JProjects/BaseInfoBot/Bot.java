@@ -15,6 +15,7 @@ import JProjects.BaseInfoBot.commands.admin.Gamemode;
 import JProjects.BaseInfoBot.commands.admin.RegisterDB;
 import JProjects.BaseInfoBot.commands.admin.Test;
 import JProjects.BaseInfoBot.commands.admin.Update;
+import JProjects.BaseInfoBot.commands.fun.TableFlip;
 import JProjects.BaseInfoBot.commands.hangar.Hangar;
 import JProjects.BaseInfoBot.tools.EnviroHandler;
 import net.dv8tion.jda.core.AccountType;
@@ -60,6 +61,7 @@ public class Bot {
 		new RegisterDB(this);
 
 		// Fun
+		new TableFlip(this);
 	}
 
 	public void sendThinkingPacket(MessageChannel channel) {
