@@ -37,7 +37,7 @@ public class Codex extends Command {
 			// Warning: this URL list has not been reformatted!!!
 			SuitType[] types = new SuitType[] { SuitType.ASSAULT, SuitType.SUPPORT, SuitType.BOMBARDIER,
 					SuitType.SNIPER };
-			HashMap<ArrayList<Suit>, SuitType> suitList = new HashMap<>();
+			HashMap<ArrayList<Suit>, SuitType> suitList = new HashMap<ArrayList<Suit>, SuitType>();
 			for (SuitType type : types) {
 				JSONArray urlList = SuitFileEditor.getSuitsFromType(type.toString().toLowerCase());
 				ArrayList<Suit> typeSuits = new ArrayList<>();

@@ -32,7 +32,7 @@ public class GVision {
 	}
 
 	public static String ocr(String url) {
-		List<AnnotateImageRequest> requests = new ArrayList<>();
+		List<AnnotateImageRequest> requests = new ArrayList<AnnotateImageRequest>();
 		ImageSource imgSource = ImageSource.newBuilder().setImageUri(url).build();
 		Image img = Image.newBuilder().setSource(imgSource).build();
 		Feature feat = Feature.newBuilder().setType(Type.DOCUMENT_TEXT_DETECTION).build();

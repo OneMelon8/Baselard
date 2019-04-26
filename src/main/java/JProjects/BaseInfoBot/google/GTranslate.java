@@ -14,7 +14,7 @@ public class GTranslate {
 	}
 
 	public static ArrayList<String> translate(ArrayList<String> messages, String fromLang, String toLang) {
-		ArrayList<String> output = new ArrayList<>();
+		ArrayList<String> output = new ArrayList<String>();
 		for (String msg : messages)
 			output.add(translate(msg, fromLang, toLang));
 		return output;
