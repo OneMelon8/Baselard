@@ -26,7 +26,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class StatTop extends Command {
 
 	public StatTop(Bot bot) {
-		super(bot, "stattop", new String[] { "st", "stop", "statstop" },
+		super(bot, "stattop", new String[] { "st", "top", "statstop" },
 				"Get the top suit in a class for a certain aspect");
 	}
 
@@ -174,16 +174,29 @@ public class StatTop extends Command {
 		ArrayList<Double> vals = new ArrayList<Double>(suits.values());
 
 		int len = keys.size();
-		StringBuilder sb = new StringBuilder("```java\n");
+		StringBuilder sb = new StringBuilder("```\n");
 		for (int a = 0; a < count; a++)
-			sb.append("Rank #" + String.format("%02d", a + 1) + ": " + keys.get(len - 1 - a).getDisplayName() + " >> "
+			sb.append("#" + String.format("%02d", a + 1) + ": " + keys.get(len - 1 - a).getDisplayName() + " - "
 					+ GeneralTools.getNumeric(vals.get(len - 1 - a)) + "\n");
 		sb.append("```");
 
-		Field rankingField = new Field("Top " + count + " suits in all " + keys.size() + " " + type
-				+ " suits ranked by " + aspect.toUpperCase() + " aspect (such rankings much wow)", sb.toString(),
-				false);
-		builder.addField(rankingField);
+		if (sb.length() < 1024) {
+			Field rankingField = new Field("Top " + count + " suits in all " + keys.size() + " " + type
+					+ " suits ranked by " + aspect.toUpperCase() + " aspect (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧", sb.toString(), false);
+			builder.addField(rankingField);
+		} else {
+			Field title = new Field(
+					"Top " + count + " suits in all " + keys.size() + " " + type + " suits ranked by "
+							+ aspect.toUpperCase() + " aspect",
+					"Split into multiple parts because Discord limitations", false);
+			builder.addField(title);
+			while (sb.length() > 0) {
+				int limit = sb.length() > 1024 ? 1024 : sb.length();
+				Field rankingField = new Field("", sb.substring(0, limit), false);
+				builder.addField(rankingField);
+				sb.delete(0, limit);
+			}
+		}
 		return builder.build();
 	}
 

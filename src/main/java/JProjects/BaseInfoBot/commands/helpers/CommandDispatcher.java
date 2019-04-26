@@ -23,9 +23,8 @@ public class CommandDispatcher {
 	 */
 	public static void onCommand(MessageReceivedEvent event) {
 		String msg = event.getMessage().getContentRaw();
-		if (!msg.startsWith(Messages.prefix))
+		if (!msg.startsWith(Messages.prefix) && !msg.startsWith("Hey base, "))
 			return;
-		App.bot.sendThinkingPacket(event.getChannel());
 
 		String[] msgArr = msg.split(" ");
 		String userCmd = msgArr[0].substring(Messages.prefix.length()).toLowerCase();
@@ -35,12 +34,13 @@ public class CommandDispatcher {
 			ArrayList<String> aliases = new ArrayList<String>(Arrays.asList(registeredCommands.get(cmd)));
 			if (userCmd.equals(cmd) || aliases.contains(userCmd)) {
 				// Dispatch command
+				App.bot.sendThinkingPacket(event.getChannel());
 				registeredListeners.get(cmd).fire(event);
 				return;
 			}
 		}
-
-		unknownCommand(userCmd, event);
+		// Disabled cause.. spam i guess?
+		// unknownCommand(userCmd, event);
 	}
 
 	public static void unknownCommand(String cmd, MessageReceivedEvent event) {

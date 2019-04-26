@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import javax.security.auth.login.LoginException;
 
+import JProjects.BaseInfoBot.commands.Codex;
 import JProjects.BaseInfoBot.commands.Help;
+import JProjects.BaseInfoBot.commands.Pat;
 import JProjects.BaseInfoBot.commands.Ping;
 import JProjects.BaseInfoBot.commands.Register;
 import JProjects.BaseInfoBot.commands.StatTop;
@@ -14,6 +16,8 @@ import JProjects.BaseInfoBot.commands.admin.AddSuitAliases;
 import JProjects.BaseInfoBot.commands.admin.Gamemode;
 import JProjects.BaseInfoBot.commands.admin.RegisterDB;
 import JProjects.BaseInfoBot.commands.admin.Test;
+import JProjects.BaseInfoBot.commands.admin.Translate;
+import JProjects.BaseInfoBot.commands.admin.TranslateImage;
 import JProjects.BaseInfoBot.commands.admin.Update;
 import JProjects.BaseInfoBot.commands.fun.TableFlip;
 import JProjects.BaseInfoBot.commands.hangar.Hangar;
@@ -42,16 +46,17 @@ public class Bot {
 		new Help(this);
 		new Ping(this);
 
-		/*
-		 * part calculator? predict estimated damage and or estimated damage taken
-		 */
-
 		new Register(this);
 		new Hangar(this);
 
 		new SuitStats(this);
 		new SuitComp(this);
 		new StatTop(this);
+		new Codex(this);
+
+		// Beta
+		new TranslateImage(this);
+		new Translate(this);
 
 		// Administration
 		new Gamemode(this);
@@ -62,6 +67,7 @@ public class Bot {
 
 		// Fun
 		new TableFlip(this);
+		new Pat(this);
 	}
 
 	public void sendThinkingPacket(MessageChannel channel) {

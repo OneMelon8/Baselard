@@ -21,7 +21,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class SuitStats extends Command {
 
 	public SuitStats(Bot bot) {
-		super(bot, "suitstat", new String[] { "ss", "stst", "suitstats" }, "Query for suit statistics");
+		super(bot, "suitstat", new String[] { "st", "stat", "stats", "suitstats" }, "Query for suit statistics");
 	}
 
 	@Override

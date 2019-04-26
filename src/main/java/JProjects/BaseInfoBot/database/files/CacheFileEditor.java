@@ -97,8 +97,10 @@ public class CacheFileEditor {
 
 	public static Suit getSuit(String name, User owner) throws IOException, ParseException {
 		JSONObject map = getSuitMap(name);
-		if (map == null || map.get("suit") == null
-				|| Long.parseLong(String.valueOf(map.get("expire"))) < System.currentTimeMillis())
+		// Update: never expires
+		// Expire code: Long.parseLong(String.valueOf(map.get("expire"))) <
+		// System.currentTimeMillis()
+		if (map == null || map.get("suit") == null)
 			return null;
 		Suit suit = Suit.fromString((String) map.get("suit"));
 		suit.changeOwner(owner);

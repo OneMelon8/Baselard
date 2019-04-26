@@ -8,24 +8,6 @@ import java.util.TimerTask;
 
 public class KeyTyper {
 
-	/*
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * add discord commands!! easter eggs
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
 	public static void main(String[] args) {
 		try {
 			final Robot bot = new Robot();

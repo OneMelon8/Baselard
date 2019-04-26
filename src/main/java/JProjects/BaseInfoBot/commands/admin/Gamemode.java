@@ -17,10 +17,9 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class Gamemode extends Command {
 
 	public Gamemode(Bot bot) {
-		super(bot, "gamemode", "Administrative action mode accessor");
+		super(bot, "gamemode", new String[] { "gm" }, "Administrative action mode accessor");
 	}
 
-	// Me Tkon Tater
 	ArrayList<String> admins = EnviroHandler.getAdministrators();
 	String[] deathMessages = new String[] { " tried to swim in lava", " attempted to hug a creeper",
 			" was obliterated by Baselard's lasors. Ehehee rekt!", " fell out of the world" };
