@@ -12,6 +12,7 @@ import JProjects.BaseInfoBot.commands.Register;
 import JProjects.BaseInfoBot.commands.StatTop;
 import JProjects.BaseInfoBot.commands.SuitComp;
 import JProjects.BaseInfoBot.commands.SuitStats;
+import JProjects.BaseInfoBot.commands.Version;
 import JProjects.BaseInfoBot.commands.admin.AddSuitAliases;
 import JProjects.BaseInfoBot.commands.admin.Gamemode;
 import JProjects.BaseInfoBot.commands.admin.RegisterDB;
@@ -45,6 +46,7 @@ public class Bot {
 	public void registerCommands() {
 		new Help(this);
 		new Ping(this);
+		new Version(this);
 
 		new Register(this);
 		new Hangar(this);
