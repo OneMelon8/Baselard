@@ -53,7 +53,7 @@ public class GVision {
 	}
 
 	public static String ocr(File f) throws FileNotFoundException, IOException {
-		List<AnnotateImageRequest> requests = new ArrayList<>();
+		List<AnnotateImageRequest> requests = new ArrayList<AnnotateImageRequest>();
 		ByteString imgBytes = ByteString.readFrom(new FileInputStream(f));
 		Image img = Image.newBuilder().setContent(imgBytes).build();
 

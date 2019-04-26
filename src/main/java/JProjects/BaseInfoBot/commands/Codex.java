@@ -40,7 +40,7 @@ public class Codex extends Command {
 			HashMap<ArrayList<Suit>, SuitType> suitList = new HashMap<ArrayList<Suit>, SuitType>();
 			for (SuitType type : types) {
 				JSONArray urlList = SuitFileEditor.getSuitsFromType(type.toString().toLowerCase());
-				ArrayList<Suit> typeSuits = new ArrayList<>();
+				ArrayList<Suit> typeSuits = new ArrayList<Suit>();
 				int level = 51;
 				for (Object obj : urlList) {
 					String url = Suit.rebuildName((String) obj);
