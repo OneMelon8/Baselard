@@ -23,6 +23,7 @@ public class Test extends Command {
 			return;
 		}
 		bot.sendMessage(e.getMessage().getContentRaw().replace(Messages.prefix + "test ", ""), e.getChannel());
+		e.getMessage().delete().queue();
 	}
 
 	@Override
