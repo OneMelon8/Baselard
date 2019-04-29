@@ -25,6 +25,8 @@ public class CommandDispatcher {
 		String msg = event.getMessage().getContentRaw();
 		if (!msg.startsWith(Messages.prefix) && !msg.startsWith("Hey base, "))
 			return;
+		if (msg.startsWith("Hey base, "))
+			msg = msg.replace("Hey base, ", "/");
 
 		String[] msgArr = msg.split(" ");
 		String userCmd = msgArr[0].substring(Messages.prefix.length()).toLowerCase();
