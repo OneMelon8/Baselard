@@ -16,16 +16,16 @@ public class Version extends Command {
 
 	@Override
 	public void fire(MessageReceivedEvent e) {
-		bot.sendMessage("Base ver 2.4.7", e.getChannel());
+		bot.sendMessage("Base ver "+Bot.getVersion(), e.getChannel());
 	}
 
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Messages.colorMisc);
-		builder.setAuthor("Ping Template");
-		builder.setDescription("Use the following template to check my heartbeat");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "ping" + "```", false));
+		builder.setAuthor("Version Template");
+		builder.setDescription("Use the following template to get my version");
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "version" + "```", false));
 		return builder.build();
 	}
 }

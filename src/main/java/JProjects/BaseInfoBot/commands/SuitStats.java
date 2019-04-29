@@ -48,7 +48,7 @@ public class SuitStats extends Command {
 			url = Suit.rebuildName(url);
 			Suit suit;
 
-			int level = 41;
+			int level = 51;
 			if (args.length >= 3) {
 				try {
 					level = Integer.parseInt(args[2]);

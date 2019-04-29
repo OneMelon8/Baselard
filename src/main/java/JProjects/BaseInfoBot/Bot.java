@@ -19,7 +19,6 @@ import JProjects.BaseInfoBot.commands.admin.RegisterDB;
 import JProjects.BaseInfoBot.commands.admin.Test;
 import JProjects.BaseInfoBot.commands.admin.Translate;
 import JProjects.BaseInfoBot.commands.admin.TranslateImage;
-import JProjects.BaseInfoBot.commands.admin.Update;
 import JProjects.BaseInfoBot.commands.fun.TableFlip;
 import JProjects.BaseInfoBot.commands.hangar.Hangar;
 import JProjects.BaseInfoBot.tools.EnviroHandler;
@@ -33,10 +32,12 @@ public class Bot {
 
 	private JDA api;
 	public static ArrayList<String> admins = new ArrayList<String>(); // A list of ID's
+	private static String version;
 
-	public Bot() throws LoginException {
+	public Bot(String ver) throws LoginException {
 		JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(EnviroHandler.getBotToken());
 		this.api = builder.build();
+		version = ver;
 	}
 
 	public void addListener(Object listener) {
@@ -44,28 +45,28 @@ public class Bot {
 	}
 
 	public void registerCommands() {
+		// General Commands
 		new Help(this);
 		new Ping(this);
 		new Version(this);
+		// General Administration
+		new Gamemode(this);
+		new Test(this);
 
+		// MOE Commands
 		new Register(this);
 		new Hangar(this);
-
 		new SuitStats(this);
 		new SuitComp(this);
 		new StatTop(this);
 		new Codex(this);
+		// MOE Administration
+		new AddSuitAliases(this);
+		new RegisterDB(this);
 
 		// Beta
 		new TranslateImage(this);
 		new Translate(this);
-
-		// Administration
-		new Gamemode(this);
-		new Test(this);
-		new Update(this);
-		new AddSuitAliases(this);
-		new RegisterDB(this);
 
 		// Fun
 		new TableFlip(this);
@@ -86,5 +87,9 @@ public class Bot {
 
 	public JDA getJDA() {
 		return api;
+	}
+
+	public static String getVersion() {
+		return version;
 	}
 }

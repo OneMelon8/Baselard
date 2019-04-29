@@ -22,8 +22,6 @@ public class TranslateImage extends Command {
 		super(bot, "itranslate", new String[] { "it", "itrans" }, "Developer testing stuff :p");
 	}
 
-	// itranslate [to]
-
 	@Override
 	public void fire(MessageReceivedEvent e) {
 		User author = e.getAuthor();
@@ -76,9 +74,11 @@ public class TranslateImage extends Command {
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Messages.colorMisc);
-		builder.setAuthor("Test template");
-		builder.setDescription("You sure you need a template for this?");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "test hello world" + "```", false));
+		builder.setAuthor("iTranslation Template");
+		builder.setDescription("Use the following template to translate an image");
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "it [target locale]```", false));
+		builder.addField(
+				new Field("List of Locales:", "```https://cloud.google.com/translate/docs/languages```", false));
 		return builder.build();
 	}
 
