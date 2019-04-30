@@ -16,7 +16,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class AddSuitAliases extends Command {
 
 	public AddSuitAliases(Bot bot) {
-		super(bot, "addsuitalias", new String[] { "asa", "addsuitaliases" },
+		super(bot, "addsuitalias", new String[] { "alias", "aliases", "addsuitaliases" },
 				"Register a suit into the **temporary** database");
 	}
 
@@ -25,7 +25,7 @@ public class AddSuitAliases extends Command {
 		String[] args = e.getMessage().getContentRaw().split(" ");
 		User author = e.getAuthor();
 		if (!Bot.admins.contains(author.getId())) {
-			bot.sendMessage(e.getAuthor().getAsMention() + " permission denied :x:", e.getChannel());
+			bot.reactCross(e.getMessage());
 			return;
 		}
 		if (args.length != 3) {

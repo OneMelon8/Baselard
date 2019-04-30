@@ -2,17 +2,18 @@ package JProjects.BaseInfoBot.commands.admin;
 
 import JProjects.BaseInfoBot.Bot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
+import JProjects.BaseInfoBot.commands.helpers.CommandDispatcher;
 import JProjects.BaseInfoBot.database.Messages;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class Test extends Command {
+public class Toggle extends Command {
 
-	public Test(Bot bot) {
-		super(bot, "test", "Developer testing stuff :p");
+	public Toggle(Bot bot) {
+		super(bot, "toggle", "Administration toggle bot responses");
 	}
 
 	@Override
@@ -22,17 +23,17 @@ public class Test extends Command {
 			bot.reactCross(e.getMessage());
 			return;
 		}
-		bot.sendMessage(e.getMessage().getContentRaw().replace(Messages.prefix + "test ", ""), e.getChannel());
-		e.getMessage().delete().queue();
+		CommandDispatcher.mute = !CommandDispatcher.mute;
+		bot.reactCheck(e.getMessage());
 	}
 
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Messages.colorMisc);
-		builder.setAuthor("Test template");
-		builder.setDescription("You sure you need a template for this?");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "test hello world" + "```", false));
+		builder.setAuthor("Toggle Template");
+		builder.setDescription("Use the following template to enable/disable the bot");
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "toggle" + "```", false));
 		return builder.build();
 	}
 }

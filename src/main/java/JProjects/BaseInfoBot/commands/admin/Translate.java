@@ -27,8 +27,7 @@ public class Translate extends Command {
 		User author = e.getAuthor();
 		MessageChannel ch = e.getChannel();
 		if (!Bot.admins.contains(author.getId())) {
-			bot.sendMessage(author.getAsMention()
-					+ " permission denied :x: (this feature will be premium/limited in the future)", ch);
+			bot.reactCross(e.getMessage());
 			return;
 		}
 		Message m = e.getMessage();

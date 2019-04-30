@@ -26,7 +26,7 @@ public class RegisterDB extends Command {
 		String[] args = e.getMessage().getContentRaw().split(" ");
 		User author = e.getAuthor();
 		if (!Bot.admins.contains(author.getId())) {
-			bot.sendMessage(e.getAuthor().getAsMention() + " permission denied :x:", e.getChannel());
+			bot.reactCross(e.getMessage());
 			return;
 		}
 		if (args.length != 17) {

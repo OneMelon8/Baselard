@@ -17,14 +17,17 @@ import JProjects.BaseInfoBot.commands.admin.AddSuitAliases;
 import JProjects.BaseInfoBot.commands.admin.Gamemode;
 import JProjects.BaseInfoBot.commands.admin.RegisterDB;
 import JProjects.BaseInfoBot.commands.admin.Test;
+import JProjects.BaseInfoBot.commands.admin.Toggle;
 import JProjects.BaseInfoBot.commands.admin.Translate;
 import JProjects.BaseInfoBot.commands.admin.TranslateImage;
 import JProjects.BaseInfoBot.commands.fun.TableFlip;
 import JProjects.BaseInfoBot.commands.hangar.Hangar;
+import JProjects.BaseInfoBot.commands.helpers.CommandDispatcher;
 import JProjects.BaseInfoBot.tools.EnviroHandler;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 
@@ -52,6 +55,7 @@ public class Bot {
 		// General Administration
 		new Gamemode(this);
 		new Test(this);
+		new Toggle(this);
 
 		// MOE Commands
 		new Register(this);
@@ -83,6 +87,26 @@ public class Bot {
 
 	public void sendMessage(MessageEmbed message, MessageChannel channel) {
 		channel.sendMessage(message).queue();
+	}
+
+	public void addReaction(Message msg, String reaction) {
+		msg.addReaction(reaction).queue();
+	}
+
+	public void reactCheck(Message msg) {
+		addReaction(msg, "✅");
+	}
+
+	public void reactCross(Message msg) {
+		addReaction(msg, "❌");
+	}
+
+	public void reactQuestion(Message msg) {
+		addReaction(msg, "❔");
+	}
+
+	public void setMuted(boolean mute) {
+		CommandDispatcher.mute = mute;
 	}
 
 	public JDA getJDA() {

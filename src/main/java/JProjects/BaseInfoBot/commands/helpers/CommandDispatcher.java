@@ -16,33 +16,40 @@ public class CommandDispatcher {
 	public static HashMap<String, String[]> registeredCommands = new HashMap<String, String[]>();
 	public static HashMap<String, Command> registeredListeners = new HashMap<String, Command>();
 
+	public static boolean mute = false;
+
 	/**
 	 * Tries to process the command (if registered)
 	 * 
-	 * @param event - the {@link MessageReceivedEvent} instance
+	 * @param e - the {@link MessageReceivedEvent} instance
 	 */
-	public static void onCommand(MessageReceivedEvent event) {
-		String msg = event.getMessage().getContentRaw();
-		if (!msg.startsWith(Messages.prefix) && !msg.startsWith("Hey base, "))
+	public static void onCommand(MessageReceivedEvent e) {
+		String msg = e.getMessage().getContentRaw();
+		if (!msg.startsWith(Messages.prefix))
 			return;
-		if (msg.startsWith("Hey base, "))
-			msg = msg.replace("Hey base, ", "/");
-
 		String[] msgArr = msg.split(" ");
 		String userCmd = msgArr[0].substring(Messages.prefix.length()).toLowerCase();
-		System.out.println(GeneralTools.getTime() + " >> " + event.getAuthor().getAsTag() + " executed " + msg);
+		System.out.println(GeneralTools.getTime() + " >> " + e.getAuthor().getAsTag() + " executed " + msg);
+
+		if (mute && userCmd.equalsIgnoreCase("toggle")) {
+			registeredListeners.get("toggle").fire(e);
+			return;
+		}
+		if (mute)
+			return;
+
 		// Loop thru all the registered commands
 		for (String cmd : registeredCommands.keySet()) {
 			ArrayList<String> aliases = new ArrayList<String>(Arrays.asList(registeredCommands.get(cmd)));
-			if (userCmd.equals(cmd) || aliases.contains(userCmd)) {
+			if ((userCmd.equals(cmd) || aliases.contains(userCmd)) && !mute) {
 				// Dispatch command
-				App.bot.sendThinkingPacket(event.getChannel());
-				registeredListeners.get(cmd).fire(event);
+				registeredListeners.get(cmd).fire(e);
 				return;
 			}
 		}
 		// Disabled cause.. spam i guess?
 		// unknownCommand(userCmd, event);
+		App.bot.reactQuestion(e.getMessage());
 	}
 
 	public static void unknownCommand(String cmd, MessageReceivedEvent event) {
