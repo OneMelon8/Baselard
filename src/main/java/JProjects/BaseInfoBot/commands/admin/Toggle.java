@@ -33,7 +33,7 @@ public class Toggle extends Command {
 		builder.setColor(Messages.colorMisc);
 		builder.setAuthor("Toggle Template");
 		builder.setDescription("Use the following template to enable/disable the bot");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "toggle" + "```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + "```", false));
 		return builder.build();
 	}
 }

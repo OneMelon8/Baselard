@@ -19,7 +19,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class TranslateImage extends Command {
 
 	public TranslateImage(Bot bot) {
-		super(bot, "itranslate", new String[] { "it", "itrans" }, "Developer testing stuff :p");
+		super(bot, "itranslate", new String[] { "it", "itrans" }, "Image translation using Google API");
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class TranslateImage extends Command {
 		builder.setColor(Messages.colorMisc);
 		builder.setAuthor("iTranslation Template");
 		builder.setDescription("Use the following template to translate an image");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "it [target locale]```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + " [target locale]```", false));
 		builder.addField(
 				new Field("List of Locales:", "```https://cloud.google.com/translate/docs/languages```", false));
 		return builder.build();

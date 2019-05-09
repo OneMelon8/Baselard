@@ -22,7 +22,11 @@ public class Test extends Command {
 			bot.reactCross(e.getMessage());
 			return;
 		}
-		bot.sendMessage(e.getMessage().getContentRaw().replace(Messages.prefix + "test ", ""), e.getChannel());
+		String msg = e.getMessage().getContentRaw().replace(Messages.prefix + "test", "").trim();
+		if (msg.isEmpty())
+			msg = "Ehehee, what are you trying to test?";
+		bot.sendMessage(msg, e.getChannel());
+		System.out.println(msg);
 		e.getMessage().delete().queue();
 	}
 
@@ -32,7 +36,7 @@ public class Test extends Command {
 		builder.setColor(Messages.colorMisc);
 		builder.setAuthor("Test template");
 		builder.setDescription("You sure you need a template for this?");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "test hello world" + "```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + " hello world" + "```", false));
 		return builder.build();
 	}
 }

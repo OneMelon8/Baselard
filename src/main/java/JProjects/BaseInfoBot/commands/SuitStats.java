@@ -21,7 +21,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class SuitStats extends Command {
 
 	public SuitStats(Bot bot) {
-		super(bot, "suitstat", new String[] { "st", "stat", "stats", "suitstats" }, "Query for suit statistics");
+		super(bot, "stats", new String[] { "su", "st", "suit", "stat", "stats" }, "Query for suit statistics");
 	}
 
 	@Override
@@ -92,14 +92,14 @@ public class SuitStats extends Command {
 		builder.setAuthor("Suit Statistics Query Template");
 		builder.setDescription("Use the following template to run the suit query and potentially save the suit");
 		builder.addField(new Field("Copy & Paste:",
-				"```" + Messages.prefix + "suitstats <name> [lv = 1/31/41/51] [save? Y/N]" + "```", false));
+				"```" + Messages.prefix + command + " <name> [lv = 1/31/41/51] [save? Y/N]" + "```", false));
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");
 		sb.deleteCharAt(sb.length() - 1);
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
-		builder.addField(new Field("Example:", "```" + Messages.prefix + "suitstat Zenka 31 y```", false));
+		builder.addField(new Field("Example:", "```" + Messages.prefix + command + " Zenka 31 y```", false));
 		return builder.build();
 	}
 }

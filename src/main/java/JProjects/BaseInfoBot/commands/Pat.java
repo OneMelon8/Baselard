@@ -33,7 +33,7 @@ public class Pat extends Command {
 		builder.setColor(Messages.colorMisc);
 		builder.setAuthor("Pat Template");
 		builder.setDescription("Use the following template to pat");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "pat" + "```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + "```", false));
 		return builder.build();
 	}
 }

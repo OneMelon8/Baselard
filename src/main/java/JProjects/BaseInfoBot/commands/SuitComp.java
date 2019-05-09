@@ -22,8 +22,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class SuitComp extends Command {
 
 	public SuitComp(Bot bot) {
-		super(bot, "suitcomp", new String[] { "sc", "scomp", "suitcomp", "suitcomparison", "suitscomparison" },
-				"Compare two different suits' statstics");
+		super(bot, "sc", new String[] { "comp", "compare", "suitcomp" }, "Compare two different suits' statstics");
 	}
 
 	@Override
@@ -90,11 +89,11 @@ public class SuitComp extends Command {
 		suit1.levelChange(level);
 		suit2.levelChange(level);
 		Field suit1Field = new Field(
-				suit1.getName() + "'s Perspective: ED = " + GeneralTools.round(suit1.getExpectedDamage(), 2),
+				suit1.getName() + "'s Perspective: Firepower = " + GeneralTools.round(suit1.getExpectedDamage(), 2),
 				suit1.makeComparisonTable(suit2), false);
 		builder.addField(suit1Field);
 		Field suit2Field = new Field(
-				suit2.getName() + "'s Perspective: ED = " + GeneralTools.round(suit2.getExpectedDamage(), 2),
+				suit2.getName() + "'s Perspective: Firepower = " + GeneralTools.round(suit2.getExpectedDamage(), 2),
 				suit2.makeComparisonTable(suit1), false);
 		builder.addField(suit2Field);
 		return builder.build();
@@ -106,14 +105,14 @@ public class SuitComp extends Command {
 		builder.setAuthor("Suit Statistics Comparison Query Template");
 		builder.setDescription("Use the following template to run the suit comparison query");
 		builder.addField(
-				new Field("Copy & Paste:", "```" + Messages.prefix + "suitcomp <name> <name2>" + "```", false));
+				new Field("Copy & Paste:", "```" + Messages.prefix + command + " <name> <name2>" + "```", false));
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");
 		sb.deleteCharAt(sb.length() - 1);
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
-		builder.addField(new Field("Example:", "```" + Messages.prefix + "suitcomp Pygma Zenka```", false));
+		builder.addField(new Field("Example:", "```" + Messages.prefix + command + " Pygma Zenka```", false));
 		Field edNote = new Field("Notes about Expected Damage:",
 				"This is a value that calculates the raw DPS of the suit"
 						+ "\n```ED = ATK × CRT% × CRIT + ATK × (1-CRT%)```",

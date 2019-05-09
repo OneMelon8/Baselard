@@ -17,7 +17,7 @@ public class Ping extends Command {
 
 	@Override
 	public void fire(MessageReceivedEvent e) {
-		bot.sendMessage(Emotes.rodyBeat + " Heartbeat " + Math.round(e.getJDA().getPing()) + "ms", e.getChannel());
+		bot.sendMessage(Emotes.RODY_BEAT + " Heartbeat " + Math.round(e.getJDA().getPing()) + "ms", e.getChannel());
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class Ping extends Command {
 		builder.setColor(Messages.colorMisc);
 		builder.setAuthor("Ping Template");
 		builder.setDescription("Use the following template to check my heartbeat");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "ping" + "```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + "```", false));
 		return builder.build();
 	}
 }

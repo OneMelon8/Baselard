@@ -18,6 +18,7 @@ public class Suit implements Cloneable {
 	private String name;
 	private Grade grade;
 	private int level;
+	private double exp;
 
 	// Statistics
 	private int hp;
@@ -46,6 +47,7 @@ public class Suit implements Cloneable {
 		this.name = name;
 		this.grade = grade;
 		this.level = level;
+		this.exp = 0D;
 		this.hp = hp;
 		this.attack = attack;
 		this.defense = defense;
@@ -70,6 +72,10 @@ public class Suit implements Cloneable {
 		this.grade = Grade.fromString(info.get("grade"));
 		this.level = (Integer) GeneralTools.getNumeric(info.get("level"));
 
+		this.exp = (Double) GeneralTools.getNumeric(info.get("exp"));
+		if (this.exp == -1)
+			this.exp = 0;
+
 		this.hp = (Integer) GeneralTools.getNumeric(info.get("hp"));
 		this.attack = (Integer) GeneralTools.getNumeric(info.get("atk"));
 		this.defense = (Integer) GeneralTools.getNumeric(info.get("def"));
@@ -85,12 +91,12 @@ public class Suit implements Cloneable {
 		this.acidResistance = (Double) GeneralTools.getNumeric(info.get("acd"), true);
 	}
 
-	/*
-	 * Leveling Functions: US => +1 x4 => +2 x5 => +3 x6
+	/**
+	 * Leveling Functions: US => +1 x4 => +2 x5 => +3 x6 <br>
+	 * Assuming: +4 = x7 and linear distribution
 	 */
-	// Bulk change levels (aka from US to US+1 etc)
 	public void levelChange(int target) {
-		double multiplier = 1;
+		double multiplier = 1D;
 		if (this.level == 1) {
 			if (target == 31)
 				multiplier = 4D;
@@ -123,11 +129,19 @@ public class Suit implements Cloneable {
 		if (multiplier == 1)
 			return;
 		this.level = target;
+		this.statsLevelChange(multiplier);
+	}
+
+	private void statsLevelChange(double multiplier) {
 		this.hp *= multiplier;
 		this.attack *= multiplier;
 		this.defense *= multiplier;
 		this.accuracy *= multiplier;
 		this.evasion *= multiplier;
+	}
+
+	public void gainExp(int exp) {
+		// TODO
 	}
 
 	/*
@@ -154,7 +168,7 @@ public class Suit implements Cloneable {
 
 		builder.addField(new Field("**Statistics:**", this.makeDefaultTable(), false));
 		if (newData)
-			builder.setFooter("Data saved (temporarily)", imgUrl);
+			builder.setFooter("Data saved", imgUrl);
 		return builder.build();
 	}
 
@@ -354,6 +368,10 @@ public class Suit implements Cloneable {
 		return level;
 	}
 
+	public double getExp() {
+		return exp;
+	}
+
 	public int getHP() {
 		return hp;
 	}
@@ -431,6 +449,10 @@ public class Suit implements Cloneable {
 
 	public void setLevel(int level) {
 		this.level = level;
+	}
+
+	public void setExp(double exp) {
+		this.exp = exp;
 	}
 
 	public void setHP(int hp) {

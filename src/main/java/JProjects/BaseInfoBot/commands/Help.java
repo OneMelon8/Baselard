@@ -47,7 +47,7 @@ public class Help extends Command {
 	public MessageEmbed getAllHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Messages.colorMisc);
-		builder.setAuthor("Commands List for Baselard"); // v1.0 Beta
+		builder.setAuthor("Commands List for Baselard");
 		builder.setDescription("Here's how to use my command: `" + Messages.prefix + "<command> [arguments...]`");
 
 		StringBuilder general = new StringBuilder("```");
@@ -65,7 +65,7 @@ public class Help extends Command {
 		stats.append("```");
 		builder.addField(new Field("Suit Statistics Command:", stats.toString(), false));
 		builder.addField(
-				new Field("", "For more information, check out `" + Messages.prefix + "help [command]`", false));
+				new Field("", "For more information, check out `" + Messages.prefix + command + " [command]`", false));
 		return builder.build();
 	}
 
@@ -75,7 +75,7 @@ public class Help extends Command {
 		builder.setColor(Messages.colorMisc);
 		builder.setAuthor("Help Template");
 		builder.setDescription("Do you seriously need a template for this?");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "help" + "```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + "```", false));
 		return builder.build();
 	}
 }

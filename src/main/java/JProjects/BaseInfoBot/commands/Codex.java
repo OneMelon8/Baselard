@@ -32,7 +32,6 @@ public class Codex extends Command {
 		User author = e.getAuthor();
 		String name = author.getName();
 		String id = author.getId();
-		bot.sendMessage("Okay, hold on a while, I'm getting a lot of suits~", e.getChannel());
 		try {
 			// Warning: this URL list has not been reformatted!!!
 			SuitType[] types = new SuitType[] { SuitType.ASSAULT, SuitType.SUPPORT, SuitType.BOMBARDIER,
@@ -69,7 +68,7 @@ public class Codex extends Command {
 		builder.setColor(Messages.colorMisc);
 		builder.setAuthor("Codex Query Template");
 		builder.setDescription("Use the following template to view the MOE codex");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "codex```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + "```", false));
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");

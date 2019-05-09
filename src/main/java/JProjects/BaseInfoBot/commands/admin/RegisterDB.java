@@ -18,7 +18,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class RegisterDB extends Command {
 
 	public RegisterDB(Bot bot) {
-		super(bot, "aregister", new String[] { "areg", "aregist" }, "Register a suit into the **permanent** database");
+		super(bot, "reg", new String[] { "register" }, "Register a suit into the **permanent** database");
 	}
 
 	@Override
@@ -62,9 +62,9 @@ public class RegisterDB extends Command {
 		builder.setColor(Messages.colorMisc);
 		builder.setAuthor("Suit Registration Template");
 		builder.setDescription("Use the following template to register your suit and enter the data after \"=\"");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix
-				+ "aregister type= name= grade= level= hp= atk= def= acc= eva= cntr= crt%= crit= stn= frz= sil= acd="
-				+ "```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command
+				+ " type= name= grade= level= hp= atk= def= acc= eva= cntr= crt%= crit= stn= frz= sil= acd=" + "```",
+				false));
 		return builder.build();
 	}
 }

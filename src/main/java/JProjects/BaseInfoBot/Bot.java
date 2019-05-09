@@ -8,7 +8,6 @@ import JProjects.BaseInfoBot.commands.Codex;
 import JProjects.BaseInfoBot.commands.Help;
 import JProjects.BaseInfoBot.commands.Pat;
 import JProjects.BaseInfoBot.commands.Ping;
-import JProjects.BaseInfoBot.commands.Register;
 import JProjects.BaseInfoBot.commands.StatTop;
 import JProjects.BaseInfoBot.commands.SuitComp;
 import JProjects.BaseInfoBot.commands.SuitStats;
@@ -27,6 +26,7 @@ import JProjects.BaseInfoBot.tools.EnviroHandler;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -58,12 +58,13 @@ public class Bot {
 		new Toggle(this);
 
 		// MOE Commands
-		new Register(this);
 		new Hangar(this);
 		new SuitStats(this);
 		new SuitComp(this);
 		new StatTop(this);
 		new Codex(this);
+		// MOE Combat
+
 		// MOE Administration
 		new AddSuitAliases(this);
 		new RegisterDB(this);
@@ -90,6 +91,10 @@ public class Bot {
 	}
 
 	public void addReaction(Message msg, String reaction) {
+		msg.addReaction(reaction).queue();
+	}
+
+	public void addReaction(Message msg, Emote reaction) {
 		msg.addReaction(reaction).queue();
 	}
 

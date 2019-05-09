@@ -26,8 +26,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class StatTop extends Command {
 
 	public StatTop(Bot bot) {
-		super(bot, "stattop", new String[] { "st", "top", "statstop" },
-				"Get the top suit in a class for a certain aspect");
+		super(bot, "top", new String[] { "top", "statstop" }, "Get the top suit in a class for a certain aspect");
 	}
 
 	private ArrayList<String> availableAspects = new ArrayList<String>(Arrays.asList("hp", "atk", "def", "acc", "eva",
@@ -208,7 +207,7 @@ public class StatTop extends Command {
 		builder.setDescription("Use the following template to run the top statistics query"
 				+ "\nWarning: this command might take a while to perform");
 		builder.addField(new Field("Copy & Paste:",
-				"```" + Messages.prefix + "top <aspect> <class> [top # to display or \"all\"]" + "```", false));
+				"```" + Messages.prefix + command + " <aspect> <class> [top # to display or \"all\"]" + "```", false));
 		builder.addField(new Field("Available Aspects:",
 				"```hp, atk, def, acc, eva, cntr, crt%, crit, acd, stn, frz, sil or rank```", false));
 		StringBuilder sb = new StringBuilder("```");
@@ -218,7 +217,8 @@ public class StatTop extends Command {
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
 		builder.addField(new Field("Example:",
-				"```" + Messages.prefix + "top atk sniper\n" + Messages.prefix + "top rank Zenka```", false));
+				"```" + Messages.prefix + command + " atk sniper\n" + Messages.prefix + command + " rank Zenka```",
+				false));
 		return builder.build();
 	}
 
@@ -249,8 +249,8 @@ public class StatTop extends Command {
 		builder.setColor(Messages.colorMisc);
 		builder.setAuthor("Rank Query Template");
 		builder.setDescription("Rank query is a bit different than stats query");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "top rank <name>```", false));
-		builder.addField(new Field("Example:", "```" + Messages.prefix + "top rank Atropos```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + " rank <name>```", false));
+		builder.addField(new Field("Example:", "```" + Messages.prefix + command + " rank Atropos```", false));
 		return builder.build();
 	}
 }

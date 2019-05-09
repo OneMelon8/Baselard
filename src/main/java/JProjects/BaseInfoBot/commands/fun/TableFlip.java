@@ -25,7 +25,7 @@ public class TableFlip extends Command {
 		builder.setColor(Messages.colorMisc);
 		builder.setAuthor("Tableflip Template");
 		builder.setDescription("Use the following template to flip a table");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "tableflip" + "```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + "```", false));
 		return builder.build();
 	}
 }

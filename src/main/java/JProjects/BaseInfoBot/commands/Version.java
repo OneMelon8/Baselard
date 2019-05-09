@@ -16,7 +16,7 @@ public class Version extends Command {
 
 	@Override
 	public void fire(MessageReceivedEvent e) {
-		bot.sendMessage("Base ver "+Bot.getVersion(), e.getChannel());
+		bot.sendMessage("Base ver " + Bot.getVersion(), e.getChannel());
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class Version extends Command {
 		builder.setColor(Messages.colorMisc);
 		builder.setAuthor("Version Template");
 		builder.setDescription("Use the following template to get my version");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "version" + "```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + "```", false));
 		return builder.build();
 	}
 }

@@ -51,8 +51,8 @@ public class Hangar extends Command {
 		builder.setAuthor("Hangar Template");
 		builder.setDescription("Use the following template to navigate in your hangar! (such hangar much wow)");
 		builder.addField(new Field("Copy & Paste:",
-				"```" + Messages.prefix + "hangar [import/export/view] [data]" + "```", false));
-		builder.addField(new Field("Example:", "```" + Messages.prefix + "hangar export" + "```", false));
+				"```" + Messages.prefix + command + " [import/export/view] [data]" + "```", false));
+		builder.addField(new Field("Example:", "```" + Messages.prefix + command + " export" + "```", false));
 		return builder.build();
 	}
 }

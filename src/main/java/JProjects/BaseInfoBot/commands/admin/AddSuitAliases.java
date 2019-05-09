@@ -16,8 +16,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class AddSuitAliases extends Command {
 
 	public AddSuitAliases(Bot bot) {
-		super(bot, "addsuitalias", new String[] { "alias", "aliases", "addsuitaliases" },
-				"Register a suit into the **temporary** database");
+		super(bot, "alias", new String[] { "aliases" }, "Add an alias to a suit");
 	}
 
 	@Override
@@ -60,9 +59,8 @@ public class AddSuitAliases extends Command {
 		builder.setAuthor("Add Suit Aliases Template");
 		builder.setDescription("Use the following template to add aliases to a suit (usable in queries)");
 		builder.addField(
-				new Field("Copy & Paste:", "```" + Messages.prefix + "addsuitalias <original> <alias>" + "```", false));
-		builder.addField(
-				new Field("Example:", "```" + Messages.prefix + "addsuitalias Hellmaster_Blader HMB```", false));
+				new Field("Copy & Paste:", "```" + Messages.prefix + command + " <original> <alias>" + "```", false));
+		builder.addField(new Field("Example:", "```" + Messages.prefix + command + " Hellmaster_Blader HMB```", false));
 		return builder.build();
 	}
 }

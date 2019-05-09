@@ -17,10 +17,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class Translate extends Command {
 
 	public Translate(Bot bot) {
-		super(bot, "translate", new String[] { "t", "trans" }, "Developer testing stuff :p");
+		super(bot, "translate", new String[] { "t", "trans" }, "Translate from a language to another");
 	}
-
-	// itranslate [to]
 
 	@Override
 	public void fire(MessageReceivedEvent e) {
@@ -33,10 +31,14 @@ public class Translate extends Command {
 		Message m = e.getMessage();
 		String[] args = m.getContentRaw().split(" ");
 		String msg = String.join(" ", Arrays.asList(args).subList(1, args.length));
-		
+		if (msg.isEmpty()) {
+			bot.sendMessage("*insert nothing here*", ch);
+			return;
+		}
+
 		bot.sendMessage("Let me translate it for ya...", ch);
 		bot.sendThinkingPacket(ch);
-		
+
 		String translated;
 		try {
 			translated = GTranslate.translate(msg, "en");
@@ -52,9 +54,10 @@ public class Translate extends Command {
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Messages.colorMisc);
-		builder.setAuthor("Test template");
-		builder.setDescription("You sure you need a template for this?");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + "test hello world" + "```", false));
+		builder.setAuthor("Translation template");
+		builder.setDescription("Use the following template to translate to English");
+		builder.addField(
+				new Field("Copy & Paste:", "```" + Messages.prefix + command + " <message...>" + "```", false));
 		return builder.build();
 	}
 
