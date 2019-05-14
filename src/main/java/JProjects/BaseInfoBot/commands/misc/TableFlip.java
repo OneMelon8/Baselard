@@ -1,4 +1,4 @@
-package JProjects.BaseInfoBot.commands.fun;
+package JProjects.BaseInfoBot.commands.misc;
 
 import JProjects.BaseInfoBot.Bot;
 import JProjects.BaseInfoBot.commands.helpers.Command;

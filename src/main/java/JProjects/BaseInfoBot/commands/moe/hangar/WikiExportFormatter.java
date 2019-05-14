@@ -1,4 +1,4 @@
-package JProjects.BaseInfoBot.commands.hangar;
+package JProjects.BaseInfoBot.commands.moe.hangar;
 
 import java.util.ArrayList;
 import java.util.Arrays;

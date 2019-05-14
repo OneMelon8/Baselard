@@ -11,7 +11,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class Version extends Command {
 
 	public Version(Bot bot) {
-		super(bot, "ver", new String[] { "version" }, "Check the bot version");
+		super(bot, "ver", new String[] { "v", "version" }, "Check the bot version");
 	}
 
 	@Override

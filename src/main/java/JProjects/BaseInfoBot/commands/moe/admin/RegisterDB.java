@@ -1,4 +1,4 @@
-package JProjects.BaseInfoBot.commands.admin;
+package JProjects.BaseInfoBot.commands.moe.admin;
 
 import java.util.HashMap;
 

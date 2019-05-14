@@ -14,7 +14,7 @@ import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.database.SuitType;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 
-public class Spider {
+public class MoeSpider {
 
 	private static final String[] statArr = new String[] { "hp", "atk", "def", "acc", "eva", "cntr", "crt%", "crit",
 			"stn", "frz", "sil", "acd" };

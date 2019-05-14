@@ -56,6 +56,7 @@ public class TranslateImage extends Command {
 		}
 
 		bot.sendMessage("Ah ha! Now let me translate it for ya...", ch);
+		bot.sendMessage(ocr, ch);
 		bot.sendThinkingPacket(ch);
 
 		String translated;

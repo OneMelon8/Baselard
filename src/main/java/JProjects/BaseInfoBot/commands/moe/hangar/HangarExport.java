@@ -1,4 +1,4 @@
-package JProjects.BaseInfoBot.commands.hangar;
+package JProjects.BaseInfoBot.commands.moe.hangar;
 
 import org.json.simple.JSONObject;
 

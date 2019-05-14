@@ -1,4 +1,4 @@
-package JProjects.BaseInfoBot.commands.combat;
+package JProjects.BaseInfoBot.commands.moe.combat;
 
 import JProjects.BaseInfoBot.database.Pixie;
 

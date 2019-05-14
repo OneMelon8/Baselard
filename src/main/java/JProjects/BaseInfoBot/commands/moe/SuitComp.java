@@ -1,4 +1,4 @@
-package JProjects.BaseInfoBot.commands;
+package JProjects.BaseInfoBot.commands.moe;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.database.Suit;
 import JProjects.BaseInfoBot.database.files.CacheFileEditor;
 import JProjects.BaseInfoBot.database.files.SuitFileEditor;
-import JProjects.BaseInfoBot.spider.Spider;
+import JProjects.BaseInfoBot.spider.MoeSpider;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -48,13 +48,13 @@ public class SuitComp extends Command {
 			suit2 = CacheFileEditor.getSuit(url2.toLowerCase(), e.getAuthor());
 
 			if (suit1 == null) {
-				HashMap<String, String> resultsS1 = Spider.query(url1, SuitFileEditor.getSuitType(url1.toLowerCase()),
+				HashMap<String, String> resultsS1 = MoeSpider.query(url1, SuitFileEditor.getSuitType(url1.toLowerCase()),
 						Grade.US);
 				suit1 = new Suit(e.getAuthor().getName(), e.getAuthor().getId(), resultsS1);
 				CacheFileEditor.write(suit1);
 			}
 			if (suit2 == null) {
-				HashMap<String, String> resultsS2 = Spider.query(url2, SuitFileEditor.getSuitType(url2.toLowerCase()),
+				HashMap<String, String> resultsS2 = MoeSpider.query(url2, SuitFileEditor.getSuitType(url2.toLowerCase()),
 						Grade.US);
 				suit2 = new Suit(e.getAuthor().getName(), e.getAuthor().getId(), resultsS2);
 				CacheFileEditor.write(suit2);

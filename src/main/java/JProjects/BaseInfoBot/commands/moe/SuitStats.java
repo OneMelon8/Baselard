@@ -1,4 +1,4 @@
-package JProjects.BaseInfoBot.commands;
+package JProjects.BaseInfoBot.commands.moe;
 
 import java.util.HashMap;
 
@@ -11,7 +11,7 @@ import JProjects.BaseInfoBot.database.SuitType;
 import JProjects.BaseInfoBot.database.files.CacheFileEditor;
 import JProjects.BaseInfoBot.database.files.HangarFileEditor;
 import JProjects.BaseInfoBot.database.files.SuitFileEditor;
-import JProjects.BaseInfoBot.spider.Spider;
+import JProjects.BaseInfoBot.spider.MoeSpider;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -63,7 +63,7 @@ public class SuitStats extends Command {
 			String cache = url.toLowerCase();
 			suit = CacheFileEditor.getSuit(cache, e.getAuthor());
 			if (suit == null) {
-				HashMap<String, String> results = Spider.query(url, type, Grade.US);
+				HashMap<String, String> results = MoeSpider.query(url, type, Grade.US);
 				suit = new Suit(e.getAuthor().getName(), e.getAuthor().getId(), results);
 				suit.levelChange(level);
 				CacheFileEditor.write(suit.clone());

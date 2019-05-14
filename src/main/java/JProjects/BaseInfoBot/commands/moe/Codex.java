@@ -1,4 +1,4 @@
-package JProjects.BaseInfoBot.commands;
+package JProjects.BaseInfoBot.commands.moe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import JProjects.BaseInfoBot.database.Suit;
 import JProjects.BaseInfoBot.database.SuitType;
 import JProjects.BaseInfoBot.database.files.CacheFileEditor;
 import JProjects.BaseInfoBot.database.files.SuitFileEditor;
-import JProjects.BaseInfoBot.spider.Spider;
+import JProjects.BaseInfoBot.spider.MoeSpider;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -46,7 +46,7 @@ public class Codex extends Command {
 					Suit s;
 					s = CacheFileEditor.getSuit(url.toLowerCase(), author);
 					if (s == null) {
-						s = new Suit(name, id, Spider.query(url, type, Grade.US));
+						s = new Suit(name, id, MoeSpider.query(url, type, Grade.US));
 						CacheFileEditor.write(s);
 					}
 					s.levelChange(level);
