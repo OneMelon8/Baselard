@@ -18,18 +18,14 @@ public class Emotes {
 
 	public static String getAttribute(String attr) {
 		attr = attr.toLowerCase();
-		switch (attr) {
-		case "pure":
+		if (attr.equals("pure"))
 			return ATTR_PURE;
-		case "power":
+		else if (attr.equals("power"))
 			return ATTR_POWER;
-		case "happy":
+		else if (attr.equals("happy"))
 			return ATTR_HAPPY;
-		case "cool":
+		else if (attr.equals("cool"))
 			return ATTR_COOL;
-		default:
-			System.out.println(attr);
-			return null;
-		}
+		return null;
 	}
 }
