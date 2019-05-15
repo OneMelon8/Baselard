@@ -37,8 +37,12 @@ public class BandoriEvents extends Command {
 		String eventName = String.join(" ", Arrays.asList(args).subList(1, args.length));
 		try {
 			bot.sendMessage(BandoriEventSpider.queryEvent(eventName), ch);
-		} catch (IOException | IndexOutOfBoundsException ex) {
+		} catch (IndexOutOfBoundsException ex) {
 			bot.sendMessage("I cannot found information on that event, maybe you spelled it wrong?", ch);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			bot.sendMessage("Seems like I cannot get the information right now. Check your data and try again later.",
+					ch);
 		}
 	}
 

@@ -26,7 +26,7 @@ public class BandoriEventSpider {
 	// General query function
 	public static ArrayList<String> queryEventList() throws IOException {
 		int page = 1;
-		ArrayList<String> events = new ArrayList<>();
+		ArrayList<String> events = new ArrayList<String>();
 		while (true) {
 			Document doc = Jsoup.connect(masterUrl + queryAllUrl + "&page=" + page).userAgent("Chrome")
 					.timeout(20 * 1000).get();
@@ -43,7 +43,7 @@ public class BandoriEventSpider {
 
 	// Specific event
 	public static List<MessageEmbed> queryEvent(String name) throws IOException {
-		List<MessageEmbed> output = new ArrayList<>();
+		List<MessageEmbed> output = new ArrayList<MessageEmbed>();
 
 		Document doc = Jsoup.connect(masterUrl + querySearchUrl + name.replace(" ", "+")).userAgent("Chrome")
 				.timeout(20 * 1000).get();
