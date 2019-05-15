@@ -19,9 +19,9 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class SuitComp extends Command {
+public class MoeSuitComp extends Command {
 
-	public SuitComp(Bot bot) {
+	public MoeSuitComp(Bot bot) {
 		super(bot, "sc", new String[] { "comp", "compare", "suitcomp" }, "Compare two different suits' statstics");
 	}
 

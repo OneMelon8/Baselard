@@ -1,6 +1,7 @@
 package JProjects.BaseInfoBot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.security.auth.login.LoginException;
 
@@ -13,12 +14,13 @@ import JProjects.BaseInfoBot.commands.admin.Test;
 import JProjects.BaseInfoBot.commands.admin.Toggle;
 import JProjects.BaseInfoBot.commands.admin.Translate;
 import JProjects.BaseInfoBot.commands.admin.TranslateImage;
+import JProjects.BaseInfoBot.commands.bandori.BandoriEvents;
 import JProjects.BaseInfoBot.commands.helpers.CommandDispatcher;
 import JProjects.BaseInfoBot.commands.misc.TableFlip;
-import JProjects.BaseInfoBot.commands.moe.Codex;
-import JProjects.BaseInfoBot.commands.moe.StatTop;
-import JProjects.BaseInfoBot.commands.moe.SuitComp;
-import JProjects.BaseInfoBot.commands.moe.SuitStats;
+import JProjects.BaseInfoBot.commands.moe.MoeCodex;
+import JProjects.BaseInfoBot.commands.moe.MoeStatTop;
+import JProjects.BaseInfoBot.commands.moe.MoeSuitComp;
+import JProjects.BaseInfoBot.commands.moe.MoeSuitStats;
 import JProjects.BaseInfoBot.commands.moe.admin.AddSuitAliases;
 import JProjects.BaseInfoBot.commands.moe.admin.RegisterDB;
 import JProjects.BaseInfoBot.commands.moe.hangar.Hangar;
@@ -59,15 +61,18 @@ public class Bot {
 
 		// MOE Commands
 		new Hangar(this);
-		new SuitStats(this);
-		new SuitComp(this);
-		new StatTop(this);
-		new Codex(this);
+		new MoeSuitStats(this);
+		new MoeSuitComp(this);
+		new MoeStatTop(this);
+		new MoeCodex(this);
 		// MOE Combat
 
 		// MOE Administration
 		new AddSuitAliases(this);
 		new RegisterDB(this);
+
+		// Bandori Commands
+		new BandoriEvents(this);
 
 		// Beta
 		new TranslateImage(this);
@@ -88,6 +93,11 @@ public class Bot {
 
 	public void sendMessage(MessageEmbed message, MessageChannel channel) {
 		channel.sendMessage(message).queue();
+	}
+
+	public void sendMessage(List<MessageEmbed> messages, MessageChannel channel) {
+		for (MessageEmbed message : messages)
+			channel.sendMessage(message).queue();
 	}
 
 	public void addReaction(Message msg, String reaction) {

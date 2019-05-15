@@ -18,9 +18,9 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class SuitStats extends Command {
+public class MoeSuitStats extends Command {
 
-	public SuitStats(Bot bot) {
+	public MoeSuitStats(Bot bot) {
 		super(bot, "stats", new String[] { "su", "st", "suit", "stat", "stats" }, "Query for suit statistics");
 	}
 

@@ -10,11 +10,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import JProjects.BaseInfoBot.database.Grade;
-import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.database.SuitType;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 
 public class MoeSpider {
+	private static final String masterUrl = "https://masterofeternity.gamepedia.com/";
 
 	private static final String[] statArr = new String[] { "hp", "atk", "def", "acc", "eva", "cntr", "crt%", "crit",
 			"stn", "frz", "sil", "acd" };
@@ -22,7 +22,7 @@ public class MoeSpider {
 
 	// General query function
 	public static HashMap<String, String> query(String subUrl, SuitType type, Grade grade) throws IOException {
-		Document doc = Jsoup.connect(Messages.masterUrl + subUrl).userAgent("Chrome").timeout(20 * 1000).get();
+		Document doc = Jsoup.connect(masterUrl + subUrl).userAgent("Chrome").timeout(20 * 1000).get();
 		HashMap<String, String> stats = new HashMap<String, String>();
 		stats.put("name", subUrl.replace("_", " "));
 		stats.put("type", type.toString());

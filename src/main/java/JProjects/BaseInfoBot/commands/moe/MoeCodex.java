@@ -21,9 +21,9 @@ import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class Codex extends Command {
+public class MoeCodex extends Command {
 
-	public Codex(Bot bot) {
+	public MoeCodex(Bot bot) {
 		super(bot, "codex", new String[] { "cdx" }, "Get all suits");
 	}
 

@@ -23,9 +23,9 @@ import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class StatTop extends Command {
+public class MoeStatTop extends Command {
 
-	public StatTop(Bot bot) {
+	public MoeStatTop(Bot bot) {
 		super(bot, "top", new String[] { "top", "statstop" }, "Get the top suit in a class for a certain aspect");
 	}
 
