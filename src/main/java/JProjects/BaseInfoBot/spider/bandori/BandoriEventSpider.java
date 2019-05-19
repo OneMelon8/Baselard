@@ -56,7 +56,7 @@ public class BandoriEventSpider {
 
 		EmbedBuilder eventBuilder = new EmbedBuilder();
 		eventBuilder.setColor(Messages.colorMisc);
-		eventBuilder.setAuthor(table.select("tr[data-field=name]").select("strong").get(0).text());
+		eventBuilder.setAuthor(table.select("tr[data-field=name]").text());
 		eventBuilder.setImage("https:" + wrapper.select("img.event-image").attr("src"));
 		eventBuilder.setDescription("UTC: "
 				+ table.select("tr[data-field=english_start_date]").select("span.datetime").text().replace(" +0000", "")
