@@ -50,20 +50,27 @@ public class Help extends Command {
 		builder.setAuthor("Commands List for Baselard");
 		builder.setDescription("Here's how to use my command: `" + Messages.prefix + "<command> [arguments...]`");
 
-		StringBuilder general = new StringBuilder("```");
-		general.append(String.format("%-8s >> %s", "help", "Show this message\n"));
-		general.append(String.format("%-8s >> %s", "ping", "Check my heartbeat\n"));
-		general.append(String.format("%-8s >> %s", "ver", "Check my version info\n"));
-		general.append("```");
-		builder.addField(new Field("General Commands:", general.toString(), false));
+		StringBuilder sb = new StringBuilder("```");
+		sb.append(String.format("%-8s >> %s", "help", "Show this message\n"));
+		sb.append(String.format("%-8s >> %s", "ping", "Check my heartbeat\n"));
+		sb.append(String.format("%-8s >> %s", "ver", "Check my version info\n"));
+		sb.append("```");
+		builder.addField(new Field("**General Commands:**", sb.toString(), false));
 
-		StringBuilder stats = new StringBuilder("```");
-		stats.append(String.format("%-8s >> %s", "stat", "Display statistics for a suit\n"));
-		stats.append(String.format("%-8s >> %s", "sc", "Compare the stats for two different suits\n"));
-		stats.append(String.format("%-8s >> %s", "top", "List the top suits for certain stats\n"));
-		stats.append(String.format("%-8s >> %s", "codex", "List all suits in the database\n"));
-		stats.append("```");
-		builder.addField(new Field("Suit Statistics Command:", stats.toString(), false));
+		sb = new StringBuilder("```");
+		sb.append(String.format("%-8s >> %s", "stat", "Display statistics for a suit\n"));
+		sb.append(String.format("%-8s >> %s", "sc", "Compare the stats for two different suits\n"));
+		sb.append(String.format("%-8s >> %s", "top", "List the top suits for certain stats\n"));
+		sb.append(String.format("%-8s >> %s", "codex", "List all suits in the database\n"));
+		sb.append("```");
+		builder.addField(new Field("**Suit Statistics Commands:**", sb.toString(), false));
+
+		sb = new StringBuilder("```");
+		sb.append(String.format("%-8s >> %s", "ev", "Display event list or a specific event\n"));
+		sb.append(String.format("%-8s >> %s", "card", "Query for card list or a specific card\n"));
+		sb.append("```");
+		builder.addField(new Field("**Bandori Commands:**", sb.toString(), false));
+
 		builder.addField(
 				new Field("", "For more information, check out `" + Messages.prefix + command + " [command]`", false));
 		return builder.build();
