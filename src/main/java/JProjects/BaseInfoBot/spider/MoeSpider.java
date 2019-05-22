@@ -9,8 +9,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import JProjects.BaseInfoBot.database.Grade;
-import JProjects.BaseInfoBot.database.SuitType;
+import JProjects.BaseInfoBot.database.moe.MoeGrade;
+import JProjects.BaseInfoBot.database.moe.MoeSuitType;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 
 public class MoeSpider {
@@ -21,7 +21,7 @@ public class MoeSpider {
 	private static final List<String> statLst = Arrays.asList(statArr);
 
 	// General query function
-	public static HashMap<String, String> query(String subUrl, SuitType type, Grade grade) throws IOException {
+	public static HashMap<String, String> query(String subUrl, MoeSuitType type, MoeGrade grade) throws IOException {
 		Document doc = Jsoup.connect(masterUrl + subUrl).userAgent("Chrome").timeout(20 * 1000).get();
 		HashMap<String, String> stats = new HashMap<String, String>();
 		stats.put("name", subUrl.replace("_", " "));

@@ -1,9 +1,9 @@
-package JProjects.BaseInfoBot.database;
+package JProjects.BaseInfoBot.database.moe;
 
-public enum Grade {
+public enum MoeGrade {
 	C, B, A, S, S2, S3, US;
 
-	public static Grade fromString(String s) {
+	public static MoeGrade fromString(String s) {
 		if (s == null)
 			return null;
 		if (s.equalsIgnoreCase("c"))

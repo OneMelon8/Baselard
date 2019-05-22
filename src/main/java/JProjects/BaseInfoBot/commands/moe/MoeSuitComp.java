@@ -7,11 +7,11 @@ import org.json.simple.parser.ParseException;
 
 import JProjects.BaseInfoBot.Bot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.database.Grade;
 import JProjects.BaseInfoBot.database.Messages;
-import JProjects.BaseInfoBot.database.Suit;
 import JProjects.BaseInfoBot.database.files.CacheFileEditor;
 import JProjects.BaseInfoBot.database.files.SuitFileEditor;
+import JProjects.BaseInfoBot.database.moe.MoeGrade;
+import JProjects.BaseInfoBot.database.moe.MoeSuit;
 import JProjects.BaseInfoBot.spider.MoeSpider;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -43,20 +43,20 @@ public class MoeSuitComp extends Command {
 				return;
 			}
 
-			Suit suit1, suit2;
+			MoeSuit suit1, suit2;
 			suit1 = CacheFileEditor.getSuit(url1.toLowerCase(), e.getAuthor());
 			suit2 = CacheFileEditor.getSuit(url2.toLowerCase(), e.getAuthor());
 
 			if (suit1 == null) {
 				HashMap<String, String> resultsS1 = MoeSpider.query(url1, SuitFileEditor.getSuitType(url1.toLowerCase()),
-						Grade.US);
-				suit1 = new Suit(e.getAuthor().getName(), e.getAuthor().getId(), resultsS1);
+						MoeGrade.US);
+				suit1 = new MoeSuit(e.getAuthor().getName(), e.getAuthor().getId(), resultsS1);
 				CacheFileEditor.write(suit1);
 			}
 			if (suit2 == null) {
 				HashMap<String, String> resultsS2 = MoeSpider.query(url2, SuitFileEditor.getSuitType(url2.toLowerCase()),
-						Grade.US);
-				suit2 = new Suit(e.getAuthor().getName(), e.getAuthor().getId(), resultsS2);
+						MoeGrade.US);
+				suit2 = new MoeSuit(e.getAuthor().getName(), e.getAuthor().getId(), resultsS2);
 				CacheFileEditor.write(suit2);
 			}
 			bot.sendMessage(getsuitcompEmbeded(suit1, suit2), e.getChannel());
@@ -79,13 +79,13 @@ public class MoeSuitComp extends Command {
 		return suggestion;
 	}
 
-	private MessageEmbed getsuitcompEmbeded(Suit suit1, Suit suit2) {
+	private MessageEmbed getsuitcompEmbeded(MoeSuit suit1, MoeSuit suit2) {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Messages.colorMisc);
 		builder.setAuthor("Suit Comparison: " + suit1.getName() + " vs " + suit2.getName());
 		final int level = 51;
 		builder.setDescription(
-				"Comparison based on both suits' statistics at " + Grade.getUsGradeFromString(level) + " Lv. " + level);
+				"Comparison based on both suits' statistics at " + MoeGrade.getUsGradeFromString(level) + " Lv. " + level);
 		suit1.levelChange(level);
 		suit2.levelChange(level);
 		Field suit1Field = new Field(

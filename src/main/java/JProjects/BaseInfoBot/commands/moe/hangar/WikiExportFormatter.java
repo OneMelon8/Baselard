@@ -3,7 +3,7 @@ package JProjects.BaseInfoBot.commands.moe.hangar;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import JProjects.BaseInfoBot.database.Suit;
+import JProjects.BaseInfoBot.database.moe.MoeSuit;
 
 public class WikiExportFormatter {
 
@@ -22,7 +22,7 @@ public class WikiExportFormatter {
 			"| DEF51 = ", "| ACC51 = ", "| EVA51 = ", "| HP60 = ", "| MP60 = \n| ATK60 = ", "| DEF60 = ", "| ACC60 = ",
 			"| EVA60 = " };
 
-	public static String format(Suit suit) {
+	public static String format(MoeSuit suit) {
 		StringBuilder builder = new StringBuilder();
 
 		// Global Information

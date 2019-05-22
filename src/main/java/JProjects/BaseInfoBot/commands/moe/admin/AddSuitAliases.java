@@ -3,9 +3,9 @@ package JProjects.BaseInfoBot.commands.moe.admin;
 import JProjects.BaseInfoBot.Bot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
-import JProjects.BaseInfoBot.database.Suit;
 import JProjects.BaseInfoBot.database.files.SuitAliasesFileEditor;
 import JProjects.BaseInfoBot.database.files.SuitFileEditor;
+import JProjects.BaseInfoBot.database.moe.MoeSuit;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -42,7 +42,7 @@ public class AddSuitAliases extends Command {
 		try {
 			SuitAliasesFileEditor.write(suitAlias, suitName);
 			bot.sendMessage(author.getAsMention() + " Successfully added **" + suitAlias + "** as an aliase for **"
-					+ Suit.rebuildNameReadable(suitName) + "**!", e.getChannel());
+					+ MoeSuit.rebuildNameReadable(suitName) + "**!", e.getChannel());
 		} catch (Exception ex) {
 			bot.sendMessage(
 					author.getAsMention()

@@ -7,12 +7,12 @@ import org.json.simple.JSONArray;
 
 import JProjects.BaseInfoBot.Bot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.database.Grade;
 import JProjects.BaseInfoBot.database.Messages;
-import JProjects.BaseInfoBot.database.Suit;
-import JProjects.BaseInfoBot.database.SuitType;
 import JProjects.BaseInfoBot.database.files.CacheFileEditor;
 import JProjects.BaseInfoBot.database.files.SuitFileEditor;
+import JProjects.BaseInfoBot.database.moe.MoeGrade;
+import JProjects.BaseInfoBot.database.moe.MoeSuit;
+import JProjects.BaseInfoBot.database.moe.MoeSuitType;
 import JProjects.BaseInfoBot.spider.MoeSpider;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -34,19 +34,19 @@ public class MoeCodex extends Command {
 		String id = author.getId();
 		try {
 			// Warning: this URL list has not been reformatted!!!
-			SuitType[] types = new SuitType[] { SuitType.ASSAULT, SuitType.SUPPORT, SuitType.BOMBARDIER,
-					SuitType.SNIPER };
-			HashMap<ArrayList<Suit>, SuitType> suitList = new HashMap<ArrayList<Suit>, SuitType>();
-			for (SuitType type : types) {
+			MoeSuitType[] types = new MoeSuitType[] { MoeSuitType.ASSAULT, MoeSuitType.SUPPORT, MoeSuitType.BOMBARDIER,
+					MoeSuitType.SNIPER };
+			HashMap<ArrayList<MoeSuit>, MoeSuitType> suitList = new HashMap<ArrayList<MoeSuit>, MoeSuitType>();
+			for (MoeSuitType type : types) {
 				JSONArray urlList = SuitFileEditor.getSuitsFromType(type.toString().toLowerCase());
-				ArrayList<Suit> typeSuits = new ArrayList<Suit>();
+				ArrayList<MoeSuit> typeSuits = new ArrayList<MoeSuit>();
 				int level = 51;
 				for (Object obj : urlList) {
-					String url = Suit.rebuildName((String) obj);
-					Suit s;
+					String url = MoeSuit.rebuildName((String) obj);
+					MoeSuit s;
 					s = CacheFileEditor.getSuit(url.toLowerCase(), author);
 					if (s == null) {
-						s = new Suit(name, id, MoeSpider.query(url, type, Grade.US));
+						s = new MoeSuit(name, id, MoeSpider.query(url, type, MoeGrade.US));
 						CacheFileEditor.write(s);
 					}
 					s.levelChange(level);
@@ -78,14 +78,14 @@ public class MoeCodex extends Command {
 		return builder.build();
 	}
 
-	public MessageEmbed getCodexEmbeded(HashMap<ArrayList<Suit>, SuitType> suitList) {
+	public MessageEmbed getCodexEmbeded(HashMap<ArrayList<MoeSuit>, MoeSuitType> suitList) {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Messages.colorMisc);
 		builder.setAuthor("Codex Results");
 		builder.setDescription("Here is a list of all MOE suits in the database!");
-		for (ArrayList<Suit> typeSuits : suitList.keySet()) {
+		for (ArrayList<MoeSuit> typeSuits : suitList.keySet()) {
 			StringBuilder sb = new StringBuilder();
-			for (Suit suit : typeSuits)
+			for (MoeSuit suit : typeSuits)
 				sb.append(suit.getDisplayName() + ", ");
 			if (sb.length() > 2)
 				sb.delete(sb.length() - 2, sb.length());

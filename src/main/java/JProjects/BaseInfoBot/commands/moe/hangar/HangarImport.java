@@ -2,8 +2,8 @@ package JProjects.BaseInfoBot.commands.moe.hangar;
 
 import JProjects.BaseInfoBot.Bot;
 import JProjects.BaseInfoBot.database.Messages;
-import JProjects.BaseInfoBot.database.Suit;
 import JProjects.BaseInfoBot.database.files.HangarFileEditor;
+import JProjects.BaseInfoBot.database.moe.MoeSuit;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -21,7 +21,7 @@ public class HangarImport {
 			return;
 		}
 		try {
-			Suit suit = Suit.fromString(message);
+			MoeSuit suit = MoeSuit.fromString(message);
 			if (!suit.getOwnerId().equals(author.getId()))
 				suit.changeOwner(author);
 			HangarFileEditor.write(author.getId(), suit.toString());

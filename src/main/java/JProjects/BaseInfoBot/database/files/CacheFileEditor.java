@@ -9,7 +9,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import JProjects.BaseInfoBot.database.Suit;
+import JProjects.BaseInfoBot.database.moe.MoeSuit;
 import net.dv8tion.jda.core.entities.User;
 
 public class CacheFileEditor {
@@ -22,7 +22,7 @@ public class CacheFileEditor {
 	// }
 
 	@SuppressWarnings("unchecked")
-	public static void write(Suit suit) throws IOException {
+	public static void write(MoeSuit suit) throws IOException {
 		JSONObject obj;
 		try {
 			obj = read();
@@ -54,7 +54,7 @@ public class CacheFileEditor {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void writePerm(Suit suit) throws IOException {
+	public static void writePerm(MoeSuit suit) throws IOException {
 		JSONObject obj;
 		try {
 			obj = read();
@@ -95,14 +95,14 @@ public class CacheFileEditor {
 		return (JSONObject) read().get(name);
 	}
 
-	public static Suit getSuit(String name, User owner) throws IOException, ParseException {
+	public static MoeSuit getSuit(String name, User owner) throws IOException, ParseException {
 		JSONObject map = getSuitMap(name);
 		// Update: never expires
 		// Expire code: Long.parseLong(String.valueOf(map.get("expire"))) <
 		// System.currentTimeMillis()
 		if (map == null || map.get("suit") == null)
 			return null;
-		Suit suit = Suit.fromString((String) map.get("suit"));
+		MoeSuit suit = MoeSuit.fromString((String) map.get("suit"));
 		suit.changeOwner(owner);
 		return suit;
 	}

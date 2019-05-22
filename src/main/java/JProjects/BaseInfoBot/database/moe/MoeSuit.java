@@ -1,9 +1,10 @@
-package JProjects.BaseInfoBot.database;
+package JProjects.BaseInfoBot.database.moe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import JProjects.BaseInfoBot.App;
+import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import JProjects.BaseInfoBot.tools.TableMaker;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -11,12 +12,12 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
 
-public class Suit implements Cloneable {
+public class MoeSuit implements Cloneable {
 	private String owner;
 	private String ownerId;
-	private SuitType suitType;
+	private MoeSuitType suitType;
 	private String name;
-	private Grade grade;
+	private MoeGrade grade;
 	private int level;
 	private double exp;
 
@@ -37,7 +38,7 @@ public class Suit implements Cloneable {
 	private double silenceResistance;
 	private double acidResistance;
 
-	public Suit(String owner, String ownerId, SuitType suitType, String name, Grade grade, int level, int hp,
+	public MoeSuit(String owner, String ownerId, MoeSuitType suitType, String name, MoeGrade grade, int level, int hp,
 			int attack, int defense, int move, int accuracy, int evasion, double counterChance, double criticalChance,
 			double criticalDamage, double stunResistance, double freezeResistance, double silenceResistance,
 			double acidResistance) {
@@ -63,13 +64,13 @@ public class Suit implements Cloneable {
 		this.acidResistance = acidResistance;
 	}
 
-	public Suit(String owner, String ownerId, HashMap<String, String> info)
+	public MoeSuit(String owner, String ownerId, HashMap<String, String> info)
 			throws ClassCastException, NullPointerException {
 		this.owner = owner.replace("_", " ");
 		this.ownerId = ownerId;
-		this.suitType = SuitType.fromString(info.get("type"));
+		this.suitType = MoeSuitType.fromString(info.get("type"));
 		this.name = rebuildNameReadable(info.get("name"));
-		this.grade = Grade.fromString(info.get("grade"));
+		this.grade = MoeGrade.fromString(info.get("grade"));
 		this.level = (Integer) GeneralTools.getNumeric(info.get("level"));
 
 		this.exp = (Double) GeneralTools.getNumeric(info.get("exp"));
@@ -194,7 +195,7 @@ public class Suit implements Cloneable {
 		return TableMaker.makeDefaultTable(data.get(0), data.get(1));
 	}
 
-	public String makeComparisonTable(Suit other) {
+	public String makeComparisonTable(MoeSuit other) {
 		ArrayList<HashMap<String, Number>> data = getLeftRightDisplayMaps();
 		ArrayList<HashMap<String, Number>> dataOther = other.getLeftRightDisplayMaps();
 		return TableMaker.makeComparisonTable(data, dataOther);
@@ -288,7 +289,7 @@ public class Suit implements Cloneable {
 	/*
 	 * Data Storage Functions
 	 */
-	public static Suit fromString(String suitString) throws NullPointerException, ClassCastException {
+	public static MoeSuit fromString(String suitString) throws NullPointerException, ClassCastException {
 		String[] map = suitString.split(":=>:");
 		HashMap<String, String> dataMap = new HashMap<String, String>();
 		String[] dataArr = map[1].split(" ");
@@ -298,7 +299,7 @@ public class Suit implements Cloneable {
 		}
 		dataMap.put("owner", App.bot.getJDA().getUserById(map[0].replace(Messages.prefix + "hangar import ", ""))
 				.getName().replace(" ", "_"));
-		return new Suit(dataMap.get("owner"), map[0], dataMap);
+		return new MoeSuit(dataMap.get("owner"), map[0], dataMap);
 	}
 
 	public String toString() {
@@ -333,8 +334,8 @@ public class Suit implements Cloneable {
 		this.ownerId = owner.getId();
 	}
 
-	public Suit clone() throws CloneNotSupportedException {
-		return (Suit) super.clone();
+	public MoeSuit clone() throws CloneNotSupportedException {
+		return (MoeSuit) super.clone();
 	}
 
 	/*
@@ -348,7 +349,7 @@ public class Suit implements Cloneable {
 		return this.ownerId;
 	}
 
-	public SuitType getSuitType() {
+	public MoeSuitType getSuitType() {
 		return suitType;
 	}
 
@@ -360,7 +361,7 @@ public class Suit implements Cloneable {
 		return this.getName().replace(" ", "_");
 	}
 
-	public Grade getGrade() {
+	public MoeGrade getGrade() {
 		return grade;
 	}
 
@@ -435,7 +436,7 @@ public class Suit implements Cloneable {
 		this.owner = owner;
 	}
 
-	public void setSuitType(SuitType suitType) {
+	public void setSuitType(MoeSuitType suitType) {
 		this.suitType = suitType;
 	}
 
@@ -443,7 +444,7 @@ public class Suit implements Cloneable {
 		this.name = name;
 	}
 
-	public void setGrade(Grade grade) {
+	public void setGrade(MoeGrade grade) {
 		this.grade = grade;
 	}
 

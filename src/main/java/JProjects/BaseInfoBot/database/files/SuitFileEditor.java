@@ -12,8 +12,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import JProjects.BaseInfoBot.database.Suit;
-import JProjects.BaseInfoBot.database.SuitType;
+import JProjects.BaseInfoBot.database.moe.MoeSuit;
+import JProjects.BaseInfoBot.database.moe.MoeSuitType;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import JProjects.BaseInfoBot.tools.StringSimilarity;
 
@@ -79,7 +79,7 @@ public class SuitFileEditor {
 		String suggestion = "";
 		if (assaults.contains(suitName) || supports.contains(suitName) || bombardiers.contains(suitName)
 				|| snipers.contains(suitName)) {
-			suggestion = Suit.rebuildName(suitName);
+			suggestion = MoeSuit.rebuildName(suitName);
 			objArr[1] = 1D;
 		} else if (SuitAliasesFileEditor.getSuitFromAlias(suitName) != null) {
 			suggestion = SuitAliasesFileEditor.getSuitFromAlias(suitName);
@@ -112,7 +112,7 @@ public class SuitFileEditor {
 		return new Object[] { maxSimStr, maxSim };
 	}
 
-	public static SuitType getSuitType(String name) {
+	public static MoeSuitType getSuitType(String name) {
 		try {
 			JSONArray assaults = getSuitsFromType("assault");
 			JSONArray supports = getSuitsFromType("support");
@@ -130,7 +130,7 @@ public class SuitFileEditor {
 				type = "bombardier";
 			else if (snipers.contains(name))
 				type = "sniper";
-			return SuitType.fromString(type);
+			return MoeSuitType.fromString(type);
 		} catch (Exception ex) {
 			GeneralTools.logError(ex);
 			return null;

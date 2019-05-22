@@ -16,12 +16,12 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 
-public class BandoriEventSpider {
+public class BandoriGachaSpider {
 
 	private static final String masterUrl = "https://bandori.party";
-//	private static final String queryCurrentUrl = "/events/?version=EN&status=current&ordering=start_date";
-	private static final String querySearchUrl = "/events/?version=EN&search=";
-	private static final String queryAllUrl = "/events/?version=EN&ordering=start_date";
+//	private static final String queryCurrentUrl = "/gachas/?version=EN&status=current&ordering=start_date";
+	private static final String querySearchUrl = "/gachas/?version=EN&search=";
+	private static final String queryAllUrl = "/gachas/?version=EN&ordering=start_date";
 
 	// General query function
 	public static ArrayList<String> queryEventList() throws IOException {
@@ -51,20 +51,21 @@ public class BandoriEventSpider {
 				.connect(masterUrl + doc.select("div.collection-page-wrapper.as-container").get(0)
 						.select("div.row.items").select("a").get(0).attr("href"))
 				.userAgent("Chrome").timeout(20 * 1000).get();
-		Element wrapper = doc.select("div.event-info").get(0);
+		Element wrapper = doc.select("div.container.item-container").get(0);
 		Element table = wrapper.select("table.table.about-table").get(0);
 
-		EmbedBuilder eventBuilder = new EmbedBuilder();
-		eventBuilder.setColor(Messages.colorMisc);
-		eventBuilder.setAuthor(table.select("tr[data-field=name]").text().replace("Title", "").trim());
-		eventBuilder.setImage("https:" + wrapper.select("img.event-image").attr("src"));
-		eventBuilder.setDescription("UTC: "
+		EmbedBuilder gachaBuilder = new EmbedBuilder();
+		gachaBuilder.setColor(Messages.colorMisc);
+		gachaBuilder.setAuthor(table.select("tr[data-field=name]").text().replace("Title", "").trim());
+		gachaBuilder
+				.setImage("https:" + wrapper.select("tr.english_image").select("td").get(0).select("img").attr("src"));
+		gachaBuilder.setDescription("UTC: "
 				+ table.select("tr[data-field=english_start_date]").select("span.datetime").text().replace(" +0000", "")
 				+ " - "
 				+ table.select("tr[data-field=english_end_date]").select("span.datetime").text().replace(" +0000", ""));
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("Event Type: **" + table.select("tr[data-field=type]").select("td").get(1).text() + "**");
+		sb.append("Event Type: **" + table.select("tr[data-field=limited]").select("td").get(1).text() + "**");
 		sb.append("\nAttribute: **" + BandoriAttribute
 				.fromString(table.select("tr[data-field=boost_attribute]").select("td").get(1).text()).getEmote()
 				+ "**");
@@ -75,8 +76,8 @@ public class BandoriEventSpider {
 		sb.delete(sb.length() - 2, sb.length());
 		sb.append("**");
 
-		eventBuilder.addField(new Field("Event Information:", sb.toString(), false));
-		output.add(eventBuilder.build());
+		gachaBuilder.addField(new Field("Event Information:", sb.toString(), false));
+		output.add(gachaBuilder.build());
 
 		for (Element aElement : table.select("tr[data-field=cards]").select("td").get(1).select("a")) {
 			EmbedBuilder cardBuilder = new EmbedBuilder();
@@ -95,4 +96,5 @@ public class BandoriEventSpider {
 		}
 		return output;
 	}
+
 }

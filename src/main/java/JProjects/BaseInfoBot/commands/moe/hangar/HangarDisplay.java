@@ -3,8 +3,8 @@ package JProjects.BaseInfoBot.commands.moe.hangar;
 import org.json.simple.JSONObject;
 
 import JProjects.BaseInfoBot.Bot;
-import JProjects.BaseInfoBot.database.Suit;
 import JProjects.BaseInfoBot.database.files.HangarFileEditor;
+import JProjects.BaseInfoBot.database.moe.MoeSuit;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -19,7 +19,7 @@ public class HangarDisplay {
 				bot.sendMessage(author.getAsMention() + " you have no suits in the hangar!", e.getChannel());
 				return;
 			}
-			Suit suit = Suit.fromString((String) obj.get(author.getId()));
+			MoeSuit suit = MoeSuit.fromString((String) obj.get(author.getId()));
 			bot.sendMessage(suit.toEmbededMessage(false, null), e.getChannel());
 		} catch (Exception ex) {
 			GeneralTools.logError(ex);

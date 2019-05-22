@@ -4,13 +4,13 @@ import java.util.HashMap;
 
 import JProjects.BaseInfoBot.Bot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.database.Grade;
 import JProjects.BaseInfoBot.database.Messages;
-import JProjects.BaseInfoBot.database.Suit;
-import JProjects.BaseInfoBot.database.SuitType;
 import JProjects.BaseInfoBot.database.files.CacheFileEditor;
 import JProjects.BaseInfoBot.database.files.HangarFileEditor;
 import JProjects.BaseInfoBot.database.files.SuitFileEditor;
+import JProjects.BaseInfoBot.database.moe.MoeGrade;
+import JProjects.BaseInfoBot.database.moe.MoeSuit;
+import JProjects.BaseInfoBot.database.moe.MoeSuitType;
 import JProjects.BaseInfoBot.spider.MoeSpider;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -42,11 +42,11 @@ public class MoeSuitStats extends Command {
 //						+ Suit.rebuildName(url).replace("_", " ") + "**?", e.getChannel());
 //				return;
 //			}
-			SuitType type = SuitFileEditor.getSuitType(url.toLowerCase());
+			MoeSuitType type = SuitFileEditor.getSuitType(url.toLowerCase());
 			if (type == null)
-				type = SuitType.ASSAULT;
-			url = Suit.rebuildName(url);
-			Suit suit;
+				type = MoeSuitType.ASSAULT;
+			url = MoeSuit.rebuildName(url);
+			MoeSuit suit;
 
 			int level = 51;
 			if (args.length >= 3) {
@@ -63,8 +63,8 @@ public class MoeSuitStats extends Command {
 			String cache = url.toLowerCase();
 			suit = CacheFileEditor.getSuit(cache, e.getAuthor());
 			if (suit == null) {
-				HashMap<String, String> results = MoeSpider.query(url, type, Grade.US);
-				suit = new Suit(e.getAuthor().getName(), e.getAuthor().getId(), results);
+				HashMap<String, String> results = MoeSpider.query(url, type, MoeGrade.US);
+				suit = new MoeSuit(e.getAuthor().getName(), e.getAuthor().getId(), results);
 				suit.levelChange(level);
 				CacheFileEditor.write(suit.clone());
 			} else

@@ -4,8 +4,8 @@ import org.json.simple.JSONObject;
 
 import JProjects.BaseInfoBot.Bot;
 import JProjects.BaseInfoBot.database.Messages;
-import JProjects.BaseInfoBot.database.Suit;
 import JProjects.BaseInfoBot.database.files.HangarFileEditor;
+import JProjects.BaseInfoBot.database.moe.MoeSuit;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -27,7 +27,7 @@ public class HangarExport {
 				bot.sendMessage(author.getAsMention() + " there's nothing to export!", e.getChannel());
 				return;
 			}
-			Suit suit = Suit.fromString((String) obj.get(author.getId()));
+			MoeSuit suit = MoeSuit.fromString((String) obj.get(author.getId()));
 
 			// Wiki export
 			if (args.length == 3 && args[2].equals("wiki")) {

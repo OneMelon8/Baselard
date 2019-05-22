@@ -5,9 +5,9 @@ import java.util.HashMap;
 import JProjects.BaseInfoBot.Bot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
-import JProjects.BaseInfoBot.database.Suit;
 import JProjects.BaseInfoBot.database.files.CacheFileEditor;
 import JProjects.BaseInfoBot.database.files.HangarFileEditor;
+import JProjects.BaseInfoBot.database.moe.MoeSuit;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -41,7 +41,7 @@ public class RegisterDB extends Command {
 			info.put(data[0], data[1]);
 		}
 		try {
-			Suit suit = new Suit(author.getName(), author.getId(), info);
+			MoeSuit suit = new MoeSuit(author.getName(), author.getId(), info);
 			String suitStr = suit.toString();
 			HangarFileEditor.write(author.getId(), suitStr);
 			CacheFileEditor.writePerm(suit);

@@ -9,12 +9,12 @@ import org.json.simple.JSONArray;
 
 import JProjects.BaseInfoBot.Bot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.database.Grade;
 import JProjects.BaseInfoBot.database.Messages;
-import JProjects.BaseInfoBot.database.Suit;
-import JProjects.BaseInfoBot.database.SuitType;
 import JProjects.BaseInfoBot.database.files.CacheFileEditor;
 import JProjects.BaseInfoBot.database.files.SuitFileEditor;
+import JProjects.BaseInfoBot.database.moe.MoeGrade;
+import JProjects.BaseInfoBot.database.moe.MoeSuit;
+import JProjects.BaseInfoBot.database.moe.MoeSuitType;
 import JProjects.BaseInfoBot.spider.MoeSpider;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -40,7 +40,7 @@ public class MoeStatTop extends Command {
 			return;
 		}
 		String aspect = args[1].toLowerCase();
-		SuitType type = SuitType.fromString(args[2].toLowerCase());
+		MoeSuitType type = MoeSuitType.fromString(args[2].toLowerCase());
 
 		boolean rankQuery = false;
 		String suitName = null;
@@ -81,14 +81,14 @@ public class MoeStatTop extends Command {
 		try {
 			// Warning: this URL list has not been reformatted!!!
 			JSONArray urlList = SuitFileEditor.getSuitsFromType(type.toString().toLowerCase());
-			ArrayList<Suit> suitList = new ArrayList<Suit>();
+			ArrayList<MoeSuit> suitList = new ArrayList<MoeSuit>();
 			int level = 51;
 			for (Object obj : urlList) {
-				String url = Suit.rebuildName((String) obj);
-				Suit s;
+				String url = MoeSuit.rebuildName((String) obj);
+				MoeSuit s;
 				s = CacheFileEditor.getSuit(url.toLowerCase(), author);
 				if (s == null) {
-					s = new Suit(name, id, MoeSpider.query(url, type, Grade.US));
+					s = new MoeSuit(name, id, MoeSpider.query(url, type, MoeGrade.US));
 					CacheFileEditor.write(s);
 				}
 				s.levelChange(level);
@@ -96,8 +96,8 @@ public class MoeStatTop extends Command {
 			}
 
 			if (rankQuery) {
-				Suit target = null;
-				for (Suit suit : suitList)
+				MoeSuit target = null;
+				for (MoeSuit suit : suitList)
 					if (suit.getCodeName().equalsIgnoreCase(suitName))
 						target = suit;
 				bot.sendMessage(getSuitRankingsEmbeded(suitList, target), e.getChannel());
@@ -130,15 +130,15 @@ public class MoeStatTop extends Command {
 		}
 	}
 
-	private MessageEmbed getSuitRankingsEmbeded(ArrayList<Suit> suits, Suit suit) {
+	private MessageEmbed getSuitRankingsEmbeded(ArrayList<MoeSuit> suits, MoeSuit suit) {
 		String[] aspects = new String[] { "hp", "atk", "def", "acc", "eva", "cntr", "crt%", "crit", "acd", "stn", "frz",
 				"sil" };
 		StringBuilder sb = new StringBuilder("```java\n");
 		int len = suits.size();
 		for (String aspect : aspects) {
 			LinkedHashMap<Object, Double> rankings = getRankedSuitsFromAspect(suits, aspect);
-			ArrayList<Suit> keys = new ArrayList<Suit>();
-			keys.addAll(Arrays.asList(rankings.keySet().toArray(new Suit[] {})));
+			ArrayList<MoeSuit> keys = new ArrayList<MoeSuit>();
+			keys.addAll(Arrays.asList(rankings.keySet().toArray(new MoeSuit[] {})));
 			sb.append(String.format("%-6s", aspect.toUpperCase() + ": ") + "#"
 					+ String.format("%02d", len - keys.indexOf(suit)) + " >> " + suit.getAspect(aspect) + "\n");
 		}
@@ -153,9 +153,9 @@ public class MoeStatTop extends Command {
 		return builder.build();
 	}
 
-	private LinkedHashMap<Object, Double> getRankedSuitsFromAspect(ArrayList<Suit> suits, String aspect) {
+	private LinkedHashMap<Object, Double> getRankedSuitsFromAspect(ArrayList<MoeSuit> suits, String aspect) {
 		HashMap<Object, Double> aspects = new HashMap<Object, Double>();
-		for (Suit s : suits)
+		for (MoeSuit s : suits)
 			aspects.put(s, s.getAspect(aspect));
 		LinkedHashMap<Object, Double> sortedSuits = GeneralTools.sortByValue(aspects);
 		return sortedSuits;
@@ -168,8 +168,8 @@ public class MoeStatTop extends Command {
 		builder.setAuthor("List of Top Suits");
 		builder.setDescription("The suits of " + type + " class at Lv. " + level);
 
-		ArrayList<Suit> keys = new ArrayList<Suit>();
-		keys.addAll(Arrays.asList(suits.keySet().toArray(new Suit[] {})));
+		ArrayList<MoeSuit> keys = new ArrayList<MoeSuit>();
+		keys.addAll(Arrays.asList(suits.keySet().toArray(new MoeSuit[] {})));
 		ArrayList<Double> vals = new ArrayList<Double>(suits.values());
 
 		int len = keys.size();

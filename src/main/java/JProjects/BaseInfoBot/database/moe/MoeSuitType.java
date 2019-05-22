@@ -1,15 +1,15 @@
-package JProjects.BaseInfoBot.database;
+package JProjects.BaseInfoBot.database.moe;
 
 import java.awt.Color;
 
-public enum SuitType {
+public enum MoeSuitType {
 	ASSAULT, SUPPORT, BOMBARDIER, SNIPER;
 
 	// US => US+1 STATS x4
 	// US => US+2 STATS x5
 	// US+1 => US+2 STATS x5/4
 
-	public static SuitType fromString(String s) {
+	public static MoeSuitType fromString(String s) {
 		if (s == null)
 			return null;
 		if (s.equalsIgnoreCase("assault") || s.equalsIgnoreCase("assaults") || s.equalsIgnoreCase("ass"))
