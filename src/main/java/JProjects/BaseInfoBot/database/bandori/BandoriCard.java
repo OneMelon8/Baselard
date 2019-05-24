@@ -55,7 +55,7 @@ public class BandoriCard {
 //		builder.addField(new Field("**Information:**", sb.toString(), false));
 
 //		sb = new StringBuilder();
-		sb.append("Name: **" + this.getSkillName() + "**");
+		sb.append("Skill: **" + this.getSkillName() + "**");
 		sb.append("\nDetail: **" + this.getSkillDesc() + "**");
 //		builder.addField(new Field("**Skill Info:**", sb.toString(), false));
 		builder.addField(

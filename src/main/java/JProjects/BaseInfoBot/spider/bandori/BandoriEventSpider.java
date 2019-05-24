@@ -12,6 +12,8 @@ import org.jsoup.select.Elements;
 
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.database.bandori.BandoriAttribute;
+import JProjects.BaseInfoBot.database.bandori.BandoriCard;
+import JProjects.BaseInfoBot.database.bandori.BandoriMember;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
@@ -70,28 +72,20 @@ public class BandoriEventSpider {
 				+ "**");
 
 		sb.append("\nPref Band: **");
-		for (Element aElement : table.select("tr[data-field=boost_members]").select("td").get(1).select("a"))
-			sb.append(aElement.attr("data-ajax-title").split(" ")[0] + ", ");
-		sb.delete(sb.length() - 2, sb.length());
+		for (Element aElement : table.select("tr[data-field=boost_members]").select("td").get(1).select("a")) {
+			String[] info = aElement.attr("data-ajax-title").split(" ");
+			sb.append(BandoriMember.valueOf((info[0] + "_" + info[1]).toUpperCase()).getEmote());
+		}
 		sb.append("**");
 
 		eventBuilder.addField(new Field("Event Information:", sb.toString(), false));
 		output.add(eventBuilder.build());
 
 		for (Element aElement : table.select("tr[data-field=cards]").select("td").get(1).select("a")) {
-			EmbedBuilder cardBuilder = new EmbedBuilder();
-			cardBuilder.setColor(Messages.colorMisc);
-			cardBuilder.setAuthor("Event Card:");
-			cardBuilder.setThumbnail("https:" + aElement.select("img").attr("src"));
-
-			StringBuilder csb = new StringBuilder();
 			String[] cardData = aElement.attr("data-ajax-title").split(" ");
-			csb.append("Name: **" + cardData[1] + " " + cardData[2] + "**");
-			csb.append("\nRarity: **" + cardData[0] + "**");
-			csb.append("\nAttribute: **" + BandoriAttribute.fromString(cardData[4]).getEmote() + "**");
-			cardBuilder.addField(new Field(String.join(" ", Arrays.asList(cardData).subList(6, cardData.length)),
-					csb.toString(), false));
-			output.add(cardBuilder.build());
+			List<BandoriCard> cards = BandoriCardSpider
+					.queryCard(String.join(" ", Arrays.asList(cardData).subList(6, cardData.length)));
+			output.add(cards.get(0).getEmbededMessage());
 		}
 		return output;
 	}
