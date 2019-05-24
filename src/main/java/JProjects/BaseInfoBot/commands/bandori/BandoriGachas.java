@@ -39,7 +39,7 @@ public class BandoriGachas extends Command {
 			bot.sendMessage(BandoriEventSpider.queryEvent(eventName), ch);
 		} catch (IndexOutOfBoundsException ex) {
 			ex.printStackTrace();
-			bot.sendMessage("I cannot found information on that event, maybe you spelled it wrong?", ch);
+			bot.sendMessage("I cannot find information on that event, maybe you spelled it wrong?", ch);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			bot.sendMessage("Seems like I cannot get the information right now. Check your data and try again later.",

@@ -17,7 +17,6 @@ import JProjects.BaseInfoBot.commands.admin.TranslateImage;
 import JProjects.BaseInfoBot.commands.bandori.BandoriCards;
 import JProjects.BaseInfoBot.commands.bandori.BandoriEvents;
 import JProjects.BaseInfoBot.commands.bandori.BandoriGachas;
-import JProjects.BaseInfoBot.commands.bandori.BandoriMembers;
 import JProjects.BaseInfoBot.commands.helpers.CommandDispatcher;
 import JProjects.BaseInfoBot.commands.misc.TableFlip;
 import JProjects.BaseInfoBot.commands.moe.MoeCodex;
@@ -78,7 +77,6 @@ public class Bot {
 		new BandoriEvents(this);
 		new BandoriGachas(this);
 		new BandoriCards(this);
-		new BandoriMembers(this);
 
 		// Beta
 		new TranslateImage(this);

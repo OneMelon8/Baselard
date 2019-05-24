@@ -67,7 +67,7 @@ public class Help extends Command {
 
 		sb = new StringBuilder("```");
 		sb.append(String.format("%-8s >> %s", "ev", "Display event list or a specific event\n"));
-		sb.append(String.format("%-8s >> %s", "card", "Query for card list or a specific card\n"));
+		sb.append(String.format("%-8s >> %s", "card", "Query for a random or specific card\n"));
 		sb.append("```");
 		builder.addField(new Field("**Bandori Commands:**", sb.toString(), false));
 
