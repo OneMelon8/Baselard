@@ -3,6 +3,7 @@ package JProjects.BaseInfoBot.spider.bandori;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -39,43 +40,61 @@ public class BandoriCardSpider {
 	}
 
 	// Specific card
-	public static BandoriCard queryCard(String name) throws IOException {
-		Document doc = Jsoup.connect(masterUrl + querySearchUrl + name.replace(" ", "+")).userAgent("Chrome")
-				.timeout(20 * 1000).get();
-		doc = Jsoup
-				.connect(masterUrl
-						+ doc.select("div.collection-page-wrapper.as-container").get(0).select("div.row.items").get(0)
-								.select("div.card-wrapper").get(0).select("a").get(0).attr("href"))
-				.userAgent("Chrome").timeout(20 * 1000).get();
-		Element table = doc.select("table.table.about-table").get(0);
+	public static List<BandoriCard> queryCard(String name) throws IOException {
+		List<BandoriCard> cards = new ArrayList<BandoriCard>();
+		int page = 1;
+		while (true) {
+			Document doc = Jsoup.connect(masterUrl + querySearchUrl + name.replace(" ", "+") + "&page=" + page)
+					.userAgent("Chrome").timeout(20 * 1000).get();
+			Elements resultsRows = doc.select("div.collection-page-wrapper.as-container").get(0)
+					.select("div.row.items");
+			if (resultsRows.size() == 0)
+				break;
 
-		BandoriCard card = new BandoriCard(table.select("tr[data-field=card_name]").select("td").get(1).text(),
-				BandoriAttribute.fromString(table.select("tr[data-field=attribute]").select("td").get(1).text()),
-				BandoriMember
-						.valueOf(String
-								.join("_",
-										Arrays.asList(table.select("tr[data-field=member]").select("td").get(1)
-												.select("span.text_with_link").text().split(" ")).subList(0, 2))
-								.toUpperCase()),
-				table.select("tr[data-field=rarity]").select("td").get(1).select("img").size(),
-				table.select("tr[data-field=skill_name]").select("td").get(1).text(),
-				table.select("tr[data-field=skill_type]").select("td").get(1).text(),
-				"https:" + table.select("tr[data-field=images]").select("td").get(1).select("img").get(0).attr("src"),
-				"https:" + table.select("tr[data-field=arts]").select("td").get(1).select("a").get(0).select("img")
-						.get(0).attr("src"));
+			for (int a = 0; a < resultsRows.size(); a++) {
+				Elements results = resultsRows.get(a).select("div.card-wrapper");
+				for (int b = 0; b < results.size(); b++) {
+					doc = Jsoup.connect(masterUrl + results.get(b).select("a").get(0).attr("href")).userAgent("Chrome")
+							.timeout(20 * 1000).get();
+					Element table = doc.select("table.table.about-table").get(0);
 
-		Elements statsWrapper = doc.select("div.card-statistics").select("div.tab-content").select("div.tab-pane");
-		Elements stats = statsWrapper.get(statsWrapper.size() - 1).select("div.row");
-		card.setPerformance(Integer.parseInt(stats.get(0).select("div").get(2).text()));
-		card.setTechnique(Integer.parseInt(stats.get(1).select("div").get(2).text()));
-		card.setVisual(Integer.parseInt(stats.get(2).select("div").get(2).text()));
+					BandoriCard card = new BandoriCard(
+							table.select("tr[data-field=card_name]").select("td").get(1).text(),
+							BandoriAttribute
+									.fromString(table.select("tr[data-field=attribute]").select("td").get(1).text()),
+							BandoriMember.valueOf(String
+									.join("_",
+											Arrays.asList(table.select("tr[data-field=member]").select("td").get(1)
+													.select("span.text_with_link").text().split(" ")).subList(0, 2))
+									.toUpperCase()),
+							table.select("tr[data-field=rarity]").select("td").get(1).select("img").size(),
+							table.select("tr[data-field=skill_name]").select("td").get(1).text(),
+							table.select("tr[data-field=skill_type]").select("td").get(1).text(),
+							"https:" + table.select("tr[data-field=images]").select("td").get(1).select("img").last()
+									.attr("src"),
+							"https:" + table.select("tr[data-field=arts]").select("td").get(1).select("a").get(0)
+									.select("img").last().attr("src"));
 
-		doc = Jsoup
-				.connect(masterUrl
-						+ table.select("tr[data-field=member]").select("td").get(1).select("a").get(0).attr("href"))
-				.userAgent("Chrome").timeout(20 * 1000).get();
-		table = doc.select("table.table.about-table").get(0);
-		card.setColor(table.select("tr[data-field=color]").select("td").get(1).select("span.text-muted").text());
-		return card;
+					Elements statsWrapper = doc.select("div.card-statistics").select("div.tab-content")
+							.select("div.tab-pane");
+					Elements stats = statsWrapper.get(statsWrapper.size() - 1).select("div.row");
+					card.setPerformance(Integer.parseInt(stats.get(0).select("div").get(2).text()));
+					card.setTechnique(Integer.parseInt(stats.get(1).select("div").get(2).text()));
+					card.setVisual(Integer.parseInt(stats.get(2).select("div").get(2).text()));
+
+					doc = Jsoup.connect(masterUrl
+							+ table.select("tr[data-field=member]").select("td").get(1).select("a").get(0).attr("href"))
+							.userAgent("Chrome").timeout(20 * 1000).get();
+					table = doc.select("table.table.about-table").get(0);
+					card.setColor(
+							table.select("tr[data-field=color]").select("td").get(1).select("span.text-muted").text());
+
+					cards.add(card);
+				}
+			}
+
+			page++;
+		}
+		return cards;
 	}
 }

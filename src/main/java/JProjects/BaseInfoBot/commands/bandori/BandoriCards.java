@@ -3,10 +3,12 @@ package JProjects.BaseInfoBot.commands.bandori;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import JProjects.BaseInfoBot.Bot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
+import JProjects.BaseInfoBot.database.bandori.BandoriCard;
 import JProjects.BaseInfoBot.spider.bandori.BandoriCardSpider;
 import JProjects.BaseInfoBot.spider.bandori.BandoriEventSpider;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -36,8 +38,21 @@ public class BandoriCards extends Command {
 			return;
 		}
 		String query = String.join(" ", Arrays.asList(args).subList(1, args.length));
+		if (query.length() < 5) {
+			bot.sendMessage("Hey " + e.getAuthor().getAsMention()
+					+ ", I need more information! Search terms should be at least 5 characters long!", ch);
+			return;
+		}
+
+		bot.sendMessage("Okay~ I'm searching for \"" + query + "\" right now. It might take a while though >w<", ch);
 		try {
-			bot.sendMessage(BandoriCardSpider.queryCard(query).getEmbededMessage(), ch);
+			List<BandoriCard> cards = BandoriCardSpider.queryCard(query);
+			if (cards.isEmpty())
+				throw new IndexOutOfBoundsException("No results");
+			bot.sendMessage("I found " + cards.size() + " results matching your search:", ch);
+			for (BandoriCard card : cards)
+				bot.sendMessage(card.getEmbededMessage(), ch);
+			bot.sendMessage("That's all for \"" + query + "\"!", ch);
 		} catch (IndexOutOfBoundsException ex) {
 			ex.printStackTrace();
 			bot.sendMessage("I cannot found information on that card, maybe you spelled it wrong?", ch);

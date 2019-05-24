@@ -46,25 +46,25 @@ public class BandoriCard {
 		builder.setColor(this.getColor());
 		builder.setAuthor(this.getName());
 		builder.setThumbnail(this.getIconUrl());
-		builder.setImage(this.getArtUrl());
+//		builder.setImage(this.getArtUrl());
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("Member: **" + this.getMember().getEmote() + "**");
-		sb.append("\nRarity: **" + this.getRarityStars() + "**");
-		sb.append("\nAttribute: **" + this.getAttr().getEmote() + "**");
-		builder.addField(new Field("**Information:**", sb.toString(), false));
+//		sb.append("Member: **" + this.getMember().getEmote() + "**");
+//		sb.append("\nRarity: **" + this.getRarityStars() + "**");
+//		sb.append("\nAttribute: **" + this.getAttr().getEmote() + "**");
+//		builder.addField(new Field("**Information:**", sb.toString(), false));
 
-		sb = new StringBuilder();
+//		sb = new StringBuilder();
 		sb.append("Name: **" + this.getSkillName() + "**");
 		sb.append("\nDetail: **" + this.getSkillDesc() + "**");
 		builder.addField(new Field("**Skill Info:**", sb.toString(), false));
 
-		sb = new StringBuilder();
-		sb.append("Performance: **" + this.getPerformance() + "**");
-		sb.append("\nTechnique: **" + this.getTechnique() + "**");
-		sb.append("\nVisual: **" + this.getVisual() + "**");
-		sb.append("\nOverall: **" + this.getOverall() + "**");
-		builder.addField(new Field("**Statistics:**", sb.toString(), false));
+//		sb = new StringBuilder();
+//		sb.append("Performance: **" + this.getPerformance() + "**");
+//		sb.append("\nTechnique: **" + this.getTechnique() + "**");
+//		sb.append("\nVisual: **" + this.getVisual() + "**");
+//		sb.append("\nOverall: **" + this.getOverall() + "**");
+//		builder.addField(new Field("**Statistics:**", sb.toString(), false));
 
 		return builder.build();
 	}
