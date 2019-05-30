@@ -35,10 +35,10 @@ public class BandoriCards extends Command {
 			}
 			return;
 		}
-		String query = String.join(" ", Arrays.asList(args).subList(1, args.length));
-		if (query.length() < 5) {
+		String query = String.join(" ", Arrays.asList(args).subList(1, args.length)).trim();
+		if (query.length() < 8) {
 			bot.sendMessage("Hey " + e.getAuthor().getAsMention()
-					+ ", I need more information! Search terms should be at least 5 characters long!", ch);
+					+ ", I need more information! Search terms should be at least 8 characters long!", ch);
 			return;
 		}
 
@@ -47,7 +47,7 @@ public class BandoriCards extends Command {
 			List<BandoriCard> cards = BandoriCardSpider.queryCard(query);
 			if (cards.isEmpty())
 				throw new IndexOutOfBoundsException("No results");
-			bot.sendMessage("I found " + cards.size() + " results matching your search:", ch);
+			bot.sendMessage("I found **" + cards.size() + "** results matching your search:", ch);
 			for (BandoriCard card : cards)
 				bot.sendMessage(card.getEmbededMessage(), ch);
 			bot.sendMessage("That's all for \"" + query + "\"!", ch);
@@ -70,7 +70,7 @@ public class BandoriCards extends Command {
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");
-		sb.deleteCharAt(sb.length() - 1);
+		sb.delete(sb.length() - 2, sb.length());
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
 		builder.addField(new Field("Example:", "```" + Messages.prefix + command + " (shows a random card)\n"

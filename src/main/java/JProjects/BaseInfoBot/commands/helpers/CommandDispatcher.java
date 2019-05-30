@@ -16,6 +16,8 @@ public class CommandDispatcher {
 	public static HashMap<String, String[]> registeredCommands = new HashMap<String, String[]>();
 	public static HashMap<String, Command> registeredListeners = new HashMap<String, Command>();
 
+	private static HashMap<String, Long> cooldown = new HashMap<String, Long>();
+
 	public static boolean mute = false;
 
 	/**
@@ -37,6 +39,17 @@ public class CommandDispatcher {
 		}
 		if (mute)
 			return;
+
+		String authorId = e.getAuthor().getId();
+		int cooldownTime = 3000; // Milliseconds
+		if (cooldown.containsKey(authorId)) {
+			long secondsLeft = cooldown.get(authorId) + cooldownTime - System.currentTimeMillis();
+			if (secondsLeft > 0) {
+				App.bot.reactClock(e.getMessage());
+				return;
+			}
+		}
+		cooldown.put(authorId, System.currentTimeMillis());
 
 		// Loop thru all the registered commands
 		for (String cmd : registeredCommands.keySet()) {

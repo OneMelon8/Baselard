@@ -15,6 +15,12 @@ public class Emotes {
 	public static final String BANDORI_STAR = "<:bandori_star:578806302864572427>";
 	public static final String BANDORI_STAR2 = "<:bandori_star2:580847904508346378>";
 
+	public static final String POPPIN_PARTY = "<:poppin_party:581601489290788864>";
+	public static final String AFTERGLOW = "<:afterglow:581601488808312843>";
+	public static final String PASTEL_PALETTES = "<:pastel_palettes:581601488485482507>";
+	public static final String ROSELIA = "<:roselia:581601488577626125>";
+	public static final String HELLO_HAPPY_WORLD = "<:hello_happy_world:581601488883941376>";
+
 	// POPIPA
 	public static final String KASUMI_TOYAMA = "<:kasumi_toyama:580848806057476106>";
 	public static final String ARISA_ICHIGAYA = "<:arisa_ichigaya:580848805998493706>";
@@ -56,4 +62,17 @@ public class Emotes {
 	public static final long MINECRAFT_COBBLESTONE_ID = 575908019783598130L;
 	public static final long MINECRAFT_GLASS_ID = 575908022526672916L;
 
+	public static String getBandEmote(String band) {
+		if (band.equalsIgnoreCase("Poppin&#39;Party") || band.equalsIgnoreCase("Poppin'Party"))
+			return POPPIN_PARTY;
+		else if (band.equalsIgnoreCase("Afterglow"))
+			return AFTERGLOW;
+		else if (band.equalsIgnoreCase("Pastel*Palettes"))
+			return PASTEL_PALETTES;
+		else if (band.equalsIgnoreCase("Roselia"))
+			return ROSELIA;
+		else if (band.equalsIgnoreCase("Hello, Happy World!"))
+			return HELLO_HAPPY_WORLD;
+		return null;
+	}
 }
