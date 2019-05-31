@@ -36,9 +36,9 @@ public class BandoriCards extends Command {
 			return;
 		}
 		String query = String.join(" ", Arrays.asList(args).subList(1, args.length)).trim();
-		if (query.length() < 8) {
+		if (query.length() < 5) {
 			bot.sendMessage("Hey " + e.getAuthor().getAsMention()
-					+ ", I need more information! Search terms should be at least 8 characters long!", ch);
+					+ ", I need more information! Search terms should be at least 5 characters long!", ch);
 			return;
 		}
 
