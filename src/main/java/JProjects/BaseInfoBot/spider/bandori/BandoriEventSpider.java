@@ -14,6 +14,7 @@ import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.database.bandori.BandoriAttribute;
 import JProjects.BaseInfoBot.database.bandori.BandoriCard;
 import JProjects.BaseInfoBot.database.bandori.BandoriMember;
+import JProjects.BaseInfoBot.tools.TimeFormatter;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
@@ -60,10 +61,14 @@ public class BandoriEventSpider {
 		eventBuilder.setColor(Messages.colorMisc);
 		eventBuilder.setAuthor(table.select("tr[data-field=name]").text().replace("Title", "").trim());
 		eventBuilder.setImage("https:" + wrapper.select("img.event-image").attr("src"));
-		eventBuilder.setDescription("UTC: "
-				+ table.select("tr[data-field=english_start_date]").select("span.datetime").text().replace(" +0000", "")
-				+ " - "
-				+ table.select("tr[data-field=english_end_date]").select("span.datetime").text().replace(" +0000", ""));
+
+		String start = table.select("tr[data-field=english_start_date]").select("span.datetime").text()
+				.replace(" +0000", "");
+		String end = table.select("tr[data-field=english_end_date]").select("span.datetime").text().replace(" +0000",
+				"");
+		eventBuilder.setDescription("UTC: " + start + " - " + end + "\n"
+				+ TimeFormatter.getCountDown(TimeFormatter.getDateFromBandoriString(start).getTimeInMillis(),
+						TimeFormatter.getDateFromBandoriString(end).getTimeInMillis(), System.currentTimeMillis()));
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("Event Type: **" + table.select("tr[data-field=type]").select("td").get(1).text() + "**");
