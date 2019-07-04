@@ -26,7 +26,7 @@ public class BandoriEvents extends Command {
 		MessageChannel ch = e.getChannel();
 		if (args.length <= 1) {
 			try {
-				bot.sendMessage(getEventsEmbeded(BandoriEventSpider.queryEventList()), ch);
+				bot.sendMessage(getEventsEmbeded(BandoriEventSpider.queryEventList(false)), ch);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 				bot.sendMessage(
@@ -34,7 +34,20 @@ public class BandoriEvents extends Command {
 			}
 			return;
 		}
-		String eventName = String.join(" ", Arrays.asList(args).subList(1, args.length));
+
+		String eventName = String.join(" ", Arrays.asList(args).subList(1, args.length)).trim().toLowerCase();
+		// If query current
+		if (eventName.equals("c") || eventName.equals("current")) {
+			try {
+				eventName = BandoriEventSpider.queryEventList(true).get(0);
+			} catch (IOException ex) {
+				ex.printStackTrace();
+				bot.sendMessage(
+						"Seems like I cannot get the information right now. Check your data and try again later.", ch);
+			}
+		}
+
+		// Show details on that event
 		try {
 			bot.sendMessage(BandoriEventSpider.queryEvent(eventName), ch);
 		} catch (IndexOutOfBoundsException ex) {
@@ -69,7 +82,7 @@ public class BandoriEvents extends Command {
 		builder.setColor(Messages.colorMisc);
 		builder.setAuthor("Bandori Events Query Template");
 		builder.setDescription("Use the following template to run the Bandori event query");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + " [name]```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + " [name/c(urrent)]```", false));
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");

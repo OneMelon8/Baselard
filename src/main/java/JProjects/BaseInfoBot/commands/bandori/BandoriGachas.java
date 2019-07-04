@@ -26,7 +26,7 @@ public class BandoriGachas extends Command {
 		MessageChannel ch = e.getChannel();
 		if (args.length <= 1) {
 			try {
-				bot.sendMessage(getEventsEmbeded(BandoriEventSpider.queryEventList()), ch);
+				bot.sendMessage(getEventsEmbeded(BandoriEventSpider.queryEventList(true)), ch);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 				bot.sendMessage(

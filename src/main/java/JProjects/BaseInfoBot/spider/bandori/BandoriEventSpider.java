@@ -22,17 +22,17 @@ import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 public class BandoriEventSpider {
 
 	private static final String masterUrl = "https://bandori.party";
-//	private static final String queryCurrentUrl = "/events/?version=EN&status=current&ordering=start_date";
+	private static final String queryCurrentUrl = "/events/?version=EN&status=current&ordering=start_date";
 	private static final String querySearchUrl = "/events/?version=EN&search=";
 	private static final String queryAllUrl = "/events/?version=EN&ordering=start_date";
 
 	// General query function
-	public static ArrayList<String> queryEventList() throws IOException {
+	public static ArrayList<String> queryEventList(boolean current) throws IOException {
 		int page = 1;
 		ArrayList<String> events = new ArrayList<String>();
 		while (true) {
-			Document doc = Jsoup.connect(masterUrl + queryAllUrl + "&page=" + page).userAgent("Chrome")
-					.timeout(20 * 1000).get();
+			Document doc = Jsoup.connect(masterUrl + (current ? queryCurrentUrl : queryAllUrl) + "&page=" + page)
+					.userAgent("Chrome").timeout(20 * 1000).get();
 			Elements rows = doc.select("div.collection-page-wrapper.as-container").get(0).select("div.row.items");
 			if (rows.size() == 0)
 				break;
