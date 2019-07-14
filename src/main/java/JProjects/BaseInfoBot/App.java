@@ -7,14 +7,13 @@ import JProjects.BaseInfoBot.google.GTranslate;
 import JProjects.BaseInfoBot.google.GVision;
 
 public class App {
-	public static Bot bot;
+	public static BaseInfoBot bot;
 
 	public static void main(String[] args) {
 		try {
-			System.out.println("Hello World!");
-			bot = new Bot("2.6.5");
+			System.out.println("Hello Happy World!");
+			bot = new BaseInfoBot("3.0.0");
 			bot.addListener(new ChatEventHandler());
-			bot.registerCommands();
 
 //			initGoogle();
 		} catch (Exception e) {

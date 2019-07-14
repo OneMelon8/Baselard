@@ -2,7 +2,7 @@ package JProjects.BaseInfoBot.commands.moe;
 
 import java.util.HashMap;
 
-import JProjects.BaseInfoBot.Bot;
+import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.database.files.CacheFileEditor;
@@ -20,12 +20,12 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class MoeSuitStats extends Command {
 
-	public MoeSuitStats(Bot bot) {
+	public MoeSuitStats(BaseInfoBot bot) {
 		super(bot, "stats", new String[] { "su", "st", "suit", "stat", "stats" }, "Query for suit statistics");
 	}
 
 	@Override
-	public void fire(MessageReceivedEvent e) {
+	public void onCommand(MessageReceivedEvent e) {
 		String[] args = e.getMessage().getContentRaw().split(" ");
 		if (args.length != 2 && args.length != 3 && args.length != 4) {
 			bot.sendMessage(getHelpEmbeded(), e.getChannel());
@@ -88,18 +88,18 @@ public class MoeSuitStats extends Command {
 
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Suit Statistics Query Template");
 		builder.setDescription("Use the following template to run the suit query and potentially save the suit");
 		builder.addField(new Field("Copy & Paste:",
-				"```" + Messages.prefix + command + " <name> [lv = 1/31/41/51] [save? Y/N]" + "```", false));
+				"```" + Messages.PREFIX + command + " <name> [lv = 1/31/41/51] [save? Y/N]" + "```", false));
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");
 		sb.delete(sb.length() - 2, sb.length());
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
-		builder.addField(new Field("Example:", "```" + Messages.prefix + command + " Zenka 31 y```", false));
+		builder.addField(new Field("Example:", "```" + Messages.PREFIX + command + " Zenka 31 y```", false));
 		return builder.build();
 	}
 }

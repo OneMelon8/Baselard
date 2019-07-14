@@ -25,16 +25,16 @@ public class CommandDispatcher {
 	 * 
 	 * @param e - the {@link MessageReceivedEvent} instance
 	 */
-	public static void onCommand(MessageReceivedEvent e) {
+	public static void fire(MessageReceivedEvent e) {
 		String msg = e.getMessage().getContentRaw();
-		if (!msg.startsWith(Messages.prefix))
+		if (!msg.startsWith(Messages.PREFIX))
 			return;
 		String[] msgArr = msg.split(" ");
-		String userCmd = msgArr[0].substring(Messages.prefix.length()).toLowerCase();
+		String userCmd = msgArr[0].substring(Messages.PREFIX.length()).toLowerCase();
 		System.out.println(GeneralTools.getTime() + " >> " + e.getAuthor().getAsTag() + " executed " + msg);
 
 		if (mute && userCmd.equalsIgnoreCase("toggle")) {
-			registeredListeners.get("toggle").fire(e);
+			registeredListeners.get("toggle").onCommand(e);
 			return;
 		}
 		if (mute)
@@ -56,7 +56,7 @@ public class CommandDispatcher {
 			ArrayList<String> aliases = new ArrayList<String>(Arrays.asList(registeredCommands.get(cmd)));
 			if ((userCmd.equals(cmd) || aliases.contains(userCmd)) && !mute) {
 				// Dispatch command
-				registeredListeners.get(cmd).fire(e);
+				registeredListeners.get(cmd).onCommand(e);
 				return;
 			}
 		}
@@ -71,13 +71,13 @@ public class CommandDispatcher {
 		String attempt = (String) help[0];
 		double sim = (Double) help[1];
 		if (sim >= 0.85) {
-			registeredListeners.get(attempt).fire(event);
+			registeredListeners.get(attempt).onCommand(event);
 			return;
 		}
 		// No attempts are valid => send help message
-		String helpMsg = Messages.unknownCommand[new Random().nextInt(Messages.unknownCommand.length)];
+		String helpMsg = Messages.UNKNOWN_COMMAND[new Random().nextInt(Messages.UNKNOWN_COMMAND.length)];
 		if (sim >= 1.65) // Disabled this function
-			helpMsg = Messages.commandSuggestion[new Random().nextInt(Messages.commandSuggestion.length)].replace("#",
+			helpMsg = Messages.COMMAND_SUGGESTION[new Random().nextInt(Messages.COMMAND_SUGGESTION.length)].replace("#",
 					attempt);
 		App.bot.sendMessage(helpMsg, event.getChannel());
 	}

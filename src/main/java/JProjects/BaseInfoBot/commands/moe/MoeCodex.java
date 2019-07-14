@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import org.json.simple.JSONArray;
 
-import JProjects.BaseInfoBot.Bot;
+import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.database.files.CacheFileEditor;
@@ -23,12 +23,12 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class MoeCodex extends Command {
 
-	public MoeCodex(Bot bot) {
+	public MoeCodex(BaseInfoBot bot) {
 		super(bot, "codex", new String[] { "cdx" }, "Get all suits");
 	}
 
 	@Override
-	public void fire(MessageReceivedEvent e) {
+	public void onCommand(MessageReceivedEvent e) {
 		User author = e.getAuthor();
 		String name = author.getName();
 		String id = author.getId();
@@ -65,10 +65,10 @@ public class MoeCodex extends Command {
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Codex Query Template");
 		builder.setDescription("Use the following template to view the MOE codex");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + "```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + "```", false));
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");
@@ -80,7 +80,7 @@ public class MoeCodex extends Command {
 
 	public MessageEmbed getCodexEmbeded(HashMap<ArrayList<MoeSuit>, MoeSuitType> suitList) {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Codex Results");
 		builder.setDescription("Here is a list of all MOE suits in the database!");
 		for (ArrayList<MoeSuit> typeSuits : suitList.keySet()) {

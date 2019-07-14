@@ -30,7 +30,7 @@ public class BandoriComicSpider {
 										Arrays.asList(table.select("tr[data-field=member]").select("td").get(1)
 												.select("span.text_with_link").text().split(" ")).subList(0, 2))
 								.toUpperCase()),
-				table.select("tr[data-field=rarity]").select("td").get(1).select("img").size(),
+				table.select("tr[data-field=rarity]").select("td").get(1).select("img").size(), "",
 				table.select("tr[data-field=skill_name]").select("td").get(1).text(),
 				table.select("tr[data-field=skill_type]").select("td").get(1).text(),
 				"https:" + table.select("tr[data-field=images]").select("td").get(1).select("img").last().attr("src"),

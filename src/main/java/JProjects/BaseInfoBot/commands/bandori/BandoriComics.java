@@ -2,7 +2,7 @@ package JProjects.BaseInfoBot.commands.bandori;
 
 import java.io.IOException;
 
-import JProjects.BaseInfoBot.Bot;
+import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.spider.bandori.BandoriComicSpider;
@@ -14,12 +14,12 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class BandoriComics extends Command {
 
-	public BandoriComics(Bot bot) {
+	public BandoriComics(BaseInfoBot bot) {
 		super(bot, "comic", new String[] { "comics" }, "Searches for a random comic in the database");
 	}
 
 	@Override
-	public void fire(MessageReceivedEvent e) {
+	public void onCommand(MessageReceivedEvent e) {
 		MessageChannel ch = e.getChannel();
 		try {
 			bot.sendMessage(BandoriComicSpider.queryRandom(), ch);
@@ -32,17 +32,17 @@ public class BandoriComics extends Command {
 
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Bandori Comic Query Template");
 		builder.setDescription("Use the following template to run the Bandori comic query");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + "```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + "```", false));
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");
 		sb.delete(sb.length() - 2, sb.length());
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
-		builder.addField(new Field("Example:", "```" + Messages.prefix + command + " (shows random comic)```", false));
+		builder.addField(new Field("Example:", "```" + Messages.PREFIX + command + " (shows random comic)```", false));
 		return builder.build();
 	}
 }

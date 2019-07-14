@@ -2,7 +2,7 @@ package JProjects.BaseInfoBot.commands.admin;
 
 import java.util.List;
 
-import JProjects.BaseInfoBot.Bot;
+import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.google.GTranslate;
@@ -18,15 +18,15 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class TranslateImage extends Command {
 
-	public TranslateImage(Bot bot) {
+	public TranslateImage(BaseInfoBot bot) {
 		super(bot, "itranslate", new String[] { "it", "itrans" }, "Image translation using Google API");
 	}
 
 	@Override
-	public void fire(MessageReceivedEvent e) {
+	public void onCommand(MessageReceivedEvent e) {
 		User author = e.getAuthor();
 		MessageChannel ch = e.getChannel();
-		if (!Bot.admins.contains(author.getId())) {
+		if (!BaseInfoBot.admins.contains(author.getId())) {
 			bot.reactCross(e.getMessage());
 			return;
 		}
@@ -73,10 +73,10 @@ public class TranslateImage extends Command {
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("iTranslation Template");
 		builder.setDescription("Use the following template to translate an image");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + " [target locale]```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + " [target locale]```", false));
 		builder.addField(
 				new Field("List of Locales:", "```https://cloud.google.com/translate/docs/languages```", false));
 		return builder.build();
@@ -84,7 +84,7 @@ public class TranslateImage extends Command {
 
 	public MessageEmbed getTranslatedEmbeded(String original, String translated) {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Translated Results");
 		builder.setDescription("Ehehee here is what I figured out (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧");
 		builder.addField(new Field("Original:", "```" + original + "```", false));

@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import org.json.simple.parser.ParseException;
 
-import JProjects.BaseInfoBot.Bot;
+import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.database.files.CacheFileEditor;
@@ -21,12 +21,12 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class MoeSuitComp extends Command {
 
-	public MoeSuitComp(Bot bot) {
+	public MoeSuitComp(BaseInfoBot bot) {
 		super(bot, "sc", new String[] { "comp", "compare", "suitcomp" }, "Compare two different suits' statstics");
 	}
 
 	@Override
-	public void fire(MessageReceivedEvent e) {
+	public void onCommand(MessageReceivedEvent e) {
 		String[] args = e.getMessage().getContentRaw().split(" ");
 		if (args.length != 3 && args.length != 4) {
 			bot.sendMessage(getHelpEmbeded(), e.getChannel());
@@ -81,7 +81,7 @@ public class MoeSuitComp extends Command {
 
 	private MessageEmbed getsuitcompEmbeded(MoeSuit suit1, MoeSuit suit2) {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Suit Comparison: " + suit1.getName() + " vs " + suit2.getName());
 		final int level = 51;
 		builder.setDescription(
@@ -101,18 +101,18 @@ public class MoeSuitComp extends Command {
 
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Suit Statistics Comparison Query Template");
 		builder.setDescription("Use the following template to run the suit comparison query");
 		builder.addField(
-				new Field("Copy & Paste:", "```" + Messages.prefix + command + " <name> <name2>" + "```", false));
+				new Field("Copy & Paste:", "```" + Messages.PREFIX + command + " <name> <name2>" + "```", false));
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");
 		sb.delete(sb.length() - 2, sb.length());
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
-		builder.addField(new Field("Example:", "```" + Messages.prefix + command + " Pygma Zenka```", false));
+		builder.addField(new Field("Example:", "```" + Messages.PREFIX + command + " Pygma Zenka```", false));
 		Field edNote = new Field("Notes about Expected Damage:",
 				"This is a value that calculates the raw DPS of the suit"
 						+ "\n```ED = ATK × CRT% × CRIT + ATK × (1-CRT%)```",

@@ -55,7 +55,7 @@ public class BandoriGachaSpider {
 		Element table = wrapper.select("table.table.about-table").get(0);
 
 		EmbedBuilder gachaBuilder = new EmbedBuilder();
-		gachaBuilder.setColor(Messages.colorMisc);
+		gachaBuilder.setColor(Messages.COLOR_MISC);
 		gachaBuilder.setAuthor(table.select("tr[data-field=name]").text().replace("Title", "").trim());
 		gachaBuilder
 				.setImage("https:" + wrapper.select("tr.english_image").select("td").get(0).select("img").attr("src"));
@@ -81,7 +81,7 @@ public class BandoriGachaSpider {
 
 		for (Element aElement : table.select("tr[data-field=cards]").select("td").get(1).select("a")) {
 			EmbedBuilder cardBuilder = new EmbedBuilder();
-			cardBuilder.setColor(Messages.colorMisc);
+			cardBuilder.setColor(Messages.COLOR_MISC);
 			cardBuilder.setAuthor("Event Card:");
 			cardBuilder.setThumbnail("https:" + aElement.select("img").attr("src"));
 

@@ -1,6 +1,6 @@
 package JProjects.BaseInfoBot.commands.helpers;
 
-import JProjects.BaseInfoBot.Bot;
+import JProjects.BaseInfoBot.BaseInfoBot;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -10,7 +10,7 @@ public abstract class Command {
 
 	protected String helpMsg;
 
-	protected Bot bot;
+	protected BaseInfoBot bot;
 
 	/**
 	 * Constructor
@@ -18,7 +18,7 @@ public abstract class Command {
 	 * @param command - the command string
 	 * @param helpMsg - the help message
 	 */
-	public Command(Bot bot, String command, String helpMsg) {
+	public Command(BaseInfoBot bot, String command, String helpMsg) {
 		this.bot = bot;
 		this.command = command;
 		this.aliases = new String[0];
@@ -34,7 +34,7 @@ public abstract class Command {
 	 * @param aliases - aliases to the command
 	 * @param helpMsg - the help message
 	 */
-	public Command(Bot bot, String command, String[] aliases, String helpMsg) {
+	public Command(BaseInfoBot bot, String command, String[] aliases, String helpMsg) {
 		this.bot = bot;
 		this.command = command;
 		this.aliases = aliases;
@@ -46,7 +46,7 @@ public abstract class Command {
 	/**
 	 * Executes the command
 	 */
-	public abstract void fire(MessageReceivedEvent event);
+	public abstract void onCommand(MessageReceivedEvent event);
 
 	/**
 	 * @return (String) help message

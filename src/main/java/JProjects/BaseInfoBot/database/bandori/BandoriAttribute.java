@@ -18,6 +18,10 @@ public enum BandoriAttribute {
 		return null;
 	}
 
+	public static BandoriAttribute fromEmote(String emote) {
+		return fromString(Emotes.getName(emote).replace("attr_", ""));
+	}
+
 	public String getEmote() {
 		switch (this) {
 		case PURE:
@@ -30,6 +34,38 @@ public enum BandoriAttribute {
 			return Emotes.ATTR_POWER;
 		default:
 			return null;
+		}
+	}
+
+	public static BandoriAttribute fromIndex(int index) {
+		while (index > 4)
+			index -= 4;
+		switch (index) {
+		case 2:
+			return COOL;
+		case 4:
+			return HAPPY;
+		case 3:
+			return PURE;
+		case 1:
+			return POWER;
+		default:
+			return null;
+		}
+	}
+
+	public int getIndex() {
+		switch (this) {
+		case COOL:
+			return 2;
+		case HAPPY:
+			return 4;
+		case PURE:
+			return 3;
+		case POWER:
+			return 1;
+		default:
+			return 1;
 		}
 	}
 }

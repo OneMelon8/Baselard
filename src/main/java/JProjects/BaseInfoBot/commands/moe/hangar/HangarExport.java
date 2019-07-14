@@ -2,7 +2,7 @@ package JProjects.BaseInfoBot.commands.moe.hangar;
 
 import org.json.simple.JSONObject;
 
-import JProjects.BaseInfoBot.Bot;
+import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.database.files.HangarFileEditor;
 import JProjects.BaseInfoBot.database.moe.MoeSuit;
@@ -18,7 +18,7 @@ public class HangarExport {
 	 * TODO: get user name with ID!!!
 	 */
 
-	public static void fire(MessageReceivedEvent e, Bot bot) {
+	public static void fire(MessageReceivedEvent e, BaseInfoBot bot) {
 		User author = e.getAuthor();
 		String[] args = e.getMessage().getContentRaw().split(" ");
 		try {
@@ -44,17 +44,17 @@ public class HangarExport {
 
 	private static MessageEmbed buildExportEmbeded(String msg) {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Suit Export");
 		builder.setDescription("Your suit data is exported successfully, you can import it any time with "
-				+ Messages.prefix + "import");
+				+ Messages.PREFIX + "import");
 		builder.addField(new Field("Copy & Paste:", "```" + msg + "```", false));
 		return builder.build();
 	}
 
 	private static MessageEmbed buildWikiExportEmbeded(String msg) {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Suit Export - Wiki Format");
 		builder.setDescription("Your suit data is exported successfully as WIKI format (such export much wiki)");
 		builder.addField(new Field("Copy & Paste:", "```" + msg + "```", false));

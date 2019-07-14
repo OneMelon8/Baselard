@@ -1,6 +1,6 @@
 package JProjects.BaseInfoBot.commands;
 
-import JProjects.BaseInfoBot.Bot;
+import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -12,15 +12,15 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Pat extends Command {
 
-	public Pat(Bot bot) {
-		super(bot, "pat", new String[] { "headpat" }, "Pat base");
+	public Pat(BaseInfoBot bot) {
+		super(bot, "pat", new String[] { "headpat", "patpat" }, "Pat base");
 	}
 
 	@Override
-	public void fire(MessageReceivedEvent e) {
+	public void onCommand(MessageReceivedEvent e) {
 		User author = e.getAuthor();
 		MessageChannel ch = e.getChannel();
-		if (!Bot.admins.contains(author.getId())) {
+		if (!BaseInfoBot.admins.contains(author.getId())) {
 			bot.sendMessage("Fwah fwah~", ch);
 			return;
 		}
@@ -30,10 +30,10 @@ public class Pat extends Command {
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Pat Template");
 		builder.setDescription("Use the following template to pat");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + "```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + "```", false));
 		return builder.build();
 	}
 }

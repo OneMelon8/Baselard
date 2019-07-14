@@ -2,6 +2,8 @@ package JProjects.BaseInfoBot.database;
 
 public class Emotes {
 	public static final String RODY_BEAT = "<:rodybeat:552017882905575424>";
+	public static final String KOKORON_WUT = "<:kokoron_wut:598387497155821579>";
+	public static final String KOKORON_ERROR = "<:kokoron_error:598824542978441232>";
 
 	public static final String MINECRAFT_GRASS = "<:mc_grass:575908022346579969>";
 	public static final String MINECRAFT_COMMAND_BLOCK = "<:mc_command:575908475888992266>";
@@ -14,6 +16,11 @@ public class Emotes {
 	public static final String ATTR_COOL = "<:attr_cool:578337887142281216>";
 	public static final String BANDORI_STAR = "<:bandori_star:578806302864572427>";
 	public static final String BANDORI_STAR2 = "<:bandori_star2:580847904508346378>";
+
+	public static final String BANDORI_RARITY_1 = "<:bandori_rarity_1:599082647708237824>";
+	public static final String BANDORI_RARITY_2 = "<:bandori_rarity_2:599082647699980298>";
+	public static final String BANDORI_RARITY_3 = "<:bandori_rarity_3:599082647636934696>";
+	public static final String BANDORI_RARITY_4 = "<:bandori_rarity_4:599085915205271582>";
 
 	public static final String POPPIN_PARTY = "<:poppin_party:581601489290788864>";
 	public static final String AFTERGLOW = "<:afterglow:581601488808312843>";
@@ -56,11 +63,20 @@ public class Emotes {
 	public static final String SAYO_HIKAWA = "<:sayo_hikawa:580850110364385297>";
 	public static final String RINKO_SHIROKANE = "<:rinko_shirokane:580850110590746626>";
 
-	// ID's
-	public static final long MINECRAFT_GRASS_ID = 575908022346579969L;
-	public static final long MINECRAFT_COMMAND_BLOCK_ID = 575908475888992266L;
-	public static final long MINECRAFT_COBBLESTONE_ID = 575908019783598130L;
-	public static final long MINECRAFT_GLASS_ID = 575908022526672916L;
+	public static String getRarityEmote(int rarity) {
+		switch (rarity) {
+		case 1:
+			return BANDORI_RARITY_1;
+		case 2:
+			return BANDORI_RARITY_2;
+		case 3:
+			return BANDORI_RARITY_3;
+		case 4:
+			return BANDORI_RARITY_4;
+		default:
+			return BANDORI_STAR;
+		}
+	}
 
 	public static String getBandEmote(String band) {
 		if (band.equalsIgnoreCase("Poppin&#39;Party") || band.equalsIgnoreCase("Poppin'Party"))
@@ -74,5 +90,15 @@ public class Emotes {
 		else if (band.equalsIgnoreCase("Hello, Happy World!"))
 			return HELLO_HAPPY_WORLD;
 		return null;
+	}
+
+	public static String getId(String emote) {
+		emote = emote.replace(">", "");
+		return emote.split(":")[2];
+	}
+
+	public static String getName(String emote) {
+		emote = emote.replace(">", "");
+		return emote.split(":")[1];
 	}
 }

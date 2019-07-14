@@ -1,6 +1,6 @@
 package JProjects.BaseInfoBot.commands.moe.hangar;
 
-import JProjects.BaseInfoBot.Bot;
+import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -11,7 +11,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Hangar extends Command {
 
-	public Hangar(Bot bot) {
+	public Hangar(BaseInfoBot bot) {
 		super(bot, "hangar", "Your very own mini hangar!");
 	}
 
@@ -19,9 +19,9 @@ public class Hangar extends Command {
 	// hangar <import/export/view/clear/enhance>
 
 	@Override
-	public void fire(MessageReceivedEvent e) {
+	public void onCommand(MessageReceivedEvent e) {
 		User author = e.getAuthor();
-		if (!Bot.admins.contains(author.getId())) {
+		if (!BaseInfoBot.admins.contains(author.getId())) {
 			bot.sendMessage(
 					e.getAuthor().getAsMention()
 							+ " permission denied :x: (This is beta feature, it will be released soon)",
@@ -47,12 +47,12 @@ public class Hangar extends Command {
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Hangar Template");
 		builder.setDescription("Use the following template to navigate in your hangar! (such hangar much wow)");
 		builder.addField(new Field("Copy & Paste:",
-				"```" + Messages.prefix + command + " [import/export/view] [data]" + "```", false));
-		builder.addField(new Field("Example:", "```" + Messages.prefix + command + " export" + "```", false));
+				"```" + Messages.PREFIX + command + " [import/export/view] [data]" + "```", false));
+		builder.addField(new Field("Example:", "```" + Messages.PREFIX + command + " export" + "```", false));
 		return builder.build();
 	}
 }

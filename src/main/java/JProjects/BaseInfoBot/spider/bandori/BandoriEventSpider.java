@@ -58,7 +58,7 @@ public class BandoriEventSpider {
 		Element table = wrapper.select("table.table.about-table").get(0);
 
 		EmbedBuilder eventBuilder = new EmbedBuilder();
-		eventBuilder.setColor(Messages.colorMisc);
+		eventBuilder.setColor(Messages.COLOR_MISC);
 		eventBuilder.setAuthor(table.select("tr[data-field=name]").text().replace("Title", "").trim());
 		eventBuilder.setImage("https:" + wrapper.select("img.event-image").attr("src"));
 
@@ -66,12 +66,14 @@ public class BandoriEventSpider {
 				.replace(" +0000", "");
 		String end = table.select("tr[data-field=english_end_date]").select("span.datetime").text().replace(" +0000",
 				"");
-		eventBuilder.setDescription("UTC: " + start + " - " + end + "\n"
-				+ TimeFormatter.getCountDown(TimeFormatter.getDateFromBandoriString(start).getTimeInMillis(),
-						TimeFormatter.getDateFromBandoriString(end).getTimeInMillis(), System.currentTimeMillis()));
+		eventBuilder.setDescription("UTC: " + start + " - " + end);
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("Event Type: **" + table.select("tr[data-field=type]").select("td").get(1).text() + "**");
+		sb.append("Countdown: **"
+				+ TimeFormatter.getCountDown(TimeFormatter.getDateFromBandoriString(start).getTimeInMillis(),
+						TimeFormatter.getDateFromBandoriString(end).getTimeInMillis(), System.currentTimeMillis())
+				+ "**");
+		sb.append("\nEvent Type: **" + table.select("tr[data-field=type]").select("td").get(1).text() + "**");
 		sb.append("\nAttribute: **" + BandoriAttribute
 				.fromString(table.select("tr[data-field=boost_attribute]").select("td").get(1).text()).getEmote()
 				+ "**");
@@ -88,9 +90,9 @@ public class BandoriEventSpider {
 
 		for (Element aElement : table.select("tr[data-field=cards]").select("td").get(1).select("a")) {
 			String[] cardData = aElement.attr("data-ajax-title").split(" ");
-			List<BandoriCard> cards = BandoriCardSpider
+			BandoriCard card = BandoriCardSpider
 					.queryCard(String.join(" ", Arrays.asList(cardData).subList(6, cardData.length)));
-			output.add(cards.get(0).getEmbededMessage());
+			output.add(card.getEmbededMessage());
 		}
 		return output;
 	}

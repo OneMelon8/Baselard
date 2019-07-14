@@ -2,7 +2,7 @@ package JProjects.BaseInfoBot.commands.moe.hangar;
 
 import org.json.simple.JSONObject;
 
-import JProjects.BaseInfoBot.Bot;
+import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.database.files.HangarFileEditor;
 import JProjects.BaseInfoBot.database.moe.MoeSuit;
 import JProjects.BaseInfoBot.tools.GeneralTools;
@@ -11,7 +11,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class HangarDisplay {
 
-	public static void fire(MessageReceivedEvent e, Bot bot) {
+	public static void fire(MessageReceivedEvent e, BaseInfoBot bot) {
 		User author = e.getAuthor();
 		try {
 			JSONObject obj = HangarFileEditor.read();

@@ -297,7 +297,7 @@ public class MoeSuit implements Cloneable {
 			String[] data = dataArr[a].split("=");
 			dataMap.put(data[0], data[1].replace("_", " "));
 		}
-		dataMap.put("owner", App.bot.getJDA().getUserById(map[0].replace(Messages.prefix + "hangar import ", ""))
+		dataMap.put("owner", App.bot.getJDA().getUserById(map[0].replace(Messages.PREFIX + "hangar import ", ""))
 				.getName().replace(" ", "_"));
 		return new MoeSuit(dataMap.get("owner"), map[0], dataMap);
 	}

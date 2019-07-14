@@ -9,11 +9,16 @@ import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 
 public class BandoriCard {
 
+	private int index = 0; // Only used in card querying
+	private int total = 0; // Only used in card querying
+	private String notes = "Happy! Lucky! Smile! Yay!"; // Only used in card querying
+
 	private String name;
 	private BandoriAttribute attr;
 	private BandoriMember member;
 	private Color color;
 	private int rarity;
+	private String versions;
 	private String skillName;
 	private String skillDesc;
 	private String iconUrl;
@@ -24,12 +29,13 @@ public class BandoriCard {
 	private int visual;
 	private int overall;
 
-	public BandoriCard(String name, BandoriAttribute attr, BandoriMember member, int rarity, String skillName,
-			String skillDesc, String iconUrl, String artUrl) {
+	public BandoriCard(String name, BandoriAttribute attr, BandoriMember member, int rarity, String versions,
+			String skillName, String skillDesc, String iconUrl, String artUrl) {
 		this.name = name;
 		this.attr = attr;
 		this.member = member;
 		this.rarity = rarity;
+		this.versions = versions;
 		this.skillName = skillName;
 		this.skillDesc = skillDesc;
 		this.iconUrl = iconUrl;
@@ -39,6 +45,8 @@ public class BandoriCard {
 		this.technique = 0;
 		this.visual = 0;
 		this.overall = this.performance + this.technique + this.visual;
+
+		this.notes = this.member.getCatchPhrase();
 	}
 
 	public MessageEmbed getEmbededMessage() {
@@ -55,7 +63,8 @@ public class BandoriCard {
 //		builder.addField(new Field("**Information:**", sb.toString(), false));
 
 //		sb = new StringBuilder();
-		sb.append("Skill: **" + this.getSkillName() + "**");
+		sb.append("Versions: " + this.getVersionsEmotes());
+		sb.append("\nSkill: **" + this.getSkillName() + "**");
 		sb.append("\nDetail: **" + this.getSkillDesc() + "**");
 //		builder.addField(new Field("**Skill Info:**", sb.toString(), false));
 		builder.addField(
@@ -69,6 +78,8 @@ public class BandoriCard {
 //		sb.append("\nOverall: **" + this.getOverall() + "**");
 //		builder.addField(new Field("**Statistics:**", sb.toString(), false));
 
+		builder.setFooter((index + 1) + "/" + total + " - " + notes,
+				"https://cdn.discordapp.com/emojis/432981158670630924.png");
 		return builder.build();
 	}
 
@@ -84,6 +95,18 @@ public class BandoriCard {
 	}
 
 	// Default Generated
+	public int getIndex() {
+		return index;
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -102,6 +125,25 @@ public class BandoriCard {
 
 	public int getRarity() {
 		return rarity;
+	}
+
+	public String getVersions() {
+		return versions;
+	}
+
+	public String getVersionsEmotes() {
+		StringBuilder sb = new StringBuilder();
+		if (versions.contains("Japanese"))
+			sb.append("🇯🇵 ");
+		if (versions.contains("English"))
+			sb.append("🇺🇸 ");
+		if (versions.contains("Taiwanese"))
+			sb.append("🇹🇼 ");
+		if (versions.contains("Korean"))
+			sb.append("🇰🇷 ");
+		if (sb.length() > 1)
+			sb.deleteCharAt(sb.length() - 1);
+		return sb.toString();
 	}
 
 	public String getSkillName() {
@@ -136,6 +178,18 @@ public class BandoriCard {
 		return overall;
 	}
 
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -156,6 +210,10 @@ public class BandoriCard {
 
 	public void setRarity(int rarity) {
 		this.rarity = rarity;
+	}
+
+	public void setVersions(String versions) {
+		this.versions = versions;
 	}
 
 	public void setSkillName(String skillName) {

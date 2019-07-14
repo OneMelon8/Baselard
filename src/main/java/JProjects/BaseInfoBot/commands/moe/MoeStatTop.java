@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 
 import org.json.simple.JSONArray;
 
-import JProjects.BaseInfoBot.Bot;
+import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.database.files.CacheFileEditor;
@@ -25,7 +25,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class MoeStatTop extends Command {
 
-	public MoeStatTop(Bot bot) {
+	public MoeStatTop(BaseInfoBot bot) {
 		super(bot, "top", new String[] { "top", "statstop" }, "Get the top suit in a class for a certain aspect");
 	}
 
@@ -33,7 +33,7 @@ public class MoeStatTop extends Command {
 			"cntr", "crt%", "crit", "acd", "stn", "frz", "sil", "rank"));
 
 	@Override
-	public void fire(MessageReceivedEvent e) {
+	public void onCommand(MessageReceivedEvent e) {
 		String[] args = e.getMessage().getContentRaw().split(" ");
 		if (args.length != 3 && args.length != 4) {
 			bot.sendMessage(getHelpEmbeded(), e.getChannel());
@@ -145,7 +145,7 @@ public class MoeStatTop extends Command {
 		sb.append("```");
 
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Suit Aspects Ranking");
 		builder.setDescription("The suits of " + suit.getSuitType().toString() + " class at Lv. " + suit.getLevel());
 		builder.addField(new Field("Ranking of " + suit.getDisplayName() + " across all " + suits.size() + " "
@@ -164,7 +164,7 @@ public class MoeStatTop extends Command {
 	public MessageEmbed getTopSuitsEmbeded(LinkedHashMap<Object, Double> suits, String aspect, String type, int level,
 			final int count) {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("List of Top Suits");
 		builder.setDescription("The suits of " + type + " class at Lv. " + level);
 
@@ -202,12 +202,12 @@ public class MoeStatTop extends Command {
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Top Suit Statistics Query Template");
 		builder.setDescription("Use the following template to run the top statistics query"
 				+ "\nWarning: this command might take a while to perform");
 		builder.addField(new Field("Copy & Paste:",
-				"```" + Messages.prefix + command + " <aspect> <class> [top # to display or \"all\"]" + "```", false));
+				"```" + Messages.PREFIX + command + " <aspect> <class> [top # to display or \"all\"]" + "```", false));
 		builder.addField(new Field("Available Aspects:",
 				"```hp, atk, def, acc, eva, cntr, crt%, crit, acd, stn, frz, sil or rank```", false));
 		StringBuilder sb = new StringBuilder("```");
@@ -217,14 +217,14 @@ public class MoeStatTop extends Command {
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
 		builder.addField(new Field("Example:",
-				"```" + Messages.prefix + command + " atk sniper\n" + Messages.prefix + command + " rank Zenka```",
+				"```" + Messages.PREFIX + command + " atk sniper\n" + Messages.PREFIX + command + " rank Zenka```",
 				false));
 		return builder.build();
 	}
 
 	public MessageEmbed getAspectsEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("List of Aspects");
 		builder.setDescription("These are the only usable aspects in the query, CaSe is ignored");
 		builder.addField(new Field("Copy & Paste:",
@@ -234,7 +234,7 @@ public class MoeStatTop extends Command {
 
 	public MessageEmbed getTypeEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("List of Suit Classes");
 		builder.setDescription("These are the only usable suit classes in the query, CaSe is ignored");
 		builder.addField(new Field("Copy & Paste:",
@@ -246,11 +246,11 @@ public class MoeStatTop extends Command {
 
 	public MessageEmbed getRankTypeEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Rank Query Template");
 		builder.setDescription("Rank query is a bit different than stats query");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + " rank <name>```", false));
-		builder.addField(new Field("Example:", "```" + Messages.prefix + command + " rank Atropos```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + " rank <name>```", false));
+		builder.addField(new Field("Example:", "```" + Messages.PREFIX + command + " rank Atropos```", false));
 		return builder.build();
 	}
 }

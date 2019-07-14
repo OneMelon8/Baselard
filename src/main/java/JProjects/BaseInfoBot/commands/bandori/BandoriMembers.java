@@ -3,7 +3,7 @@ package JProjects.BaseInfoBot.commands.bandori;
 import java.io.IOException;
 import java.util.Arrays;
 
-import JProjects.BaseInfoBot.Bot;
+import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.Messages;
@@ -16,12 +16,12 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class BandoriMembers extends Command {
 
-	public BandoriMembers(Bot bot) {
+	public BandoriMembers(BaseInfoBot bot) {
 		super(bot, "member", new String[] { "members" }, "Searches for member list or a specific member");
 	}
 
 	@Override
-	public void fire(MessageReceivedEvent e) {
+	public void onCommand(MessageReceivedEvent e) {
 		String[] args = e.getMessage().getContentRaw().split(" ");
 		MessageChannel ch = e.getChannel();
 		if (args.length <= 1) {
@@ -44,7 +44,7 @@ public class BandoriMembers extends Command {
 
 	public MessageEmbed getBandsEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("All Bands in Bandori");
 		builder.setDescription("Poppin' Party, Afterglow, Pastel✽Palettes, Roselia, Hello Happy World");
 		builder.addField(new Field(Emotes.POPPIN_PARTY + " **Poppin' Party:**",
@@ -62,10 +62,10 @@ public class BandoriMembers extends Command {
 
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Bandori Member Query Template");
 		builder.setDescription("Use the following template to run the Bandori member query");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + " [name]```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + " [name]```", false));
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");
@@ -73,7 +73,7 @@ public class BandoriMembers extends Command {
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
 		builder.addField(new Field("Example:",
-				"```" + Messages.prefix + command + " (shows all members)" + Messages.prefix + command + " kokoro```",
+				"```" + Messages.PREFIX + command + " (shows all members)" + Messages.PREFIX + command + " kokoro```",
 				false));
 		return builder.build();
 	}

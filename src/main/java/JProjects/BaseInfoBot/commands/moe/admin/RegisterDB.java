@@ -2,7 +2,7 @@ package JProjects.BaseInfoBot.commands.moe.admin;
 
 import java.util.HashMap;
 
-import JProjects.BaseInfoBot.Bot;
+import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.database.files.CacheFileEditor;
@@ -17,15 +17,15 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class RegisterDB extends Command {
 
-	public RegisterDB(Bot bot) {
+	public RegisterDB(BaseInfoBot bot) {
 		super(bot, "reg", new String[] { "register" }, "Register a suit into the **permanent** database");
 	}
 
 	@Override
-	public void fire(MessageReceivedEvent e) {
+	public void onCommand(MessageReceivedEvent e) {
 		String[] args = e.getMessage().getContentRaw().split(" ");
 		User author = e.getAuthor();
-		if (!Bot.admins.contains(author.getId())) {
+		if (!BaseInfoBot.admins.contains(author.getId())) {
 			bot.reactCross(e.getMessage());
 			return;
 		}
@@ -59,10 +59,10 @@ public class RegisterDB extends Command {
 
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Suit Registration Template");
 		builder.setDescription("Use the following template to register your suit and enter the data after \"=\"");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command
 				+ " type= name= grade= level= hp= atk= def= acc= eva= cntr= crt%= crit= stn= frz= sil= acd=" + "```",
 				false));
 		return builder.build();

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import JProjects.BaseInfoBot.Bot;
+import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.spider.bandori.BandoriEventSpider;
@@ -16,12 +16,12 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class BandoriGachas extends Command {
 
-	public BandoriGachas(Bot bot) {
+	public BandoriGachas(BaseInfoBot bot) {
 		super(bot, "gacha", new String[] { "gachas" }, "Shows the gachas that are now live and future gachas");
 	}
 
 	@Override
-	public void fire(MessageReceivedEvent e) {
+	public void onCommand(MessageReceivedEvent e) {
 		String[] args = e.getMessage().getContentRaw().split(" ");
 		MessageChannel ch = e.getChannel();
 		if (args.length <= 1) {
@@ -49,7 +49,7 @@ public class BandoriGachas extends Command {
 
 	public MessageEmbed getEventsEmbeded(ArrayList<String> events) {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("All Events in Chronological Order");
 		builder.setDescription("Global Server Event Count: " + events.size());
 		for (int index = 0; index < events.size(); index += 20) {
@@ -66,17 +66,17 @@ public class BandoriGachas extends Command {
 
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.colorMisc);
+		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Bandori Gacha Query Template");
 		builder.setDescription("Use the following template to run the Bandori event query");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.prefix + command + " [name]```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + " [name]```", false));
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");
 		sb.delete(sb.length() - 2, sb.length());
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
-		builder.addField(new Field("Example:", "```" + Messages.prefix + command + " bushido```", false));
+		builder.addField(new Field("Example:", "```" + Messages.PREFIX + command + " bushido```", false));
 		return builder.build();
 	}
 }

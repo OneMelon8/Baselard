@@ -65,6 +65,63 @@ public enum BandoriMember {
 		}
 	}
 
+	public String getCatchPhrase() {
+		switch (this) {
+		case KASUMI_TOYAMA:
+			return "Kira kira doki doki!";
+		case TAE_HANAZONO:
+			return "*rabbit noises*";
+		case RIMI_USHIGOME:
+			return "Choco cornet~";
+		case SAAYA_YAMABUKI:
+			return "Yamabuki bakery's on sale~!";
+		case ARISA_ICHIGAYA:
+			return "Wha? No!";
+		case RAN_MITAKE:
+			return "Itsumo doori";
+		case MOCA_AOBA:
+			return "Pan~";
+		case HIMARI_UEHARA:
+			return "Hey! Hey! Hoh!";
+		case TOMOE_UDAGAWA:
+			return "Soi soi soi soi soi soi SOIYA!";
+		case TSUGUMI_HAZAWA:
+			return "Tsugurific!";
+		case KOKORO_TSURUMAKI:
+			return "Happy! Lucky! Smile! Yay!";
+		case KAORU_SETA:
+			return "Fleeting~";
+		case HAGUMI_KITAZAWA:
+			return "Michelle? Michelle?";
+		case KANON_MATSUBARA:
+			return "Fueee~";
+		case MISAKI_OKUSAWA:
+			return "*sigh*";
+		case AYA_MARUYAMA:
+			return "Uwahhh..";
+		case HINA_HIKAWA:
+			return "Boppin'";
+		case CHISATO_SHIRASAGI:
+			return "*stares with killing intent*";
+		case MAYA_YAMATO:
+			return "Huhehe";
+		case EVE_WAKAMIYA:
+			return "Bushido!";
+		case YUKINA_MINATO:
+			return "Nya.. You saw nothing";
+		case SAYO_HIKAWA:
+			return "Fr... Fries";
+		case LISA_IMAI:
+			return "Yukina~";
+		case AKO_UDAGAWA:
+			return "Fufu~";
+		case RINKO_SHIROKANE:
+			return "......";
+		default:
+			return null;
+		}
+	}
+
 	public String getDisplayName() {
 		String[] nameParts = this.toString().toLowerCase().split("_");
 		return nameParts[0].substring(0, 1).toUpperCase() + nameParts[0].substring(1) + " "
