@@ -9,10 +9,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.database.bandori.BandoriAttribute;
@@ -29,7 +25,7 @@ public class BandoriEventSpider {
 	private static final String queryCurrentUrl = "/events/?version=EN&status=current&ordering=start_date";
 	private static final String querySearchUrl = "/events/?version=EN&search=";
 	private static final String queryAllUrl = "/events/?version=EN&ordering=start_date";
-	private static final String queryTrackerUrl = "https://bestdori.com/tool/eventtracker";
+//	private static final String queryTrackerUrl = "https://bestdori.com/tool/eventtracker";
 
 	// General query function
 	public static ArrayList<String> queryEventList(boolean current) throws IOException {
@@ -103,17 +99,10 @@ public class BandoriEventSpider {
 	}
 
 	public static MessageEmbed queryEventTracking() throws IOException, InterruptedException {
-		DesiredCapabilities dc = new DesiredCapabilities();
-		dc.setJavascriptEnabled(true);
-		ChromeOptions options = new ChromeOptions();
-		options.merge(dc);
-		WebDriver driver = new ChromeDriver(options);
-
-		driver.get(queryTrackerUrl);
-		System.out.println(driver.getPageSource());
-		
-		Thread.sleep(5000);
-		driver.close();
-		return null;
+		EmbedBuilder b = new EmbedBuilder();
+		b.setColor(Messages.COLOR_MISC);
+		b.setAuthor("Work in Progress...");
+		b.setDescription("This feature is currently work in progress");
+		return b.build();
 	}
 }

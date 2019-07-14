@@ -12,10 +12,8 @@ public class App {
 	public static void main(String[] args) {
 		try {
 			System.out.println("Hello Happy World!");
-			bot = new BaseInfoBot("3.0.1");
+			bot = new BaseInfoBot("3.0.0");
 			bot.addListener(new ChatEventHandler());
-
-			System.setProperty("webdriver.chrome.driver", "./ChromeDriver.exe");
 
 			// initGoogle();
 		} catch (Exception e) {
