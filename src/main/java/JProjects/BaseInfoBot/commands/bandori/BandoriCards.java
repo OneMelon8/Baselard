@@ -111,7 +111,7 @@ public class BandoriCards extends Command implements ReactionEvent {
 			bot.reactNext(msg);
 
 			EmoteDispatcher.purgeReactions.put(msg, System.currentTimeMillis() / 1000 + 30);
-		} catch (IOException | IndexOutOfBoundsException ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 			bot.addReaction(msg, bot.getJDA().getEmoteById(Emotes.getId(Emotes.KOKORON_ERROR)));
 		}
