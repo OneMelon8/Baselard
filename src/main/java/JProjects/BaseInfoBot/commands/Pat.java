@@ -59,7 +59,7 @@ public class Pat extends Command {
 			bot.sendMessage("Nobody has patted me yet " + Emotes.KOKORON_WUT_3, channel);
 			return;
 		}
-		long totalPats = (long) patData.get("total_pats");
+		long totalPats = Long.valueOf(patData.get("total_pats").toString());
 		JSONObject userPatData = (JSONObject) patData.get("user_pats");
 		LinkedHashMap<Object, Long> topPats = GeneralTools.sortByValueLong(userPatData);
 		String[] userIds = topPats.keySet().toArray(new String[] {});
@@ -104,10 +104,10 @@ public class Pat extends Command {
 		if (patData == null)
 			patData = new JSONObject();
 
-		long totalPats = patData.containsKey("total_pats") ? (long) patData.get("total_pats") : 0;
+		long totalPats = patData.containsKey("total_pats") ? Long.valueOf(patData.get("total_pats").toString()) : 0;
 		JSONObject userPatData = patData.containsKey("user_pats") ? (JSONObject) patData.get("user_pats")
 				: new JSONObject();
-		long userPats = userPatData.containsKey(id) ? (long) userPatData.get(id) : 0;
+		long userPats = userPatData.containsKey(id) ? Long.valueOf(userPatData.get(id).toString()) : 0;
 
 		userPatData.put(id, userPats + 1);
 		patData.put("user_pats", userPatData);
