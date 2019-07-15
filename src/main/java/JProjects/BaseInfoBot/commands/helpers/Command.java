@@ -1,8 +1,10 @@
 package JProjects.BaseInfoBot.commands.helpers;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.User;
 
 public abstract class Command {
 	protected String command;
@@ -46,7 +48,7 @@ public abstract class Command {
 	/**
 	 * Executes the command
 	 */
-	public abstract void onCommand(MessageReceivedEvent event);
+	public abstract void onCommand(User author, String command, String[] args, Message message, MessageChannel channel);
 
 	/**
 	 * @return (String) help message

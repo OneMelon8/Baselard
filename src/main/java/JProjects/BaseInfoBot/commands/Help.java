@@ -12,7 +12,6 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.MessageReaction.ReactionEmote;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Help extends Command implements ReactionEvent {
 
@@ -21,15 +20,13 @@ public class Help extends Command implements ReactionEvent {
 	}
 
 	@Override
-	public void onCommand(MessageReceivedEvent e) {
-		String[] args = e.getMessage().getContentRaw().split(" ");
-		MessageChannel ch = e.getChannel();
-		if (args.length != 2) {
+	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
+		if (args.length != 1) {
 			// Send general help commands
-			bot.sendMessage(getAllHelpEmbeded(), ch);
+			bot.sendMessage(getAllHelpEmbeded(), channel);
 			return;
 		}
-		String sub = args[1];
+		String sub = args[0];
 		Command cmdHandler = CommandDispatcher.registeredListeners.get(sub);
 		if (cmdHandler == null)
 			for (String key : CommandDispatcher.registeredCommands.keySet()) {
@@ -40,12 +37,12 @@ public class Help extends Command implements ReactionEvent {
 			}
 		cmdHandler = CommandDispatcher.registeredListeners.get(sub);
 		if (cmdHandler == null) {
-			bot.sendMessage(e.getAuthor().getAsMention()
+			bot.sendMessage(author.getAsMention()
 					+ " Hmm, I'm not sure what that means. Check out a list of available commands with **"
-					+ Messages.PREFIX + "help**", e.getChannel());
+					+ Messages.PREFIX + "help**", channel);
 			return;
 		}
-		bot.sendMessage(cmdHandler.getHelpEmbeded(), e.getChannel());
+		bot.sendMessage(cmdHandler.getHelpEmbeded(), channel);
 	}
 
 	@Override
@@ -58,7 +55,7 @@ public class Help extends Command implements ReactionEvent {
 	public MessageEmbed getAllHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Messages.COLOR_MISC);
-		builder.setAuthor("Commands List for Baselard");
+		builder.setAuthor("Commands List for Kokoro");
 		builder.setDescription("Here's how to use my command: `" + Messages.PREFIX + "<command> [arguments...]`");
 
 		StringBuilder sb = new StringBuilder("```");

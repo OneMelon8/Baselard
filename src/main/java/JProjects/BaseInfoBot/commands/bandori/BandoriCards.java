@@ -1,7 +1,6 @@
 package JProjects.BaseInfoBot.commands.bandori;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
@@ -21,7 +20,6 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.MessageReaction.ReactionEmote;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class BandoriCards extends Command implements ReactionEvent {
 
@@ -30,28 +28,27 @@ public class BandoriCards extends Command implements ReactionEvent {
 	}
 
 	@Override
-	public void onCommand(MessageReceivedEvent e) {
-		String[] args = e.getMessage().getContentRaw().split(" ");
-		MessageChannel ch = e.getChannel();
-		if (args.length <= 1) {
+	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
+		if (args.length == 0) {
 			try {
-				bot.sendMessage(BandoriCardSpider.queryRandom().getEmbededMessage(), ch);
+				bot.sendMessage(BandoriCardSpider.queryRandom().getEmbededMessage(), channel);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 				bot.sendMessage(
-						"Seems like I cannot get the information right now. Check your data and try again later.", ch);
+						"Seems like I cannot get the information right now. Check your data and try again later.",
+						channel);
 			}
 			return;
 		}
 
-		String query = String.join(" ", Arrays.asList(args).subList(1, args.length)).trim();
+		String query = String.join(" ", args).trim();
 		try {
 			BandoriCard card = BandoriCardSpider.queryCard(query);
 			if (card == null)
 				throw new IndexOutOfBoundsException("No results");
 			card.setIndex(0);
 			card.setNotes(query);
-			Message msg = bot.sendMessage(card.getEmbededMessage(), ch);
+			Message msg = bot.sendMessage(card.getEmbededMessage(), channel);
 //			bot.addReaction(msg, bot.getJDA().getEmoteById(Emotes.getId(card.getAttr().getEmote())));
 //			bot.addReaction(msg, bot.getJDA().getEmoteById(Emotes.getId(Emotes.getRarityEmote(card.getRarity()))));
 			bot.reactPrev(msg);
@@ -60,11 +57,11 @@ public class BandoriCards extends Command implements ReactionEvent {
 			EmoteDispatcher.purgeReactions.put(msg, System.currentTimeMillis() / 1000 + 30);
 		} catch (IndexOutOfBoundsException ex) {
 			ex.printStackTrace();
-			bot.sendMessage("I cannot find information on that card, maybe you spelled it wrong?", ch);
+			bot.sendMessage("I cannot find information on that card, maybe you spelled it wrong?", channel);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			bot.sendMessage("Seems like I cannot get the information right now. Check your data and try again later.",
-					ch);
+					channel);
 		}
 	}
 

@@ -14,7 +14,6 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Gamemode extends Command {
 
@@ -34,33 +33,29 @@ public class Gamemode extends Command {
 			" was impaled by drowned", " withered away", " was pummeled by wither", " fell out of the world" };
 
 	@Override
-	public void onCommand(MessageReceivedEvent e) {
-		User user = e.getAuthor();
-		MessageChannel ch = e.getChannel();
-		Message msg = e.getMessage();
-		String[] args = msg.getContentRaw().split(" ");
+	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
 		String reaction = null;
-		if (args.length <= 1) {
-			bot.reactQuestion(msg);
+		if (args.length == 0) {
+			bot.reactQuestion(message);
 			return;
 		}
-		if (args[1].equals("0") || args[1].equals("s") || args[1].equals("survival")) {
+		if (args[0].equals("0") || args[0].equals("s") || args[0].equals("survival")) {
 			reaction = Emotes.getId(Emotes.MINECRAFT_GRASS);
-			if (admins.contains(user.getId()))
-				toggleAdminMode(false, user.getId());
-		} else if (args[1].equals("1") || args[1].equals("c") || args[1].equals("creative")) {
+			if (admins.contains(author.getId()))
+				toggleAdminMode(false, author.getId());
+		} else if (args[0].equals("1") || args[0].equals("c") || args[0].equals("creative")) {
 			reaction = Emotes.getId(Emotes.MINECRAFT_COMMAND_BLOCK);
-			if (admins.contains(user.getId()))
-				toggleAdminMode(true, user.getId());
-		} else if (args[1].equals("2") || args[1].equals("a") || args[1].equals("adventure")) {
+			if (admins.contains(author.getId()))
+				toggleAdminMode(true, author.getId());
+		} else if (args[0].equals("2") || args[0].equals("a") || args[0].equals("adventure")) {
 			reaction = Emotes.getId(Emotes.MINECRAFT_COBBLESTONE);
-		} else if (args[1].equals("3") || args[1].equals("sp") || args[1].equals("spectator")) {
+		} else if (args[0].equals("3") || args[0].equals("sp") || args[0].equals("spectator")) {
 			reaction = Emotes.getId(Emotes.MINECRAFT_GLASS);
 		} else {
-			bot.sendMessage(user.getAsMention() + deathMessages[new Random().nextInt(deathMessages.length)], ch);
+			bot.sendMessage(author.getAsMention() + deathMessages[new Random().nextInt(deathMessages.length)], channel);
 			return;
 		}
-		bot.addReaction(msg, bot.getJDA().getEmoteById(reaction));
+		bot.addReaction(message, bot.getJDA().getEmoteById(reaction));
 	}
 
 	public void toggleAdminMode(boolean admin, String id) {

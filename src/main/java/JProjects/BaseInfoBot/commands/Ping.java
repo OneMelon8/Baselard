@@ -5,9 +5,11 @@ import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.Messages;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.User;
 
 public class Ping extends Command {
 
@@ -16,8 +18,8 @@ public class Ping extends Command {
 	}
 
 	@Override
-	public void onCommand(MessageReceivedEvent e) {
-		bot.sendMessage(Emotes.RODY_BEAT + " Heartbeat " + Math.round(e.getJDA().getPing()) + "ms", e.getChannel());
+	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
+		bot.sendMessage(Emotes.RODY_BEAT + " Heartbeat " + Math.round(bot.getJDA().getPing()) + "ms", channel);
 	}
 
 	@Override

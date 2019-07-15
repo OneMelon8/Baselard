@@ -14,7 +14,6 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class TranslateImage extends Command {
 
@@ -23,51 +22,47 @@ public class TranslateImage extends Command {
 	}
 
 	@Override
-	public void onCommand(MessageReceivedEvent e) {
-		User author = e.getAuthor();
-		MessageChannel ch = e.getChannel();
+	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
 		if (!BaseInfoBot.admins.contains(author.getId())) {
-			bot.reactCross(e.getMessage());
+			bot.reactCross(message);
 			return;
 		}
-		Message m = e.getMessage();
-		String[] args = m.getContentRaw().split(" ");
 		String localeTo = "en";
-		if (args.length == 2)
-			localeTo = args[1];
+		if (args.length == 1)
+			localeTo = args[0];
 
-		List<Attachment> attachments = m.getAttachments();
+		List<Attachment> attachments = message.getAttachments();
 		if (attachments.isEmpty() || !attachments.get(0).isImage()) {
-			bot.sendMessage(getHelpEmbeded(), ch);
+			bot.sendMessage(getHelpEmbeded(), channel);
 			return;
 		}
 		String url = attachments.get(0).getProxyUrl();
 
-		bot.sendMessage("Let me see what's in this image, hmm...", ch);
-		bot.sendThinkingPacket(ch);
+		bot.sendMessage("Let me see what's in this image, hmm...", channel);
+		bot.sendThinkingPacket(channel);
 
 		String ocr;
 		try {
 			ocr = GVision.ocr(url);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			bot.sendMessage("Hmm, something went wrong, try again later", ch);
+			bot.sendMessage("Hmm, something went wrong, try again later", channel);
 			return;
 		}
 
-		bot.sendMessage("Ah ha! Now let me translate it for ya...", ch);
-		bot.sendMessage(ocr, ch);
-		bot.sendThinkingPacket(ch);
+		bot.sendMessage("Ah ha! Now let me translate it for ya...", channel);
+		bot.sendMessage(ocr, channel);
+		bot.sendThinkingPacket(channel);
 
 		String translated;
 		try {
 			translated = GTranslate.translate(ocr, localeTo);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			bot.sendMessage("One (or more) of your locale values is incorrect", ch);
+			bot.sendMessage("One (or more) of your locale values is incorrect", channel);
 			return;
 		}
-		bot.sendMessage(getTranslatedEmbeded(ocr, translated), ch);
+		bot.sendMessage(getTranslatedEmbeded(ocr, translated), channel);
 	}
 
 	@Override

@@ -2,17 +2,17 @@ package JProjects.BaseInfoBot.commands.bandori;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.spider.bandori.BandoriEventSpider;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.User;
 
 public class BandoriEvents extends Command {
 
@@ -21,21 +21,20 @@ public class BandoriEvents extends Command {
 	}
 
 	@Override
-	public void onCommand(MessageReceivedEvent e) {
-		String[] args = e.getMessage().getContentRaw().split(" ");
-		MessageChannel ch = e.getChannel();
-		if (args.length <= 1) {
+	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
+		if (args.length == 0) {
 			try {
-				bot.sendMessage(getEventsEmbeded(BandoriEventSpider.queryEventList(false)), ch);
+				bot.sendMessage(getEventsEmbeded(BandoriEventSpider.queryEventList(false)), channel);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 				bot.sendMessage(
-						"Seems like I cannot get the information right now. Check your data and try again later.", ch);
+						"Seems like I cannot get the information right now. Check your data and try again later.",
+						channel);
 			}
 			return;
 		}
 
-		String eventName = String.join(" ", Arrays.asList(args).subList(1, args.length)).trim().toLowerCase();
+		String eventName = String.join(" ", args).trim().toLowerCase();
 		// If query current
 		if (eventName.equals("c") || eventName.equals("curr") || eventName.equals("current")) {
 			try {
@@ -43,24 +42,25 @@ public class BandoriEvents extends Command {
 			} catch (IOException ex) {
 				ex.printStackTrace();
 				bot.sendMessage(
-						"Seems like I cannot get the information right now. Check your data and try again later.", ch);
+						"Seems like I cannot get the information right now. Check your data and try again later.",
+						channel);
 			}
 		} else if (eventName.equals("t") || eventName.equals("track") || eventName.equals("tracker")) {
 			MessageEmbed msg = BandoriEventSpider.queryEventTracking();
-			bot.sendMessage(msg, ch);
+			bot.sendMessage(msg, channel);
 			return;
 		}
 
 		// Show details on that event
 		try {
-			bot.sendMessage(BandoriEventSpider.queryEvent(eventName), ch);
+			bot.sendMessage(BandoriEventSpider.queryEvent(eventName), channel);
 		} catch (IndexOutOfBoundsException ex) {
 			ex.printStackTrace();
-			bot.sendMessage("I cannot find information on that event, maybe you spelled it wrong?", ch);
+			bot.sendMessage("I cannot find information on that event, maybe you spelled it wrong?", channel);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			bot.sendMessage("Seems like I cannot get the information right now. Check your data and try again later.",
-					ch);
+					channel);
 		}
 	}
 

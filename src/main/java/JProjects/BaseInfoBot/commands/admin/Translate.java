@@ -1,7 +1,5 @@
 package JProjects.BaseInfoBot.commands.admin;
 
-import java.util.Arrays;
-
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
@@ -12,7 +10,6 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Translate extends Command {
 
@@ -21,33 +18,29 @@ public class Translate extends Command {
 	}
 
 	@Override
-	public void onCommand(MessageReceivedEvent e) {
-		User author = e.getAuthor();
-		MessageChannel ch = e.getChannel();
+	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
 		if (!BaseInfoBot.admins.contains(author.getId())) {
-			bot.reactCross(e.getMessage());
+			bot.reactCross(message);
 			return;
 		}
-		Message m = e.getMessage();
-		String[] args = m.getContentRaw().split(" ");
-		String msg = String.join(" ", Arrays.asList(args).subList(1, args.length));
+		String msg = String.join(" ", args);
 		if (msg.isEmpty()) {
-			bot.sendMessage("*insert nothing here*", ch);
+			bot.sendMessage("*insert nothing here*", channel);
 			return;
 		}
 
-		bot.sendMessage("Let me translate it for ya...", ch);
-		bot.sendThinkingPacket(ch);
+		bot.sendMessage("Let me translate it for ya...", channel);
+		bot.sendThinkingPacket(channel);
 
 		String translated;
 		try {
 			translated = GTranslate.translate(msg, "en");
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			bot.sendMessage("One (or more) of your locale values is incorrect", ch);
+			bot.sendMessage("One (or more) of your locale values is incorrect", channel);
 			return;
 		}
-		bot.sendMessage(getTranslatedEmbeded(msg, translated), ch);
+		bot.sendMessage(getTranslatedEmbeded(msg, translated), channel);
 	}
 
 	@Override

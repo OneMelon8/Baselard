@@ -17,18 +17,10 @@ import JProjects.BaseInfoBot.commands.admin.Test;
 import JProjects.BaseInfoBot.commands.admin.Toggle;
 import JProjects.BaseInfoBot.commands.bandori.BandoriCards;
 import JProjects.BaseInfoBot.commands.bandori.BandoriEvents;
-import JProjects.BaseInfoBot.commands.bandori.BandoriGachas;
 import JProjects.BaseInfoBot.commands.bandori.BandoriMembers;
 import JProjects.BaseInfoBot.commands.helpers.CommandDispatcher;
 import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
 import JProjects.BaseInfoBot.commands.misc.TableFlip;
-import JProjects.BaseInfoBot.commands.moe.MoeCodex;
-import JProjects.BaseInfoBot.commands.moe.MoeStatTop;
-import JProjects.BaseInfoBot.commands.moe.MoeSuitComp;
-import JProjects.BaseInfoBot.commands.moe.MoeSuitStats;
-import JProjects.BaseInfoBot.commands.moe.admin.AddSuitAliases;
-import JProjects.BaseInfoBot.commands.moe.admin.RegisterDB;
-import JProjects.BaseInfoBot.commands.moe.hangar.Hangar;
 import JProjects.BaseInfoBot.tools.EnviroHandler;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -83,20 +75,19 @@ public class BaseInfoBot {
 		new Toggle(this);
 
 		// MOE Commands
-		new Hangar(this);
-		new MoeSuitStats(this);
-		new MoeSuitComp(this);
-		new MoeStatTop(this);
-		new MoeCodex(this);
+		// new Hangar(this);
+		// new MoeSuitStats(this);
+		// new MoeSuitComp(this);
+		// new MoeStatTop(this);
+		// new MoeCodex(this);
 		// MOE Combat
 
 		// MOE Administration
-		new AddSuitAliases(this);
-		new RegisterDB(this);
+		// new AddSuitAliases(this);
+		// new RegisterDB(this);
 
 		// Bandori Commands
 		new BandoriEvents(this);
-		new BandoriGachas(this);
 		new BandoriCards(this);
 		new BandoriMembers(this);
 		// new BandoriComics(this);

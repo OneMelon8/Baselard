@@ -1,7 +1,6 @@
 package JProjects.BaseInfoBot.commands.bandori;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
@@ -9,10 +8,11 @@ import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.spider.bandori.BandoriMemberSpider;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.User;
 
 public class BandoriMembers extends Command {
 
@@ -21,24 +21,22 @@ public class BandoriMembers extends Command {
 	}
 
 	@Override
-	public void onCommand(MessageReceivedEvent e) {
-		String[] args = e.getMessage().getContentRaw().split(" ");
-		MessageChannel ch = e.getChannel();
-		if (args.length <= 1) {
-			bot.sendMessage(getBandsEmbeded(), ch);
+	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
+		if (args.length == 0) {
+			bot.sendMessage(getBandsEmbeded(), channel);
 			return;
 		}
 
-		String search = String.join(" ", Arrays.asList(args).subList(1, args.length));
+		String search = String.join(" ", args);
 		try {
-			bot.sendMessage(BandoriMemberSpider.queryMember(search, e.getJDA()), ch);
+			bot.sendMessage(BandoriMemberSpider.queryMember(search, bot.getJDA()), channel);
 		} catch (IndexOutOfBoundsException ex) {
 			ex.printStackTrace();
-			bot.sendMessage("I cannot find information on that member, maybe you spelled it wrong?", ch);
+			bot.sendMessage("I cannot find information on that member, maybe you spelled it wrong?", channel);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			bot.sendMessage("Seems like I cannot get the information right now. Check your data and try again later.",
-					ch);
+					channel);
 		}
 	}
 

@@ -5,10 +5,11 @@ import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.commands.helpers.CommandDispatcher;
 import JProjects.BaseInfoBot.database.Messages;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Toggle extends Command {
 
@@ -17,14 +18,13 @@ public class Toggle extends Command {
 	}
 
 	@Override
-	public void onCommand(MessageReceivedEvent e) {
-		User author = e.getAuthor();
+	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
 		if (!BaseInfoBot.admins.contains(author.getId())) {
-			bot.reactCross(e.getMessage());
+			bot.reactCross(message);
 			return;
 		}
 		CommandDispatcher.mute = !CommandDispatcher.mute;
-		bot.reactCheck(e.getMessage());
+		bot.reactCheck(message);
 	}
 
 	@Override

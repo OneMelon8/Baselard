@@ -4,10 +4,11 @@ import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Messages;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.User;
 
 public class Test extends Command {
 
@@ -16,18 +17,17 @@ public class Test extends Command {
 	}
 
 	@Override
-	public void onCommand(MessageReceivedEvent e) {
-		User author = e.getAuthor();
+	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
 		if (!BaseInfoBot.admins.contains(author.getId())) {
-			bot.reactCross(e.getMessage());
+			bot.reactCross(message);
 			return;
 		}
-		String msg = e.getMessage().getContentRaw().replace(Messages.PREFIX + "test", "").trim();
+		String msg = String.join(" ", args);
 		if (msg.isEmpty())
 			msg = "Ehehee, what are you trying to test?";
-		bot.sendMessage(msg, e.getChannel());
+		bot.sendMessage(msg, channel);
 		System.out.println(msg);
-		e.getMessage().delete().queue();
+		bot.deleteMessage(message);
 	}
 
 	@Override
