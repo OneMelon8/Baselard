@@ -89,6 +89,29 @@ public class TimeFormatter {
 			sb.setCharAt(0, sb.substring(0, 1).toUpperCase().charAt(0));
 			sb.append(" ago");
 		}
-		return (sb.toString());
+		return sb.toString();
+	}
+
+	public static String getCountDownSimple(long time) {
+		long days = TimeUnit.MILLISECONDS.toDays(time);
+		time -= TimeUnit.DAYS.toMillis(days);
+		long hours = TimeUnit.MILLISECONDS.toHours(time);
+		time -= TimeUnit.HOURS.toMillis(hours);
+		long minutes = TimeUnit.MILLISECONDS.toMinutes(time);
+		time -= TimeUnit.MINUTES.toMillis(minutes);
+		long seconds = TimeUnit.MILLISECONDS.toSeconds(time);
+
+		StringBuilder sb = new StringBuilder();
+		if (days > 0)
+			sb.append(days + (days == 1 ? " day " : " days "));
+		if (hours > 0)
+			sb.append(hours + (hours == 1 ? " hour " : " hours "));
+		if (minutes > 0)
+			sb.append(minutes + (minutes == 1 ? " minute " : " minutes "));
+		if (seconds > 0)
+			sb.append(seconds + (seconds == 1 ? " second" : " seconds"));
+		if (days > 99)
+			sb = new StringBuilder("a long time");
+		return sb.toString();
 	}
 }

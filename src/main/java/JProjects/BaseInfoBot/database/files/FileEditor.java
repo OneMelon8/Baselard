@@ -23,6 +23,10 @@ public class FileEditor {
 		Files.write(Paths.get("./" + fileName + ".json"), obj.toJSONString().getBytes());
 	}
 
+	public static void write(String fileName, JSONObject value) throws IOException {
+		Files.write(Paths.get("./" + fileName + ".json"), value.toJSONString().getBytes());
+	}
+
 	public static JSONObject read(String fileName) throws IOException, ParseException {
 		FileReader reader = new FileReader("./" + fileName + ".json");
 		JSONParser jsonParser = new JSONParser();

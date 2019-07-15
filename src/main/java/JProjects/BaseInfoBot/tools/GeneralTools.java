@@ -57,23 +57,34 @@ public class GeneralTools {
 		return null;
 	}
 
-	public static LinkedHashMap<Object, Double> sortByValue(HashMap<Object, Double> hm) {
-		// Create a list from elements of HashMap
+	public static LinkedHashMap<Object, Double> sortByValueDouble(HashMap<Object, Double> hm) {
 		List<Map.Entry<Object, Double>> list = new LinkedList<Map.Entry<Object, Double>>(hm.entrySet());
-
-		// Sort the list
 		Collections.sort(list, new Comparator<Map.Entry<Object, Double>>() {
 			public int compare(Map.Entry<Object, Double> o1, Map.Entry<Object, Double> o2) {
 				return (o1.getValue()).compareTo(o2.getValue());
 			}
 		});
-
-		// put data from sorted list to hashmap
 		LinkedHashMap<Object, Double> temp = new LinkedHashMap<Object, Double>();
-		for (Map.Entry<Object, Double> aa : list) {
+		for (Map.Entry<Object, Double> aa : list)
 			temp.put(aa.getKey(), aa.getValue());
-		}
 		return temp;
+	}
+
+	public static LinkedHashMap<Object, Long> sortByValueLong(HashMap<Object, Long> hm) {
+		List<Map.Entry<Object, Long>> list = new LinkedList<Map.Entry<Object, Long>>(hm.entrySet());
+		Collections.sort(list, new Comparator<Map.Entry<Object, Long>>() {
+			public int compare(Map.Entry<Object, Long> o1, Map.Entry<Object, Long> o2) {
+				return (o1.getValue()).compareTo(o2.getValue());
+			}
+		});
+		LinkedHashMap<Object, Long> temp = new LinkedHashMap<Object, Long>();
+		for (Map.Entry<Object, Long> aa : list)
+			temp.put(aa.getKey(), aa.getValue());
+		return temp;
+	}
+
+	public static Object getLinkedMapKeyByIndex(LinkedHashMap<Object, Object> map, int index) {
+		return map.keySet().toArray()[index];
 	}
 
 	public static Object getLinkedMapValueByIndex(LinkedHashMap<Object, Object> map, int index) {

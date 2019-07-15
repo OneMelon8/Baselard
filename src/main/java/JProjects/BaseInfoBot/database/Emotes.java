@@ -3,6 +3,7 @@ package JProjects.BaseInfoBot.database;
 public class Emotes {
 	public static final String RODY_BEAT = "<:rodybeat:552017882905575424>";
 	public static final String KOKORON_WUT = "<:kokoron_wut:598387497155821579>";
+	public static final String KOKORON_WUT_3 = "<:kokoron_wut_3:599596808930459649>";
 	public static final String KOKORON_ERROR = "<:kokoron_error:598824542978441232>";
 
 	public static final String MINECRAFT_GRASS = "<:mc_grass:575908022346579969>";

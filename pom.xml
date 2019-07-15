@@ -96,5 +96,6 @@
 			<artifactId>google-cloud-translate</artifactId>
 			<version>1.70.0</version>
 		</dependency>
+
 	</dependencies>
 </project>

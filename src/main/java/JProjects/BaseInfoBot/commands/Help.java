@@ -65,17 +65,18 @@ public class Help extends Command implements ReactionEvent {
 		sb.append("```");
 		builder.addField(new Field("**General Commands:**", sb.toString(), false));
 
-		sb = new StringBuilder("```");
-		sb.append(String.format("%-8s >> %s", "stat", "Display statistics for a suit\n"));
-		sb.append(String.format("%-8s >> %s", "sc", "Compare the stats for two different suits\n"));
-		sb.append(String.format("%-8s >> %s", "top", "List the top suits for certain stats\n"));
-		sb.append(String.format("%-8s >> %s", "codex", "List all suits in the database\n"));
-		sb.append("```");
-		builder.addField(new Field("**Suit Statistics Commands:**", sb.toString(), false));
+//		sb = new StringBuilder("```");
+//		sb.append(String.format("%-8s >> %s", "stat", "Display statistics for a suit\n"));
+//		sb.append(String.format("%-8s >> %s", "sc", "Compare the stats for two different suits\n"));
+//		sb.append(String.format("%-8s >> %s", "top", "List the top suits for certain stats\n"));
+//		sb.append(String.format("%-8s >> %s", "codex", "List all suits in the database\n"));
+//		sb.append("```");
+//		builder.addField(new Field("**Suit Statistics Commands:**", sb.toString(), false));
 
 		sb = new StringBuilder("```");
-		sb.append(String.format("%-8s >> %s", "ev", "Display event list or a specific event\n"));
-		sb.append(String.format("%-8s >> %s", "card", "Query for a random or specific card\n"));
+		sb.append(String.format("%-8s >> %s", "event", "Display event list or a specific event\n"));
+		sb.append(String.format("%-8s >> %s", "card", "Display random card or query for a specific card\n"));
+		sb.append(String.format("%-8s >> %s", "member", "Display member list or a specific member\n"));
 		sb.append("```");
 		builder.addField(new Field("**Bandori Commands:**", sb.toString(), false));
 

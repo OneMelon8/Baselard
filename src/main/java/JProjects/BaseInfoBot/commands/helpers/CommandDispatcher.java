@@ -46,8 +46,8 @@ public class CommandDispatcher {
 		String authorId = e.getAuthor().getId();
 		int cooldownTime = 1000; // Milliseconds
 		if (cooldown.containsKey(authorId)) {
-			long secondsLeft = cooldown.get(authorId) + cooldownTime - System.currentTimeMillis();
-			if (secondsLeft > 0) {
+			long msLeft = cooldown.get(authorId) + cooldownTime - System.currentTimeMillis();
+			if (msLeft > 0) {
 				App.bot.reactClock(e.getMessage());
 				return;
 			}
