@@ -98,7 +98,7 @@ public class BandoriEventSpider {
 		return output;
 	}
 
-	public static MessageEmbed queryEventTracking() throws IOException, InterruptedException {
+	public static MessageEmbed queryEventTracking() {
 		EmbedBuilder b = new EmbedBuilder();
 		b.setColor(Messages.COLOR_MISC);
 		b.setAuthor("Work in Progress...");

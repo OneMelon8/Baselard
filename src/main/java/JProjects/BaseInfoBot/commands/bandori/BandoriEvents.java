@@ -46,16 +46,8 @@ public class BandoriEvents extends Command {
 						"Seems like I cannot get the information right now. Check your data and try again later.", ch);
 			}
 		} else if (eventName.equals("t") || eventName.equals("track") || eventName.equals("tracker")) {
-			try {
-				BandoriEventSpider.queryEventTracking();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-				bot.sendMessage(
-						"Seems like I cannot get the information right now. Check your data and try again later.", ch);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			MessageEmbed msg = BandoriEventSpider.queryEventTracking();
+			bot.sendMessage(msg, ch);
 			return;
 		}
 
