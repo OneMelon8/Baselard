@@ -28,9 +28,6 @@ public class Test extends Command {
 		bot.sendMessage(msg, channel);
 		System.out.println(msg);
 		bot.deleteMessage(message);
-
-		for (int a = 0; a < 50; a++)
-			channel.deleteMessageById(channel.getLatestMessageId()).queue();
 	}
 
 	@Override
