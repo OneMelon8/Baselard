@@ -34,7 +34,7 @@ public class Pat extends Command {
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
 		String id = author.getId();
 		if (args.length == 0) {
-			pat(id, channel);
+			pat(author, id, channel);
 			return;
 		}
 
@@ -43,7 +43,7 @@ public class Pat extends Command {
 				|| subCommand.equals("rankings"))
 			patRank(id, channel);
 		else
-			pat(id, channel);
+			pat(author, id, channel);
 	}
 
 	private void patRank(String id, MessageChannel channel) {
@@ -83,7 +83,7 @@ public class Pat extends Command {
 		bot.sendMessage(builder.build(), channel);
 	}
 
-	private void pat(String id, MessageChannel channel) {
+	private void pat(User author, String id, MessageChannel channel) {
 		int cooldownTime = 20 * 60 * 1000; // 30 minutes
 		long msLeft = cooldown + cooldownTime - System.currentTimeMillis();
 		if (msLeft > 0) {
@@ -117,7 +117,7 @@ public class Pat extends Command {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		bot.sendMessage("Fuwa fwah~", channel);
+		bot.sendMessage(author.getAsMention() + "Hehe~ Fuwa fwah~", channel);
 	}
 
 	@Override
