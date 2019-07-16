@@ -112,6 +112,8 @@ public class TimeFormatter {
 			sb.append(seconds + (seconds == 1 ? " second" : " seconds"));
 		if (days > 99)
 			sb = new StringBuilder("a long time");
+		if (sb.length() == 0)
+			sb.append("soon");
 		return sb.toString();
 	}
 }

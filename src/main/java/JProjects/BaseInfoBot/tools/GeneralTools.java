@@ -74,7 +74,7 @@ public class GeneralTools {
 		List<Map.Entry<Object, Long>> list = new LinkedList<Map.Entry<Object, Long>>(hm.entrySet());
 		Collections.sort(list, new Comparator<Map.Entry<Object, Long>>() {
 			public int compare(Map.Entry<Object, Long> o1, Map.Entry<Object, Long> o2) {
-				return (o1.getValue()).compareTo(o2.getValue());
+				return (o2.getValue()).compareTo(o1.getValue());
 			}
 		});
 		LinkedHashMap<Object, Long> temp = new LinkedHashMap<Object, Long>();

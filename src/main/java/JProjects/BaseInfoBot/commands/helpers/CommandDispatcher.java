@@ -44,7 +44,7 @@ public class CommandDispatcher {
 			return;
 
 		String authorId = e.getAuthor().getId();
-		int cooldownTime = 1000; // Milliseconds
+		int cooldownTime = 3000; // Milliseconds
 		if (cooldown.containsKey(authorId)) {
 			long msLeft = cooldown.get(authorId) + cooldownTime - System.currentTimeMillis();
 			if (msLeft > 0) {

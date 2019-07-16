@@ -84,6 +84,7 @@ public class Pat extends Command {
 	}
 
 	private void pat(String id, MessageChannel channel) {
+		id = "548973434437107751";
 		int cooldownTime = 20 * 60 * 1000; // 30 minutes
 		long msLeft = cooldown + cooldownTime - System.currentTimeMillis();
 		if (msLeft > 0) {
