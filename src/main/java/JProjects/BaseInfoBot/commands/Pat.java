@@ -117,7 +117,7 @@ public class Pat extends Command {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		bot.sendMessage(author.getAsMention() + "Hehe~ Fuwa fwah~", channel);
+		bot.sendMessage(author.getAsMention() + " Hehe~ Fuwa fwah~", channel);
 	}
 
 	@Override
