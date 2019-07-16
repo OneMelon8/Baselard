@@ -29,15 +29,15 @@ public class CommandDispatcher {
 	 * @param e - the {@link MessageReceivedEvent} instance
 	 */
 	public static void fire(MessageReceivedEvent e) {
+		String msg = e.getMessage().getContentRaw();
+		if (!msg.startsWith(Messages.PREFIX))
+			return;
+
 		if (e.getAuthor().isBot()) {
 			App.bot.sendMessage(GeneralTools.toBinary("Hmm, you know what? Since we are bots, "
 					+ "lets talk like this so the hoomans doesn't understand us~"), e.getChannel());
 			return;
 		}
-
-		String msg = e.getMessage().getContentRaw();
-		if (!msg.startsWith(Messages.PREFIX))
-			return;
 		String[] msgArr = msg.split(" ");
 		String userCmd = msgArr[0].substring(Messages.PREFIX.length()).toLowerCase();
 		System.out.println(GeneralTools.getTime() + " >> " + e.getAuthor().getAsTag() + " executed " + msg);
