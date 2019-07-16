@@ -87,14 +87,14 @@ public class Pat extends Command {
 	}
 
 	private void pat(User author, String id, MessageChannel channel) {
-		int cooldownTime = 10 * 60 * 1000 + r.nextInt(10 * 60 * 1000); // 10-20 minutes
-		long msLeft = cooldown + cooldownTime - System.currentTimeMillis();
+		long msLeft = cooldown - System.currentTimeMillis();
 		if (msLeft > 0) {
 			bot.sendMessage("[Auto Reply] Kokoro is currently not here, she'll be back in "
 					+ TimeFormatter.getCountDownSimple(msLeft), channel);
 			return;
 		}
-		cooldown = System.currentTimeMillis();
+		int cooldownTime = 5 * 60 * 1000 + r.nextInt(25 * 60 * 1000); // 5-30 minutes
+		cooldown = System.currentTimeMillis() + cooldownTime;
 
 		JSONObject patData = null;
 		try {
