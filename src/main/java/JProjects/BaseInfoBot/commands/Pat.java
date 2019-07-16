@@ -2,6 +2,7 @@ package JProjects.BaseInfoBot.commands;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.Random;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -23,6 +24,8 @@ import net.dv8tion.jda.core.entities.User;
 @SuppressWarnings("unchecked")
 public class Pat extends Command {
 	private static long cooldown = 0;
+
+	private static Random r = new Random();
 
 	public Pat(BaseInfoBot bot) {
 		super(bot, "pat", new String[] { "pats", "headpat", "patpat" }, "Pat base");
@@ -84,7 +87,7 @@ public class Pat extends Command {
 	}
 
 	private void pat(User author, String id, MessageChannel channel) {
-		int cooldownTime = 20 * 60 * 1000; // 30 minutes
+		int cooldownTime = 10 * 60 * 1000 + r.nextInt(10 * 60 * 1000); // 10-20 minutes
 		long msLeft = cooldown + cooldownTime - System.currentTimeMillis();
 		if (msLeft > 0) {
 			bot.sendMessage("[Auto Reply] Kokoro is currently not here, she'll be back in "

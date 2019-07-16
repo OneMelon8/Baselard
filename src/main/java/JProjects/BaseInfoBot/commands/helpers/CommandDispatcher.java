@@ -29,6 +29,12 @@ public class CommandDispatcher {
 	 * @param e - the {@link MessageReceivedEvent} instance
 	 */
 	public static void fire(MessageReceivedEvent e) {
+		if (e.getAuthor().isBot()) {
+			App.bot.sendMessage(GeneralTools.toBinary("Hmm, you know what? Since we are bots, "
+					+ "lets talk like this so the hoomans doesn't understand us~"), e.getChannel());
+			return;
+		}
+
 		String msg = e.getMessage().getContentRaw();
 		if (!msg.startsWith(Messages.PREFIX))
 			return;

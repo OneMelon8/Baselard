@@ -57,6 +57,20 @@ public class GeneralTools {
 		return null;
 	}
 
+	public static String toBinary(String msg) {
+		byte[] bytes = msg.getBytes();
+		StringBuilder binary = new StringBuilder();
+		for (byte b : bytes) {
+			int val = b;
+			for (int i = 0; i < 8; i++) {
+				binary.append((val & 128) == 0 ? 0 : 1);
+				val <<= 1;
+			}
+			binary.append(' ');
+		}
+		return binary.toString();
+	}
+
 	public static LinkedHashMap<Object, Double> sortByValueDouble(HashMap<Object, Double> hm) {
 		List<Map.Entry<Object, Double>> list = new LinkedList<Map.Entry<Object, Double>>(hm.entrySet());
 		Collections.sort(list, new Comparator<Map.Entry<Object, Double>>() {
