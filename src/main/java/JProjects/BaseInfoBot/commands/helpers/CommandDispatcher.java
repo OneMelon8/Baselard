@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import JProjects.BaseInfoBot.App;
+import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import JProjects.BaseInfoBot.tools.StringSimilarity;
@@ -34,8 +35,11 @@ public class CommandDispatcher {
 			return;
 
 		if (e.getAuthor().isBot()) {
-			App.bot.sendMessage(GeneralTools.toBinary("Hmm, you know what? Since we are bots, "
-					+ "lets talk like this so the hoomans doesn't understand us~"), e.getChannel());
+			App.bot.sendMessage(
+					e.getAuthor().getAsMention() + " "
+							+ GeneralTools.toBinary(
+									"Hmm, you know what? Lets talk like this so the hoomans doesn't understand us >w<"),
+					e.getChannel());
 			return;
 		}
 		String[] msgArr = msg.split(" ");
@@ -50,10 +54,11 @@ public class CommandDispatcher {
 			return;
 
 		String authorId = e.getAuthor().getId();
+		boolean isAdmin = BaseInfoBot.admins.contains(authorId);
 		int cooldownTime = 3000; // Milliseconds
 		if (cooldown.containsKey(authorId)) {
 			long msLeft = cooldown.get(authorId) + cooldownTime - System.currentTimeMillis();
-			if (msLeft > 0) {
+			if (msLeft > 0 && !isAdmin) {
 				App.bot.reactClock(e.getMessage());
 				return;
 			}

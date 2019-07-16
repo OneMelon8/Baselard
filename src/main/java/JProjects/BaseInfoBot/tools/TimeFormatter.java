@@ -113,7 +113,7 @@ public class TimeFormatter {
 		if (days > 99)
 			sb = new StringBuilder("a long time");
 		if (sb.length() == 0)
-			sb.append("soon");
+			sb.append("0 seconds");
 		return sb.toString();
 	}
 }

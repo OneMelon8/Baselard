@@ -21,6 +21,7 @@ import JProjects.BaseInfoBot.commands.bandori.BandoriMembers;
 import JProjects.BaseInfoBot.commands.helpers.CommandDispatcher;
 import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
 import JProjects.BaseInfoBot.commands.misc.TableFlip;
+import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.tools.EnviroHandler;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -179,6 +180,10 @@ public class BaseInfoBot {
 
 	public void reactNext(Message msg) {
 		addReaction(msg, "▶");
+	}
+
+	public void reactError(Message msg) {
+		addReaction(msg, getJDA().getEmoteById(Emotes.getId(Emotes.KOKORON_ERROR)));
 	}
 
 	public void setMuted(boolean mute) {

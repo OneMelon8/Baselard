@@ -1,6 +1,7 @@
 package JProjects.BaseInfoBot.commands;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Random;
 
@@ -36,6 +37,8 @@ public class Pat extends Command {
 	@Override
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
 		String id = author.getId();
+		boolean isAdmin = BaseInfoBot.admins.contains(id);
+
 		if (args.length == 0) {
 			pat(author, id, channel);
 			return;
@@ -45,6 +48,28 @@ public class Pat extends Command {
 		if (subCommand.equals("r") || subCommand.equals("rank") || subCommand.equals("ranking")
 				|| subCommand.equals("rankings"))
 			patRank(id, channel);
+		else if (subCommand.equals("export") && isAdmin)
+			try {
+				bot.sendMessage("Pats data sent to console", channel);
+				System.out.println(FileEditor.read(fileName).toJSONString());
+			} catch (IOException e) {
+				e.printStackTrace();
+				bot.reactError(message);
+			} catch (ParseException e) {
+				e.printStackTrace();
+				bot.reactError(message);
+			}
+		else if (subCommand.equals("import") && isAdmin)
+			try {
+				FileEditor.write(fileName, String.join("", Arrays.copyOfRange(args, 1, args.length)));
+				bot.sendMessage("Successfully imported pat data!", channel);
+			} catch (IOException e) {
+				e.printStackTrace();
+				bot.reactError(message);
+			} catch (ParseException e) {
+				e.printStackTrace();
+				bot.reactError(message);
+			}
 		else
 			pat(author, id, channel);
 	}
@@ -89,8 +114,9 @@ public class Pat extends Command {
 	private void pat(User author, String id, MessageChannel channel) {
 		long msLeft = cooldown - System.currentTimeMillis();
 		if (msLeft > 0) {
-			bot.sendMessage("[Auto Reply] Kokoro is currently not here, she'll be back in "
-					+ TimeFormatter.getCountDownSimple(msLeft), channel);
+			bot.sendMessage(
+					"Hey " + author.getAsMention() + ", pat me again in " + TimeFormatter.getCountDownSimple(msLeft),
+					channel);
 			return;
 		}
 		int cooldownTime = 5 * 60 * 1000 + r.nextInt(25 * 60 * 1000); // 5-30 minutes
@@ -121,6 +147,8 @@ public class Pat extends Command {
 			ex.printStackTrace();
 		}
 		bot.sendMessage(author.getAsMention() + " Hehe~ Fuwa fwah~", channel);
+		if (r.nextInt(10) == 0)
+			bot.sendMessage("\\*pats " + author.getAsMention() + " on the head too\\*", channel);
 	}
 
 	@Override
