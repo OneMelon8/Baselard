@@ -30,7 +30,7 @@ public class Test extends Command {
 		bot.deleteMessage(message);
 
 		for (int a = 0; a < 50; a++)
-			channel.deleteMessageById(channel.getLatestMessageId()).complete();
+			channel.deleteMessageById(channel.getLatestMessageId()).queue();
 	}
 
 	@Override
