@@ -140,7 +140,9 @@ public class TimeFormatter {
 		if (days > 99)
 			sb = new StringBuilder("a long time");
 		if (sb.length() == 0)
-			sb.append("now");
+			sb.append("under 5 minutes");
+		else
+			sb.insert(0, "around ");
 		return sb.toString();
 	}
 }

@@ -117,7 +117,7 @@ public class Pat extends Command {
 	private void pat(User author, String id, MessageChannel channel) {
 		long msLeft = cooldown - System.currentTimeMillis();
 		if (msLeft > 0) {
-			bot.sendMessage("Hey " + author.getAsMention() + ", pat me again in around "
+			bot.sendMessage("Hey " + author.getAsMention() + ", pat me again in "
 					+ TimeFormatter.getCountDownApproxToMinutes(msLeft), channel);
 			return;
 		}
