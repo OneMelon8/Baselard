@@ -28,6 +28,9 @@ public class Pat extends Command {
 
 	private static Random r = new Random();
 
+	private static final String[] responses = new String[] { "Hehe~ Fuwa fwah~", "(〃'▽'〃)", "Hehe~ Thanks!",
+			"Happy! Lucky! Smile! Yay! Thanks for the pat!" };
+
 	public Pat(BaseInfoBot bot) {
 		super(bot, "pat", new String[] { "pats", "headpat", "patpat" }, "Pat base");
 	}
@@ -114,12 +117,16 @@ public class Pat extends Command {
 	private void pat(User author, String id, MessageChannel channel) {
 		long msLeft = cooldown - System.currentTimeMillis();
 		if (msLeft > 0) {
-			bot.sendMessage(
-					"Hey " + author.getAsMention() + ", pat me again in " + TimeFormatter.getCountDownSimple(msLeft),
-					channel);
+			bot.sendMessage("Hey " + author.getAsMention() + ", pat me again in around "
+					+ TimeFormatter.getCountDownApproxToMinutes(msLeft), channel);
 			return;
 		}
-		int cooldownTime = 5 * 60 * 1000 + r.nextInt(25 * 60 * 1000); // 5-30 minutes
+		int cooldownTime = 5 * 60 * 1000 + r.nextInt(25 * 60 * 1000); // 5-60 minutes
+		if (r.nextInt(10) == 0) {
+			bot.sendMessage("Saaya: Thanks for the pat~ " + Emotes.SAAYA_MELT, channel);
+			bot.sendMessage("Where's my pat? " + Emotes.KOKORON_WUT_3, channel);
+			return;
+		}
 		cooldown = System.currentTimeMillis() + cooldownTime;
 
 		JSONObject patData = null;
@@ -146,8 +153,8 @@ public class Pat extends Command {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		bot.sendMessage(author.getAsMention() + " Hehe~ Fuwa fwah~", channel);
-		if (r.nextInt(10) == 0)
+		bot.sendMessage(author.getAsMention() + " " + responses[r.nextInt(responses.length)], channel);
+		if (r.nextInt(20) == 0)
 			bot.sendMessage("\\*pats " + author.getAsMention() + " on the head too\\*", channel);
 	}
 

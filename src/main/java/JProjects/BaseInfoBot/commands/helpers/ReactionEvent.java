@@ -6,7 +6,5 @@ import net.dv8tion.jda.core.entities.MessageReaction.ReactionEmote;
 import net.dv8tion.jda.core.entities.User;
 
 public interface ReactionEvent {
-
 	public void onReact(User user, ReactionEmote emote, Message msg, MessageChannel channel);
-
 }

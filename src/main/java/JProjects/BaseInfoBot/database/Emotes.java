@@ -5,6 +5,7 @@ public class Emotes {
 	public static final String KOKORON_WUT = "<:kokoron_wut:598387497155821579>";
 	public static final String KOKORON_WUT_3 = "<:kokoron_wut_3:599596808930459649>";
 	public static final String KOKORON_ERROR = "<:kokoron_error:598824542978441232>";
+	public static final String SAAYA_MELT = "<:saaya_melt:600851841152188426>";
 
 	public static final String MINECRAFT_GRASS = "<:mc_grass:575908022346579969>";
 	public static final String MINECRAFT_COMMAND_BLOCK = "<:mc_command:575908475888992266>";

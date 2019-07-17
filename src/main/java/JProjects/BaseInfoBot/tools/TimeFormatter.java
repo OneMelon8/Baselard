@@ -113,7 +113,34 @@ public class TimeFormatter {
 		if (days > 99)
 			sb = new StringBuilder("a long time");
 		if (sb.length() == 0)
-			sb.append("0 seconds");
+			sb.append("1 second");
+		return sb.toString();
+	}
+
+	public static String getCountDownApproxToMinutes(long time) {
+		long days = TimeUnit.MILLISECONDS.toDays(time);
+		time -= TimeUnit.DAYS.toMillis(days);
+		long hours = TimeUnit.MILLISECONDS.toHours(time);
+		time -= TimeUnit.HOURS.toMillis(hours);
+		long minutes = TimeUnit.MILLISECONDS.toMinutes(time);
+		minutes = ((minutes + 5) / 10) * 10;
+		time -= TimeUnit.MINUTES.toMillis(minutes);
+		long seconds = TimeUnit.MILLISECONDS.toSeconds(time);
+		seconds = 0;
+
+		StringBuilder sb = new StringBuilder();
+		if (days > 0)
+			sb.append(days + (days == 1 ? " day " : " days "));
+		if (hours > 0)
+			sb.append(hours + (hours == 1 ? " hour " : " hours "));
+		if (minutes > 0)
+			sb.append(minutes + (minutes == 1 ? " minute " : " minutes "));
+		if (seconds > 0)
+			sb.append(seconds + (seconds == 1 ? " second" : " seconds"));
+		if (days > 99)
+			sb = new StringBuilder("a long time");
+		if (sb.length() == 0)
+			sb.append("now");
 		return sb.toString();
 	}
 }

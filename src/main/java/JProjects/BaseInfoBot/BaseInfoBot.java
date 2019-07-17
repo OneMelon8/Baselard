@@ -167,11 +167,11 @@ public class BaseInfoBot {
 	}
 
 	public void reactQuestion(Message msg) {
-		addReaction(msg, getJDA().getEmoteById("598387497155821579"));
+		addReaction(msg, getJDA().getEmoteById(Emotes.getId(Emotes.KOKORON_WUT)));
 	}
 
 	public void reactClock(Message msg) {
-		addReaction(msg, "⏱");
+		addReaction(msg, "⌛");
 	}
 
 	public void reactPrev(Message msg) {
