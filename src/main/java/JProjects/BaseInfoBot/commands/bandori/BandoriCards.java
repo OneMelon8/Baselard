@@ -14,6 +14,7 @@ import JProjects.BaseInfoBot.spider.bandori.BandoriCardSpider;
 import JProjects.BaseInfoBot.tools.EmbededUtil;
 import JProjects.BaseInfoBot.tools.ReactionUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -28,7 +29,8 @@ public class BandoriCards extends Command implements ReactionEvent {
 	}
 
 	@Override
-	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
+	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
+			Guild guild) {
 		if (args.length == 0) {
 			try {
 				bot.sendMessage(BandoriCardSpider.queryRandom().getEmbededMessage(), channel);

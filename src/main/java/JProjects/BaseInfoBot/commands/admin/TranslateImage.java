@@ -8,6 +8,7 @@ import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.google.GTranslate;
 import JProjects.BaseInfoBot.google.GVision;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Message.Attachment;
 import net.dv8tion.jda.core.entities.MessageChannel;
@@ -22,7 +23,8 @@ public class TranslateImage extends Command {
 	}
 
 	@Override
-	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
+	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
+			Guild guild) {
 		if (!BaseInfoBot.admins.contains(author.getId())) {
 			bot.reactCross(message);
 			return;

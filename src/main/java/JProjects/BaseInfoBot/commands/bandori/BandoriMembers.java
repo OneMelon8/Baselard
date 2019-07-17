@@ -8,6 +8,7 @@ import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.spider.bandori.BandoriMemberSpider;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -21,7 +22,8 @@ public class BandoriMembers extends Command {
 	}
 
 	@Override
-	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
+	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
+			Guild guild) {
 		if (args.length == 0) {
 			bot.sendMessage(getBandsEmbeded(), channel);
 			return;

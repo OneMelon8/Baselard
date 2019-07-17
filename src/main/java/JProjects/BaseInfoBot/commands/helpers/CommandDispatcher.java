@@ -10,6 +10,7 @@ import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import JProjects.BaseInfoBot.tools.StringSimilarity;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
@@ -47,7 +48,8 @@ public class CommandDispatcher {
 		System.out.println(GeneralTools.getTime() + " >> " + e.getAuthor().getAsTag() + " executed " + msg);
 
 		if (mute && userCmd.equalsIgnoreCase("toggle")) {
-			registeredListeners.get("toggle").onCommand(e.getAuthor(), userCmd, null, e.getMessage(), e.getChannel());
+			registeredListeners.get("toggle").onCommand(e.getAuthor(), userCmd, null, e.getMessage(), e.getChannel(),
+					e.getGuild());
 			return;
 		}
 		if (mute)
@@ -72,7 +74,8 @@ public class CommandDispatcher {
 			ArrayList<String> aliases = new ArrayList<String>(Arrays.asList(registeredCommands.get(cmd)));
 			if ((userCmd.equals(cmd) || aliases.contains(userCmd)) && !mute) {
 				// Dispatch command
-				registeredListeners.get(cmd).onCommand(e.getAuthor(), userCmd, args, e.getMessage(), e.getChannel());
+				registeredListeners.get(cmd).onCommand(e.getAuthor(), userCmd, args, e.getMessage(), e.getChannel(),
+						e.getGuild());
 				return;
 			}
 		}
@@ -82,13 +85,13 @@ public class CommandDispatcher {
 	}
 
 	public static void unknownCommand(String cmd, User author, String command, String[] args, Message message,
-			MessageChannel channel) {
+			MessageChannel channel, Guild guild) {
 		// No command found! => attempt to auto correct
 		Object[] help = helpAttempt(cmd);
 		String attempt = (String) help[0];
 		double sim = (Double) help[1];
 		if (sim >= 0.85) {
-			registeredListeners.get(attempt).onCommand(author, command, args, message, channel);
+			registeredListeners.get(attempt).onCommand(author, command, args, message, channel, guild);
 			return;
 		}
 		// No attempts are valid => send help message

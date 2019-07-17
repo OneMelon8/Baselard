@@ -1,6 +1,7 @@
 package JProjects.BaseInfoBot.commands.helpers;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -47,8 +48,11 @@ public abstract class Command {
 
 	/**
 	 * Executes the command
+	 * 
+	 * @param guild
 	 */
-	public abstract void onCommand(User author, String command, String[] args, Message message, MessageChannel channel);
+	public abstract void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
+			Guild guild);
 
 	/**
 	 * @return (String) help message

@@ -9,6 +9,7 @@ import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.tools.EnviroHandler;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -33,7 +34,8 @@ public class Gamemode extends Command {
 			" was impaled by drowned", " withered away", " was pummeled by wither", " fell out of the world" };
 
 	@Override
-	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
+	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
+			Guild guild) {
 		String reaction = null;
 		if (args.length == 0) {
 			bot.reactQuestion(message);

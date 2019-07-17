@@ -6,6 +6,7 @@ import JProjects.BaseInfoBot.commands.helpers.CommandDispatcher;
 import JProjects.BaseInfoBot.commands.helpers.ReactionEvent;
 import JProjects.BaseInfoBot.database.Messages;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -20,7 +21,8 @@ public class Help extends Command implements ReactionEvent {
 	}
 
 	@Override
-	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel) {
+	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
+			Guild guild) {
 		if (args.length != 1) {
 			// Send general help commands
 			bot.sendMessage(getAllHelpEmbeded(), channel);
