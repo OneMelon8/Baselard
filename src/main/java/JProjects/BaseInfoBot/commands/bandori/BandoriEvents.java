@@ -29,9 +29,7 @@ public class BandoriEvents extends Command {
 				bot.sendMessage(getEventsEmbeded(BandoriEventSpider.queryEventList(false)), channel);
 			} catch (IOException ex) {
 				ex.printStackTrace();
-				bot.sendMessage(
-						"Seems like I cannot get the information right now. Check your data and try again later.",
-						channel);
+				bot.sendMessage("Seems like bandori.party cannot be reached right now, try again later.", channel);
 			}
 			return;
 		}
@@ -43,9 +41,7 @@ public class BandoriEvents extends Command {
 				eventName = BandoriEventSpider.queryEventList(true).get(0);
 			} catch (IOException ex) {
 				ex.printStackTrace();
-				bot.sendMessage(
-						"Seems like I cannot get the information right now. Check your data and try again later.",
-						channel);
+				bot.sendMessage("Seems like bandori.party cannot be reached right now, try again later.", channel);
 			}
 		} else if (eventName.equals("t") || eventName.equals("track") || eventName.equals("tracker")) {
 			MessageEmbed msg = BandoriEventSpider.queryEventTracking();
@@ -61,8 +57,7 @@ public class BandoriEvents extends Command {
 			bot.sendMessage("I cannot find information on that event, maybe you spelled it wrong?", channel);
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			bot.sendMessage("Seems like I cannot get the information right now. Check your data and try again later.",
-					channel);
+			bot.sendMessage("Seems like bandori.party cannot be reached right now, try again later.", channel);
 		}
 	}
 

@@ -72,7 +72,7 @@ public class Gamemode extends Command {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Gamemode Template");
-		builder.setDescription("Use the following template to change game mode");
+		builder.setDescription("Use the following template to change your game mode");
 		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + " <mode>" + "```", false));
 		return builder.build();
 	}

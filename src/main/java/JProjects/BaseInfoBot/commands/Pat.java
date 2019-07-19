@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Random;
 
 import org.json.simple.JSONObject;
@@ -18,6 +19,7 @@ import JProjects.BaseInfoBot.tools.GeneralTools;
 import JProjects.BaseInfoBot.tools.TimeFormatter;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -50,21 +52,13 @@ public class Pat extends Command {
 			return;
 		}
 
+		List<Member> mentioned = message.getMentionedMembers();
 		String subCommand = args[0];
 		if (subCommand.equals("r") || subCommand.equals("rank") || subCommand.equals("ranking")
 				|| subCommand.equals("rankings"))
 			patRank(id, channel, guild);
 		else if (subCommand.equals("export") && isAdmin)
-			try {
-				bot.sendMessage("Pats data sent to console", channel);
-				System.out.println(FileEditor.read(fileName).toJSONString());
-			} catch (IOException e) {
-				e.printStackTrace();
-				bot.reactError(message);
-			} catch (ParseException e) {
-				e.printStackTrace();
-				bot.reactError(message);
-			}
+			export(channel, message);
 		else if (subCommand.equals("import") && isAdmin)
 			try {
 				FileEditor.write(fileName, String.join("", Arrays.copyOfRange(args, 1, args.length)));
@@ -76,8 +70,71 @@ public class Pat extends Command {
 				e.printStackTrace();
 				bot.reactError(message);
 			}
+		else if (subCommand.equals("set") && mentioned.size() >= 1 && args.length == 3 && isAdmin)
+			setPats(mentioned.get(0), args[2], guild.getId(), message, channel);
+		else if (subCommand.equals("calc") && isAdmin)
+			calcTotalPats(channel);
 		else
 			pat(author, id, channel, guild);
+	}
+
+	private void setPats(Member user, String count, String serverId, Message message, MessageChannel channel) {
+		JSONObject patData = null;
+		try {
+			patData = FileEditor.read(fileName);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			bot.sendMessage("Check console: IOException READ", channel);
+		} catch (ParseException ex) {
+			ex.printStackTrace();
+			bot.sendMessage("Check console: ParseException READ", channel);
+		}
+		if (patData == null)
+			patData = new JSONObject();
+
+		long totalPats = patData.containsKey("total_pats") ? Long.valueOf(patData.get("total_pats").toString()) : 0;
+		JSONObject serversPatData = patData.containsKey("server_pats") ? (JSONObject) patData.get("server_pats")
+				: new JSONObject();
+		JSONObject usersPatData = serversPatData.containsKey(serverId) ? (JSONObject) serversPatData.get(serverId)
+				: new JSONObject();
+		long userPats = Long.parseLong(count);
+
+		usersPatData.put(user.getUser().getId(), userPats);
+		serversPatData.put(serverId, usersPatData);
+		patData.put("server_pats", serversPatData);
+		patData.put("total_pats", totalPats + userPats);
+
+		try {
+			FileEditor.write(fileName, patData);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			bot.sendMessage("Check console: IOException WRITE", channel);
+		}
+		bot.sendMessage("Successfully set " + user.getUser().getName() + "'s pats to " + userPats + "!", channel);
+		bot.deleteMessage(message);
+	}
+
+	public static void export() {
+		try {
+			System.out.println(FileEditor.read(fileName).toJSONString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void export(MessageChannel channel, Message message) {
+		try {
+			bot.sendMessage("Pats data sent to console", channel);
+			System.out.println(FileEditor.read(fileName).toJSONString());
+		} catch (IOException e) {
+			e.printStackTrace();
+			bot.reactError(message);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			bot.reactError(message);
+		}
 	}
 
 	private void patRank(String id, MessageChannel channel, Guild guild) {
@@ -106,12 +163,13 @@ public class Pat extends Command {
 		Long[] userPats = topPats.values().toArray(new Long[] {});
 
 		StringBuilder sb = new StringBuilder("```");
-		for (int a = 0; a <= 10; a++) {
+		for (int a = 0; a < 10; a++) {
 			if (a >= topPats.size())
 				break;
 			if (a > 0)
 				sb.append("\n");
-			sb.append("#" + (a + 1) + ": " + bot.getJDA().getUserById(userIds[a]).getName() + " - " + userPats[a]);
+			sb.append("#" + String.format("%02d", a + 1) + ": " + bot.getJDA().getUserById(userIds[a]).getName() + " - "
+					+ userPats[a]);
 		}
 		sb.append("```");
 
@@ -171,12 +229,42 @@ public class Pat extends Command {
 			bot.sendMessage("\\*pats " + author.getAsMention() + " on the head too\\*", channel);
 	}
 
+	private void calcTotalPats(MessageChannel channel) {
+		JSONObject patData = null;
+		try {
+			patData = FileEditor.read(fileName);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} catch (ParseException ex) {
+			ex.printStackTrace();
+		}
+		if (patData == null)
+			patData = new JSONObject();
+
+		long totalPats = 0;
+		JSONObject serversPatData = patData.containsKey("server_pats") ? (JSONObject) patData.get("server_pats")
+				: new JSONObject();
+		for (Object serverId : serversPatData.keySet()) {
+			JSONObject usersPatData = (JSONObject) serversPatData.get(serverId);
+			for (Object userId : usersPatData.keySet())
+				totalPats += Long.parseLong(String.valueOf(usersPatData.get(userId)));
+		}
+
+		patData.put("total_pats", totalPats);
+		try {
+			FileEditor.write(fileName, patData);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		bot.sendMessage("Success!", channel);
+	}
+
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Messages.COLOR_MISC);
 		builder.setAuthor("Pat Template");
-		builder.setDescription("Use the following template to pat");
+		builder.setDescription("Use the following template to pat me =w=");
 		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + "```", false));
 		return builder.build();
 	}

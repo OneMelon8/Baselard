@@ -37,8 +37,7 @@ public class BandoriMembers extends Command {
 			bot.sendMessage("I cannot find information on that member, maybe you spelled it wrong?", channel);
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			bot.sendMessage("Seems like I cannot get the information right now. Check your data and try again later.",
-					channel);
+			bot.sendMessage("Seems like bandori.party cannot be reached right now, try again later.", channel);
 		}
 	}
 
@@ -73,7 +72,7 @@ public class BandoriMembers extends Command {
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
 		builder.addField(new Field("Example:",
-				"```" + Messages.PREFIX + command + " (shows all members)" + Messages.PREFIX + command + " kokoro```",
+				"```" + Messages.PREFIX + command + " (shows all members)\n" + Messages.PREFIX + command + " Kokoro```",
 				false));
 		return builder.build();
 	}

@@ -23,6 +23,10 @@ public class CommandDispatcher {
 
 	private static HashMap<String, Long> cooldown = new HashMap<String, Long>();
 
+	private static final String[] botResponses = new String[] {
+			"Hmm, you know what? Lets talk like this so the hoomans doesn't understand us >w<", "Beep boop beep boop!",
+			"Have you tried binary yet?", "Kono tensei Base-sama!" };
+	private static final Random r = new Random();
 	public static boolean mute = false;
 
 	/**
@@ -36,11 +40,8 @@ public class CommandDispatcher {
 			return;
 
 		if (e.getAuthor().isBot()) {
-			App.bot.sendMessage(
-					e.getAuthor().getAsMention() + " "
-							+ GeneralTools.toBinary(
-									"Hmm, you know what? Lets talk like this so the hoomans doesn't understand us >w<"),
-					e.getChannel());
+			App.bot.sendMessage(e.getAuthor().getAsMention() + " "
+					+ GeneralTools.toBinary(botResponses[r.nextInt(botResponses.length)]), e.getChannel());
 			return;
 		}
 		String[] msgArr = msg.split(" ");

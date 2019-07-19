@@ -76,9 +76,9 @@ public class Help extends Command implements ReactionEvent {
 //		builder.addField(new Field("**Suit Statistics Commands:**", sb.toString(), false));
 
 		sb = new StringBuilder("```");
-		sb.append(String.format("%-8s >> %s", "event", "Display event list or a specific event\n"));
-		sb.append(String.format("%-8s >> %s", "card", "Display random card or query for a specific card\n"));
-		sb.append(String.format("%-8s >> %s", "member", "Display member list or a specific member\n"));
+		sb.append(String.format("%-8s >> %s", "event", "Show event list or a specific event\n"));
+		sb.append(String.format("%-8s >> %s", "card", "Search for a specific (or random) card\n"));
+		sb.append(String.format("%-8s >> %s", "member", "Show member list or a specific member\n"));
 		sb.append("```");
 		builder.addField(new Field("**Bandori Commands:**", sb.toString(), false));
 

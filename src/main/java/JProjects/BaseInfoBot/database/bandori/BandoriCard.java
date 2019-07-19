@@ -78,7 +78,7 @@ public class BandoriCard {
 //		sb.append("\nOverall: **" + this.getOverall() + "**");
 //		builder.addField(new Field("**Statistics:**", sb.toString(), false));
 
-		builder.setFooter((index + 1) + "/" + total + " - " + notes,
+		builder.setFooter((index + 1) + "/" + (total == 0 ? index + 1 : total) + " - " + notes,
 				"https://cdn.discordapp.com/emojis/432981158670630924.png");
 		return builder.build();
 	}

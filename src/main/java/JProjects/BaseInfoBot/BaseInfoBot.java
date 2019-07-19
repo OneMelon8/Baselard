@@ -9,10 +9,12 @@ import java.util.TimerTask;
 import javax.security.auth.login.LoginException;
 
 import JProjects.BaseInfoBot.commands.Help;
+import JProjects.BaseInfoBot.commands.Lookup;
 import JProjects.BaseInfoBot.commands.Pat;
 import JProjects.BaseInfoBot.commands.Ping;
 import JProjects.BaseInfoBot.commands.Version;
 import JProjects.BaseInfoBot.commands.admin.Gamemode;
+import JProjects.BaseInfoBot.commands.admin.Servers;
 import JProjects.BaseInfoBot.commands.admin.Test;
 import JProjects.BaseInfoBot.commands.admin.Toggle;
 import JProjects.BaseInfoBot.commands.bandori.BandoriCards;
@@ -70,10 +72,12 @@ public class BaseInfoBot {
 		new Help(this);
 		new Ping(this);
 		new Version(this);
+		new Lookup(this);
 		// General Administration
 		new Gamemode(this);
 		new Test(this);
 		new Toggle(this);
+		new Servers(this);
 
 		// MOE Commands
 		// new Hangar(this);

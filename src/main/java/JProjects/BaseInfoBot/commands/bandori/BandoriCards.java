@@ -36,9 +36,7 @@ public class BandoriCards extends Command implements ReactionEvent {
 				bot.sendMessage(BandoriCardSpider.queryRandom().getEmbededMessage(), channel);
 			} catch (IOException ex) {
 				ex.printStackTrace();
-				bot.sendMessage(
-						"Seems like I cannot get the information right now. Check your data and try again later.",
-						channel);
+				bot.sendMessage("Seems like bandori.party cannot be reached right now, try again later.", channel);
 			}
 			return;
 		}
@@ -62,8 +60,7 @@ public class BandoriCards extends Command implements ReactionEvent {
 			bot.sendMessage("I cannot find information on that card, maybe you spelled it wrong?", channel);
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			bot.sendMessage("Seems like I cannot get the information right now. Check your data and try again later.",
-					channel);
+			bot.sendMessage("Seems like bandori.party cannot be reached right now, try again later.", channel);
 		}
 	}
 
