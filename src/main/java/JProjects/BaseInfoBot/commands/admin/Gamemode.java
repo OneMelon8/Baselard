@@ -6,7 +6,7 @@ import java.util.Random;
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Emotes;
-import JProjects.BaseInfoBot.database.Messages;
+import JProjects.BaseInfoBot.database.BotConfig;
 import JProjects.BaseInfoBot.tools.EnviroHandler;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -70,10 +70,10 @@ public class Gamemode extends Command {
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.COLOR_MISC);
+		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Gamemode Template");
 		builder.setDescription("Use the following template to change your game mode");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + " <mode>" + "```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + " <mode>" + "```", false));
 		return builder.build();
 	}
 }

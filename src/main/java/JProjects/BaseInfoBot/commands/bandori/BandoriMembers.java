@@ -5,7 +5,7 @@ import java.io.IOException;
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.Emotes;
-import JProjects.BaseInfoBot.database.Messages;
+import JProjects.BaseInfoBot.database.BotConfig;
 import JProjects.BaseInfoBot.spider.bandori.BandoriMemberSpider;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -43,7 +43,7 @@ public class BandoriMembers extends Command {
 
 	public MessageEmbed getBandsEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.COLOR_MISC);
+		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("All Bands in Bandori");
 		builder.setDescription("Poppin' Party, Afterglow, Pastel✽Palettes, Roselia, Hello Happy World");
 		builder.addField(new Field(Emotes.POPPIN_PARTY + " **Poppin' Party:**",
@@ -61,10 +61,10 @@ public class BandoriMembers extends Command {
 
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.COLOR_MISC);
+		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Bandori Member Query Template");
 		builder.setDescription("Use the following template to run the Bandori member query");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + " [name]```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + " [name]```", false));
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");
@@ -72,7 +72,7 @@ public class BandoriMembers extends Command {
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
 		builder.addField(new Field("Example:",
-				"```" + Messages.PREFIX + command + " (shows all members)\n" + Messages.PREFIX + command + " Kokoro```",
+				"```" + BotConfig.PREFIX + command + " (shows all members)\n" + BotConfig.PREFIX + command + " Kokoro```",
 				false));
 		return builder.build();
 	}

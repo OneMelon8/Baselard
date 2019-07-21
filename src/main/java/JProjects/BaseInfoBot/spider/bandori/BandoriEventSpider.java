@@ -10,7 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import JProjects.BaseInfoBot.database.Messages;
+import JProjects.BaseInfoBot.database.BotConfig;
 import JProjects.BaseInfoBot.database.bandori.BandoriAttribute;
 import JProjects.BaseInfoBot.database.bandori.BandoriCard;
 import JProjects.BaseInfoBot.database.bandori.BandoriMember;
@@ -59,7 +59,7 @@ public class BandoriEventSpider {
 		Element table = wrapper.select("table.table.about-table").get(0);
 
 		EmbedBuilder eventBuilder = new EmbedBuilder();
-		eventBuilder.setColor(Messages.COLOR_MISC);
+		eventBuilder.setColor(BotConfig.COLOR_MISC);
 		eventBuilder.setAuthor(table.select("tr[data-field=name]").text().replace("Title", "").trim());
 		eventBuilder.setImage("https:" + wrapper.select("img.event-image").attr("src"));
 
@@ -100,7 +100,7 @@ public class BandoriEventSpider {
 
 	public static MessageEmbed queryEventTracking() {
 		EmbedBuilder b = new EmbedBuilder();
-		b.setColor(Messages.COLOR_MISC);
+		b.setColor(BotConfig.COLOR_MISC);
 		b.setAuthor("Work in Progress...");
 		b.setDescription("This feature is currently work in progress");
 		return b.build();

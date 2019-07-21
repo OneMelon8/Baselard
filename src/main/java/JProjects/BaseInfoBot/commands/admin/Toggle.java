@@ -1,9 +1,9 @@
 package JProjects.BaseInfoBot.commands.admin;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
+import JProjects.BaseInfoBot.commands.helpers.ChatEventHandler;
 import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.commands.helpers.CommandDispatcher;
-import JProjects.BaseInfoBot.database.Messages;
+import JProjects.BaseInfoBot.database.BotConfig;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -25,17 +25,17 @@ public class Toggle extends Command {
 			bot.reactCross(message);
 			return;
 		}
-		CommandDispatcher.mute = !CommandDispatcher.mute;
+		ChatEventHandler.mute = !ChatEventHandler.mute;
 		bot.reactCheck(message);
 	}
 
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.COLOR_MISC);
+		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Toggle Template");
 		builder.setDescription("Use the following template to enable/disable the bot");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + "```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + "```", false));
 		return builder.build();
 	}
 }

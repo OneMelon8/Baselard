@@ -2,7 +2,7 @@ package JProjects.BaseInfoBot.commands.admin;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.database.Messages;
+import JProjects.BaseInfoBot.database.BotConfig;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
@@ -51,10 +51,10 @@ public class Test extends Command {
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.COLOR_MISC);
+		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Test template");
 		builder.setDescription("You sure you need a template for this?");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + " hello world" + "```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + " hello world" + "```", false));
 		return builder.build();
 	}
 }

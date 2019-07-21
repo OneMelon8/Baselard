@@ -7,7 +7,8 @@ import java.util.Random;
 
 import JProjects.BaseInfoBot.App;
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.database.Messages;
+import JProjects.BaseInfoBot.commands.Help;
+import JProjects.BaseInfoBot.database.BotConfig;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import JProjects.BaseInfoBot.tools.StringSimilarity;
 import net.dv8tion.jda.core.entities.Guild;
@@ -27,7 +28,6 @@ public class CommandDispatcher {
 			"Hmm, you know what? Lets talk like this so the hoomans doesn't understand us >w<", "Beep boop beep boop!",
 			"Have you tried binary yet?", "Kono tensei Base-sama!" };
 	private static final Random r = new Random();
-	public static boolean mute = false;
 
 	/**
 	 * Tries to process the command (if registered)
@@ -36,7 +36,7 @@ public class CommandDispatcher {
 	 */
 	public static void fire(MessageReceivedEvent e) {
 		String msg = e.getMessage().getContentRaw();
-		if (!msg.startsWith(Messages.PREFIX))
+		if (!msg.startsWith(BotConfig.PREFIX))
 			return;
 
 		if (e.getAuthor().isBot()) {
@@ -45,15 +45,15 @@ public class CommandDispatcher {
 			return;
 		}
 		String[] msgArr = msg.split(" ");
-		String userCmd = msgArr[0].substring(Messages.PREFIX.length()).toLowerCase();
+		String userCmd = msgArr[0].substring(BotConfig.PREFIX.length()).toLowerCase();
 		System.out.println(GeneralTools.getTime() + " >> " + e.getAuthor().getAsTag() + " executed " + msg);
 
-		if (mute && userCmd.equalsIgnoreCase("toggle")) {
+		if (ChatEventHandler.mute && userCmd.equalsIgnoreCase("toggle")) {
 			registeredListeners.get("toggle").onCommand(e.getAuthor(), userCmd, null, e.getMessage(), e.getChannel(),
 					e.getGuild());
 			return;
 		}
-		if (mute)
+		if (ChatEventHandler.mute)
 			return;
 
 		String authorId = e.getAuthor().getId();
@@ -62,7 +62,7 @@ public class CommandDispatcher {
 		if (cooldown.containsKey(authorId)) {
 			long msLeft = cooldown.get(authorId) + cooldownTime - System.currentTimeMillis();
 			if (msLeft > 0 && !isAdmin) {
-				App.bot.reactClock(e.getMessage());
+				App.bot.reactWait(e.getMessage());
 				return;
 			}
 		}
@@ -73,7 +73,7 @@ public class CommandDispatcher {
 		// Loop thru all the registered commands
 		for (String cmd : registeredCommands.keySet()) {
 			ArrayList<String> aliases = new ArrayList<String>(Arrays.asList(registeredCommands.get(cmd)));
-			if ((userCmd.equals(cmd) || aliases.contains(userCmd)) && !mute) {
+			if ((userCmd.equals(cmd) || aliases.contains(userCmd)) && !ChatEventHandler.mute) {
 				// Dispatch command
 				registeredListeners.get(cmd).onCommand(e.getAuthor(), userCmd, args, e.getMessage(), e.getChannel(),
 						e.getGuild());
@@ -83,6 +83,7 @@ public class CommandDispatcher {
 		// Disabled cause.. spam i guess?
 		// unknownCommand(userCmd, event);
 		App.bot.reactQuestion(e.getMessage());
+		EmoteDispatcher.register(e.getMessage(), new Help(App.bot), "◀", "▶");
 	}
 
 	public static void unknownCommand(String cmd, User author, String command, String[] args, Message message,
@@ -96,10 +97,10 @@ public class CommandDispatcher {
 			return;
 		}
 		// No attempts are valid => send help message
-		String helpMsg = Messages.UNKNOWN_COMMAND[new Random().nextInt(Messages.UNKNOWN_COMMAND.length)];
+		String helpMsg = BotConfig.UNKNOWN_COMMAND[new Random().nextInt(BotConfig.UNKNOWN_COMMAND.length)];
 		if (sim >= 1.65) // Disabled this function
-			helpMsg = Messages.COMMAND_SUGGESTION[new Random().nextInt(Messages.COMMAND_SUGGESTION.length)].replace("#",
-					attempt);
+			helpMsg = BotConfig.COMMAND_SUGGESTION[new Random().nextInt(BotConfig.COMMAND_SUGGESTION.length)]
+					.replace("#", attempt);
 		App.bot.sendMessage(helpMsg, channel);
 	}
 

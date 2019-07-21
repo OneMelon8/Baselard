@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.database.Messages;
+import JProjects.BaseInfoBot.database.BotConfig;
 import JProjects.BaseInfoBot.spider.bandori.BandoriEventSpider;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -63,7 +63,7 @@ public class BandoriEvents extends Command {
 
 	public MessageEmbed getEventsEmbeded(ArrayList<String> events) {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.COLOR_MISC);
+		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("All Events in Chronological Order");
 		builder.setDescription("Global Server Event Count: " + events.size());
 		for (int index = 0; index < events.size(); index += 20) {
@@ -80,17 +80,17 @@ public class BandoriEvents extends Command {
 
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.COLOR_MISC);
+		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Bandori Events Query Template");
 		builder.setDescription("Use the following template to run the Bandori event query");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + " [name/c(urrent)]```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + " [name/c(urrent)]```", false));
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");
 		sb.delete(sb.length() - 2, sb.length());
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
-		builder.addField(new Field("Example:", "```" + Messages.PREFIX + command + " bushido```", false));
+		builder.addField(new Field("Example:", "```" + BotConfig.PREFIX + command + " bushido```", false));
 		return builder.build();
 	}
 }

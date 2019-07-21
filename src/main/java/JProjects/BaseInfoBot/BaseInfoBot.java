@@ -1,13 +1,13 @@
 package JProjects.BaseInfoBot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.security.auth.login.LoginException;
 
+import JProjects.BaseInfoBot.commands.Cookies;
 import JProjects.BaseInfoBot.commands.Help;
 import JProjects.BaseInfoBot.commands.Lookup;
 import JProjects.BaseInfoBot.commands.Pat;
@@ -20,7 +20,7 @@ import JProjects.BaseInfoBot.commands.admin.Toggle;
 import JProjects.BaseInfoBot.commands.bandori.BandoriCards;
 import JProjects.BaseInfoBot.commands.bandori.BandoriEvents;
 import JProjects.BaseInfoBot.commands.bandori.BandoriMembers;
-import JProjects.BaseInfoBot.commands.helpers.CommandDispatcher;
+import JProjects.BaseInfoBot.commands.helpers.ChatEventHandler;
 import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
 import JProjects.BaseInfoBot.commands.misc.TableFlip;
 import JProjects.BaseInfoBot.database.Emotes;
@@ -49,8 +49,6 @@ public class BaseInfoBot {
 
 		this.startTimer();
 		this.registerCommands();
-		this.registerReactions();
-
 	}
 
 	public void startTimer() {
@@ -61,6 +59,10 @@ public class BaseInfoBot {
 				EmoteDispatcher.cleanUp();
 			}
 		}, 0, 1000);
+	}
+
+	public void scheduleDelayedTask(TimerTask task, long delay) {
+		timer.schedule(task, delay);
 	}
 
 	public void addListener(Object listener) {
@@ -104,13 +106,16 @@ public class BaseInfoBot {
 		// Fun
 		new TableFlip(this);
 		new Pat(this);
+		new Cookies(this);
 	}
 
-	public void registerReactions() {
-		EmoteDispatcher.register(new Help(this), "kokoron_wut", true);
-		EmoteDispatcher.register(new BandoriCards(this), Arrays.asList("▶", "◀", "attr_power", "attr_pure", "attr_cool",
-				"attr_happy", "bandori_rarity_1", "bandori_rarity_2", "bandori_rarity_3", "bandori_rarity_4"), false);
-	}
+//	public void registerReactions() {
+//		EmoteDispatcher.register(new Help(this), "kokoron_wut", true);
+//		EmoteDispatcher.register(new BandoriCards(this), Arrays.asList("◀", "▶"), false);
+//		// "attr_power", "attr_pure", "attr_cool", "attr_happy", "bandori_rarity_1",
+//		// "bandori_rarity_2", "bandori_rarity_3", "bandori_rarity_4"
+//		EmoteDispatcher.register(new Pat(this), Arrays.asList("▶", "◀"), false);
+//	}
 
 	public void sendThinkingPacket(MessageChannel channel) {
 		channel.sendTyping().complete();
@@ -174,7 +179,7 @@ public class BaseInfoBot {
 		addReaction(msg, getJDA().getEmoteById(Emotes.getId(Emotes.KOKORON_WUT)));
 	}
 
-	public void reactClock(Message msg) {
+	public void reactWait(Message msg) {
 		addReaction(msg, "⌛");
 	}
 
@@ -191,7 +196,7 @@ public class BaseInfoBot {
 	}
 
 	public void setMuted(boolean mute) {
-		CommandDispatcher.mute = mute;
+		ChatEventHandler.mute = mute;
 	}
 
 	public JDA getJDA() {

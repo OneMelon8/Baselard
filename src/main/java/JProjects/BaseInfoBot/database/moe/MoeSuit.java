@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import JProjects.BaseInfoBot.App;
-import JProjects.BaseInfoBot.database.Messages;
+import JProjects.BaseInfoBot.database.BotConfig;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import JProjects.BaseInfoBot.tools.TableMaker;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -297,7 +297,7 @@ public class MoeSuit implements Cloneable {
 			String[] data = dataArr[a].split("=");
 			dataMap.put(data[0], data[1].replace("_", " "));
 		}
-		dataMap.put("owner", App.bot.getJDA().getUserById(map[0].replace(Messages.PREFIX + "hangar import ", ""))
+		dataMap.put("owner", App.bot.getJDA().getUserById(map[0].replace(BotConfig.PREFIX + "hangar import ", ""))
 				.getName().replace(" ", "_"));
 		return new MoeSuit(dataMap.get("owner"), map[0], dataMap);
 	}

@@ -4,7 +4,7 @@ import java.util.List;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.database.Messages;
+import JProjects.BaseInfoBot.database.BotConfig;
 import JProjects.BaseInfoBot.google.GTranslate;
 import JProjects.BaseInfoBot.google.GVision;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -70,10 +70,10 @@ public class TranslateImage extends Command {
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.COLOR_MISC);
+		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("iTranslation Template");
 		builder.setDescription("Use the following template to translate an image");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + " [target locale]```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + " [target locale]```", false));
 		builder.addField(
 				new Field("List of Locales:", "```https://cloud.google.com/translate/docs/languages```", false));
 		return builder.build();
@@ -81,7 +81,7 @@ public class TranslateImage extends Command {
 
 	public MessageEmbed getTranslatedEmbeded(String original, String translated) {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.COLOR_MISC);
+		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Translated Results");
 		builder.setDescription("Ehehee here is what I figured out (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧");
 		builder.addField(new Field("Original:", "```" + original + "```", false));

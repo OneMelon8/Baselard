@@ -2,7 +2,7 @@ package JProjects.BaseInfoBot.commands;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.database.Messages;
+import JProjects.BaseInfoBot.database.BotConfig;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -37,10 +37,10 @@ public class Lookup extends Command {
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.COLOR_MISC);
+		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Help Template");
 		builder.setDescription("Use the following template to lookup a user");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + " <Discord ID>```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + " <Discord ID>```", false));
 		return builder.build();
 	}
 }

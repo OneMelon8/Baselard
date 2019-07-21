@@ -2,8 +2,14 @@ package JProjects.BaseInfoBot.database;
 
 import java.awt.Color;
 
-public class Messages {
-	public static final String ID = "548973434437107751";
+public class BotConfig {
+	public static final String BOT_ID = "548973434437107751";
+
+	/*
+	 * Reaction time-out time in ms
+	 */
+	public static final long REACTION_TIME_OUT = 30;
+	public static final long REACTION_TIME_OUT_MS = REACTION_TIME_OUT * 1000;
 
 	/*
 	 * Messages

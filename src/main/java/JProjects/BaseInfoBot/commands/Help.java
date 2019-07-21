@@ -4,7 +4,7 @@ import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.commands.helpers.CommandDispatcher;
 import JProjects.BaseInfoBot.commands.helpers.ReactionEvent;
-import JProjects.BaseInfoBot.database.Messages;
+import JProjects.BaseInfoBot.database.BotConfig;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -41,24 +41,23 @@ public class Help extends Command implements ReactionEvent {
 		if (cmdHandler == null) {
 			bot.sendMessage(author.getAsMention()
 					+ " Hmm, I'm not sure what that means. Check out a list of available commands with **"
-					+ Messages.PREFIX + "help**", channel);
+					+ BotConfig.PREFIX + "help**", channel);
 			return;
 		}
 		bot.sendMessage(cmdHandler.getHelpEmbeded(), channel);
 	}
 
 	@Override
-	public void onReact(User user, ReactionEmote emote, Message msg, MessageChannel channel) {
-		// PRIORITY REACTION!!!
+	public void onReact(User user, ReactionEmote emote, Message msg, MessageChannel channel, Guild guild) {
 		bot.removeAllReactions(msg);
 		bot.sendMessage(getAllHelpEmbeded(), channel);
 	}
 
 	public MessageEmbed getAllHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.COLOR_MISC);
+		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Commands List for Kokoro");
-		builder.setDescription("Here's how to use my command: `" + Messages.PREFIX + "<command> [arguments...]`");
+		builder.setDescription("Here's how to use my command: `" + BotConfig.PREFIX + "<command> [arguments...]`");
 
 		StringBuilder sb = new StringBuilder("```");
 		sb.append(String.format("%-8s >> %s", "help", "Show this message\n"));
@@ -83,17 +82,17 @@ public class Help extends Command implements ReactionEvent {
 		builder.addField(new Field("**Bandori Commands:**", sb.toString(), false));
 
 		builder.addField(
-				new Field("", "For more information, check out `" + Messages.PREFIX + command + " [command]`", false));
+				new Field("", "For more information, check out `" + BotConfig.PREFIX + command + " [command]`", false));
 		return builder.build();
 	}
 
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.COLOR_MISC);
+		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Help Template");
 		builder.setDescription("Do you seriously need a template for this?");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + "```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + "```", false));
 		return builder.build();
 	}
 }

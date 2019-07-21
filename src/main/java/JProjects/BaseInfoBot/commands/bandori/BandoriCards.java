@@ -6,8 +6,8 @@ import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
 import JProjects.BaseInfoBot.commands.helpers.ReactionEvent;
+import JProjects.BaseInfoBot.database.BotConfig;
 import JProjects.BaseInfoBot.database.Emotes;
-import JProjects.BaseInfoBot.database.Messages;
 import JProjects.BaseInfoBot.database.bandori.BandoriAttribute;
 import JProjects.BaseInfoBot.database.bandori.BandoriCard;
 import JProjects.BaseInfoBot.spider.bandori.BandoriCardSpider;
@@ -54,7 +54,8 @@ public class BandoriCards extends Command implements ReactionEvent {
 			bot.reactPrev(msg);
 			bot.reactNext(msg);
 
-			EmoteDispatcher.purgeReactions.put(msg, System.currentTimeMillis() / 1000 + 30);
+			EmoteDispatcher.register(msg, this, "◀", "▶");
+			EmoteDispatcher.purgeReactions.put(msg, System.currentTimeMillis() / 1000 + BotConfig.REACTION_TIME_OUT);
 		} catch (IndexOutOfBoundsException ex) {
 			ex.printStackTrace();
 			bot.sendMessage("I cannot find information on that card, maybe you spelled it wrong?", channel);
@@ -65,7 +66,7 @@ public class BandoriCards extends Command implements ReactionEvent {
 	}
 
 	@Override
-	public void onReact(User user, ReactionEmote emote, Message msg, MessageChannel channel) {
+	public void onReact(User user, ReactionEmote emote, Message msg, MessageChannel channel, Guild guild) {
 		if (msg.getEmbeds() == null || msg.getEmbeds().size() == 0)
 			return;
 		bot.removeAllReactions(msg);
@@ -106,7 +107,8 @@ public class BandoriCards extends Command implements ReactionEvent {
 			bot.reactPrev(msg);
 			bot.reactNext(msg);
 
-			EmoteDispatcher.purgeReactions.put(msg, System.currentTimeMillis() / 1000 + 30);
+			EmoteDispatcher.register(msg, this, "◀", "▶");
+			EmoteDispatcher.purgeReactions.put(msg, System.currentTimeMillis() / 1000 + BotConfig.REACTION_TIME_OUT);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			bot.addReaction(msg, bot.getJDA().getEmoteById(Emotes.getId(Emotes.KOKORON_ERROR)));
@@ -159,18 +161,18 @@ public class BandoriCards extends Command implements ReactionEvent {
 
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.COLOR_MISC);
+		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Bandori Card Query Template");
 		builder.setDescription("Use the following template to run the Bandori card query");
-		builder.addField(new Field("Copy & Paste:", "```" + Messages.PREFIX + command + " [search...]```", false));
+		builder.addField(new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + " [search...]```", false));
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");
 		sb.delete(sb.length() - 2, sb.length());
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
-		builder.addField(new Field("Example:", "```" + Messages.PREFIX + command + " (shows a random card)\n"
-				+ Messages.PREFIX + command + " detective kokoro```", false));
+		builder.addField(new Field("Example:", "```" + BotConfig.PREFIX + command + " (shows a random card)\n"
+				+ BotConfig.PREFIX + command + " detective kokoro```", false));
 		return builder.build();
 	}
 

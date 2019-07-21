@@ -2,7 +2,7 @@ package JProjects.BaseInfoBot.commands.admin;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.database.Messages;
+import JProjects.BaseInfoBot.database.BotConfig;
 import JProjects.BaseInfoBot.google.GTranslate;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -48,17 +48,17 @@ public class Translate extends Command {
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.COLOR_MISC);
+		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Translation template");
 		builder.setDescription("Use the following template to translate to English");
 		builder.addField(
-				new Field("Copy & Paste:", "```" + Messages.PREFIX + command + " <message...>" + "```", false));
+				new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + " <message...>" + "```", false));
 		return builder.build();
 	}
 
 	public MessageEmbed getTranslatedEmbeded(String original, String translated) {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(Messages.COLOR_MISC);
+		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Translated Results");
 		builder.setDescription("Ehehee here is what I figured out (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧");
 		builder.addField(new Field("Original:", "```" + original + "```", false));

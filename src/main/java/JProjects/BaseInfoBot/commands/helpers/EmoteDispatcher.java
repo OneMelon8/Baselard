@@ -3,11 +3,17 @@ package JProjects.BaseInfoBot.commands.helpers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
 
 import JProjects.BaseInfoBot.App;
-import JProjects.BaseInfoBot.database.Messages;
+import JProjects.BaseInfoBot.database.BotConfig;
 import JProjects.BaseInfoBot.tools.GeneralTools;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageReaction;
@@ -16,18 +22,28 @@ import net.dv8tion.jda.core.entities.User;
 
 public class EmoteDispatcher {
 
-	private static HashMap<ReactionEvent, ArrayList<String>> registeredPriorityListeners = new HashMap<ReactionEvent, ArrayList<String>>();
-	private static HashMap<ReactionEvent, ArrayList<String>> registeredListeners = new HashMap<ReactionEvent, ArrayList<String>>();
-
+	private static ConcurrentHashMap<Object[], ReactionEvent> dynamicRegisteredListeners = new ConcurrentHashMap<Object[], ReactionEvent>();
 	public static HashMap<Message, Long> purgeReactions = new HashMap<Message, Long>();
 
-	public static void register(ReactionEvent event, String emoteName, boolean priority) {
-		(priority ? registeredPriorityListeners : registeredListeners).put(event,
-				new ArrayList<String>(Arrays.asList(emoteName)));
+	public static void register(Message msg, ReactionEvent event, String emoteName) {
+		register(msg, event, emoteName);
 	}
 
-	public static void register(ReactionEvent event, List<String> emoteNames, boolean priority) {
-		(priority ? registeredPriorityListeners : registeredListeners).put(event, new ArrayList<String>(emoteNames));
+	public static void register(Message msg, ReactionEvent event, String... emoteName) {
+		register(msg, event, Arrays.asList(emoteName));
+	}
+
+	public static void register(Message msg, ReactionEvent event, List<String> emoteNames) {
+		final Object[] info = new Object[] { msg, new ArrayList<String>(emoteNames) };
+		dynamicRegisteredListeners.put(info, event);
+		App.bot.scheduleDelayedTask(new TimerTask() {
+			@Override
+			public void run() {
+				if (!dynamicRegisteredListeners.containsKey(info))
+					return;
+				dynamicRegisteredListeners.remove(info);
+			}
+		}, BotConfig.REACTION_TIME_OUT_MS);
 	}
 
 	public static void cleanUp() {
@@ -46,11 +62,11 @@ public class EmoteDispatcher {
 		}
 	}
 
-	public static void fire(User user, ReactionEmote emo, String messageId, MessageChannel channel) {
+	@SuppressWarnings("unchecked")
+	public static void fire(User user, ReactionEmote emo, String messageId, MessageChannel channel, Guild guild) {
 		if (user.isBot())
 			return;
 		Message msg = channel.getMessageById(messageId).complete();
-
 		List<MessageReaction> reactions = msg.getReactions();
 		boolean botReacted = false;
 		for (MessageReaction reaction : reactions) {
@@ -68,39 +84,32 @@ public class EmoteDispatcher {
 		if (!botReacted)
 			return;
 
-		// If message was sent over 30 seconds ago, ignore reaction
 		long time = msg.getCreationTime().toEpochSecond();
 		if (msg.getEditedTime() != null)
 			time = msg.getEditedTime().toEpochSecond();
-		boolean over30Seconds = System.currentTimeMillis() / 1000 - time > 30;
-		if (over30Seconds) {
-			if (!purgeReactions.containsKey(msg))
-				purgeReactions.put(msg, time);
+		boolean timedOut = System.currentTimeMillis() / 1000 - time > BotConfig.REACTION_TIME_OUT;
+		if (timedOut)
 			return;
-		}
 
-		// Priority listeners
-		for (ReactionEvent event : registeredPriorityListeners.keySet()) {
-			ArrayList<String> emoteNames = registeredPriorityListeners.get(event);
-			if (!emoteNames.contains(emo.getName()))
-				continue;
-			event.onReact(user, emo, msg, channel);
-			System.out.println(GeneralTools.getTime() + " >> [PRIORITY] " + user.getAsTag() + " reacted with "
-					+ emo.getName() + " on message " + msg.getContentRaw());
-		}
-
-		// Process normal listeners if the bot sent the message
 		User sender = msg.getAuthor();
-		if (!sender.getId().equals(Messages.ID))
+		String emoteName = emo.getName();
+		if (!sender.getId().equals(BotConfig.BOT_ID))
 			return;
+
 		System.out.println(GeneralTools.getTime() + " >> " + user.getAsTag() + " reacted with " + emo.getName()
 				+ " on message " + msg.getContentRaw());
-		for (ReactionEvent event : registeredListeners.keySet()) {
-			ArrayList<String> emoteNames = registeredListeners.get(event);
-			if (!emoteNames.contains(emo.getName()))
+
+		Iterator<Map.Entry<Object[], ReactionEvent>> iter = dynamicRegisteredListeners.entrySet().iterator();
+		while (iter.hasNext()) {
+			Entry<Object[], ReactionEvent> entry = iter.next();
+			Object[] info = entry.getKey();
+			Message storedMessage = (Message) info[0];
+			ArrayList<String> emoteMatchers = (ArrayList<String>) info[1];
+			if (!storedMessage.getId().equals(messageId) || !emoteMatchers.contains(emoteName))
 				continue;
-			event.onReact(user, emo, msg, channel);
+			ReactionEvent event = entry.getValue();
+			event.onReact(user, emo, msg, channel, guild);
+			iter.remove();
 		}
 	}
-
 }
