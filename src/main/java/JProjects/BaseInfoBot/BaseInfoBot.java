@@ -7,7 +7,7 @@ import java.util.TimerTask;
 
 import javax.security.auth.login.LoginException;
 
-import JProjects.BaseInfoBot.commands.Cookies;
+import JProjects.BaseInfoBot.commands.FortuneCookie;
 import JProjects.BaseInfoBot.commands.Help;
 import JProjects.BaseInfoBot.commands.Lookup;
 import JProjects.BaseInfoBot.commands.Pat;
@@ -106,7 +106,7 @@ public class BaseInfoBot {
 		// Fun
 		new TableFlip(this);
 		new Pat(this);
-		new Cookies(this);
+		new FortuneCookie(this);
 	}
 
 //	public void registerReactions() {
