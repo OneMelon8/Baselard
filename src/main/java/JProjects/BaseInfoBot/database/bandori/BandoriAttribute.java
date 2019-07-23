@@ -22,6 +22,21 @@ public enum BandoriAttribute {
 		return fromString(Emotes.getName(emote).replace("attr_", ""));
 	}
 
+	public String getDisplayName() {
+		switch (this) {
+		case PURE:
+			return "Pure";
+		case HAPPY:
+			return "Happy";
+		case COOL:
+			return "Cool";
+		case POWER:
+			return "Powerful";
+		default:
+			return null;
+		}
+	}
+
 	public String getEmote() {
 		switch (this) {
 		case PURE:

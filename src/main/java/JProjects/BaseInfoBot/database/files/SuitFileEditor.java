@@ -15,7 +15,7 @@ import org.json.simple.parser.ParseException;
 import JProjects.BaseInfoBot.database.moe.MoeSuit;
 import JProjects.BaseInfoBot.database.moe.MoeSuitType;
 import JProjects.BaseInfoBot.tools.GeneralTools;
-import JProjects.BaseInfoBot.tools.StringSimilarity;
+import JProjects.BaseInfoBot.tools.StringTools;
 
 public class SuitFileEditor {
 
@@ -103,7 +103,7 @@ public class SuitFileEditor {
 		for (JSONArray jarr : arrs)
 			for (Object val : jarr) {
 				String comp = (String) val;
-				double sim = StringSimilarity.similarity(s, comp);
+				double sim = StringTools.similarity(s, comp);
 				if (sim > maxSim) {
 					maxSim = sim;
 					maxSimStr = comp;

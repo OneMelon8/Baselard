@@ -89,61 +89,55 @@ public class BandoriCardSpider {
 			if (rowIndex >= resultsRows.size()
 					|| colIndex >= resultsRows.get(rowIndex).select("div.card-wrapper").size())
 				return null;
-			doc = Jsoup.connect(masterUrl + resultsRows.get(rowIndex).select("div.card-wrapper").get(colIndex)
-					.select("a").get(0).attr("href")).userAgent("Chrome").timeout(20 * 1000).get();
-			Element table = doc.select("table.table.about-table").get(0);
 
-			card = new BandoriCard(table.select("tr[data-field=card_name]").select("td").get(1).text(),
-					BandoriAttribute.fromString(table.select("tr[data-field=attribute]").select("td").get(1).text()),
-					BandoriMember.valueOf(String
-							.join("_",
-									Arrays.asList(table.select("tr[data-field=member]").select("td").get(1)
-											.select("span.text_with_link").text().split(" ")).subList(0, 2))
-							.toUpperCase()),
-					table.select("tr[data-field=rarity]").select("td").get(1).select("img").size(),
-					table.select("tr[data-field=versions]").select("td").get(1).text(),
-					table.select("tr[data-field=skill_name]").select("td").get(1).text(),
-					table.select("tr[data-field=skill_type]").select("td").get(1).text(),
-					"https:" + table.select("tr[data-field=images]").select("td").get(1).select("img").last()
-							.attr("src"),
-					"https:" + table.select("tr[data-field=arts]").select("td").get(1).select("a").get(0).select("img")
-							.last().attr("src"));
-			Elements statsWrapper = doc.select("div.card-statistics").select("div.tab-content").select("div.tab-pane");
-			Elements stats = statsWrapper.get(statsWrapper.size() - 1).select("div.row");
-			card.setPerformance(Integer.parseInt(stats.get(0).select("div").get(2).text()));
-			card.setTechnique(Integer.parseInt(stats.get(1).select("div").get(2).text()));
-			card.setVisual(Integer.parseInt(stats.get(2).select("div").get(2).text()));
+			card = queryCardDirect(masterUrl + resultsRows.get(rowIndex).select("div.card-wrapper").get(colIndex)
+					.select("a").get(0).attr("href"));
 			card.setTotal(total);
-			doc = Jsoup
-					.connect(masterUrl
-							+ table.select("tr[data-field=member]").select("td").get(1).select("a").get(0).attr("href"))
-					.userAgent("Chrome").timeout(20 * 1000).get();
-			table = doc.select("table.table.about-table").get(0);
-			card.setColor(table.select("tr[data-field=color]").select("td").get(1).select("span.text-muted").text());
 			break;
 		}
 		return card;
 	}
 
 	public static BandoriCard queryRandom() throws IOException {
-		Document doc = Jsoup.connect(masterUrl + queryRandomUrl).userAgent("Chrome").timeout(20 * 1000).get();
-		Element table = doc.select("table.table.about-table").get(0);
+		return queryCardDirect(masterUrl + queryRandomUrl);
+	}
 
-		BandoriCard card = new BandoriCard(table.select("tr[data-field=card_name]").select("td").get(1).text(),
-				BandoriAttribute.fromString(table.select("tr[data-field=attribute]").select("td").get(1).text()),
-				BandoriMember
-						.valueOf(String
-								.join("_",
-										Arrays.asList(table.select("tr[data-field=member]").select("td").get(1)
-												.select("span.text_with_link").text().split(" ")).subList(0, 2))
-								.toUpperCase()),
-				table.select("tr[data-field=rarity]").select("td").get(1).select("img").size(),
-				table.select("tr[data-field=versions]").select("td").get(1).text(),
-				table.select("tr[data-field=skill_name]").select("td").get(1).text(),
-				table.select("tr[data-field=skill_type]").select("td").get(1).text(),
-				"https:" + table.select("tr[data-field=images]").select("td").get(1).select("img").last().attr("src"),
-				"https:" + table.select("tr[data-field=arts]").select("td").get(1).select("a").get(0).select("img")
-						.last().attr("src"));
+	public static BandoriCard queryCardDirect(String url) throws IOException {
+		Document doc = Jsoup.connect(url).userAgent("Chrome").timeout(20 * 1000).get();
+		Element table = doc.select("table.table.about-table").get(0);
+		BandoriCard card = new BandoriCard();
+		card.setName(table.select("tr[data-field=card_name]").select("td").get(1).text());
+		card.setAttr(BandoriAttribute.fromString(table.select("tr[data-field=attribute]").select("td").get(1).text()));
+		card.setMember(
+				BandoriMember.valueOf(String
+						.join("_",
+								Arrays.asList(table.select("tr[data-field=member]").select("td").get(1)
+										.select("span.text_with_link").text().split(" ")).subList(0, 2))
+						.toUpperCase()));
+		card.setRarity(table.select("tr[data-field=rarity]").select("td").get(1).select("img").size());
+		card.setVersions(table.select("tr[data-field=versions]").select("td").get(1).text());
+		card.setSkillName(table.select("tr[data-field=skill_name]").select("td").get(1).text());
+		card.setSkillDesc(table.select("tr[data-field=skill_type]").select("td").get(1).text());
+
+		Elements icons = table.select("tr[data-field=images]").select("td").get(1).select("img");
+		if (icons.size() == 1)
+			card.setIconUrl("https:" + icons.get(0).select("img").last().attr("src"));
+		else {
+			card.setIconUrl("https:" + icons.get(1).select("img").last().attr("src"));
+			card.setIconUrl2("https:" + icons.get(0).select("img").last().attr("src"));
+		}
+
+		Elements arts = table.select("tr[data-field=arts]").select("td").get(1).select("a");
+		card.setArtUrl("https:" + arts.get(0).attr("href"));
+		if (arts.size() == 2)
+			card.setArtUrl2("https:" + arts.get(1).attr("href"));
+
+		card.setChibiUrl("https:" + table.select("tr[data-field=chibis]").select("td").get(1).select("a").get(0)
+				.select("img").last().attr("src"));
+		card.setChibiUrl2("https:" + table.select("tr[data-field=chibis]").select("td").get(1).select("a").get(1)
+				.select("img").last().attr("src"));
+		card.setChibiUrl3("https:" + table.select("tr[data-field=chibis]").select("td").get(1).select("a").get(2)
+				.select("img").last().attr("src"));
 
 		Elements statsWrapper = doc.select("div.card-statistics").select("div.tab-content").select("div.tab-pane");
 		Elements stats = statsWrapper.get(statsWrapper.size() - 1).select("div.row");

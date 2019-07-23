@@ -1,8 +1,13 @@
 package JProjects.BaseInfoBot.database.bandori;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
 
 import JProjects.BaseInfoBot.database.Emotes;
+import JProjects.BaseInfoBot.database.config.BandoriConfig;
+import JProjects.BaseInfoBot.tools.GeneralTools;
+import JProjects.BaseInfoBot.tools.ImageTools;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
@@ -11,7 +16,7 @@ public class BandoriCard {
 
 	private int index = 0; // Only used in card querying
 	private int total = 0; // Only used in card querying
-	private String notes = "Happy! Lucky! Smile! Yay!"; // Only used in card querying
+	private String notes = ""; // Only used in card querying
 
 	private String name;
 	private BandoriAttribute attr;
@@ -22,19 +27,35 @@ public class BandoriCard {
 	private String skillName;
 	private String skillDesc;
 	private String iconUrl;
+	private String iconUrl2;
 	private String artUrl;
+	private String artUrl2;
+	private String chibiUrl;
+	private String chibiUrl2;
+	private String chibiUrl3;
 
 	private int performance;
 	private int technique;
 	private int visual;
 	private int overall;
 
-	public BandoriCard(String name, BandoriAttribute attr, BandoriMember member, int rarity, String versions,
-			String skillName, String skillDesc, String iconUrl, String artUrl) {
+	public BandoriCard() {
+		this.notes = "Happy! Lucky! Smile! Yay!";
+	}
+
+	public BandoriCard(String name, BandoriAttribute attr, BandoriMember member, int rarity) {
+		this();
 		this.name = name;
 		this.attr = attr;
 		this.member = member;
 		this.rarity = rarity;
+
+		this.notes = this.member.getCatchPhrase();
+	}
+
+	public BandoriCard(String name, BandoriAttribute attr, BandoriMember member, int rarity, String versions,
+			String skillName, String skillDesc, String iconUrl, String artUrl) {
+		this(name, attr, member, rarity);
 		this.versions = versions;
 		this.skillName = skillName;
 		this.skillDesc = skillDesc;
@@ -45,8 +66,6 @@ public class BandoriCard {
 		this.technique = 0;
 		this.visual = 0;
 		this.overall = this.performance + this.technique + this.visual;
-
-		this.notes = this.member.getCatchPhrase();
 	}
 
 	public MessageEmbed getEmbededMessage() {
@@ -54,33 +73,80 @@ public class BandoriCard {
 		builder.setColor(this.getColor());
 		builder.setAuthor(this.getName());
 		builder.setThumbnail(this.getIconUrl());
-//		builder.setImage(this.getArtUrl());
 
 		StringBuilder sb = new StringBuilder();
-//		sb.append("Member: **" + this.getMember().getEmote() + "**");
-//		sb.append("\nRarity: **" + this.getRarityStars() + "**");
-//		sb.append("\nAttribute: **" + this.getAttr().getEmote() + "**");
-//		builder.addField(new Field("**Information:**", sb.toString(), false));
-
-//		sb = new StringBuilder();
 		sb.append("Versions: " + this.getVersionsEmotes());
 		sb.append("\nSkill: **" + this.getSkillName() + "**");
 		sb.append("\nDetail: **" + this.getSkillDesc() + "**");
-//		builder.addField(new Field("**Skill Info:**", sb.toString(), false));
 		builder.addField(
 				new Field(this.getMember().getEmote() + "・" + this.getAttr().getEmote() + "・" + this.getRarityStars(),
 						sb.toString(), false));
+		builder.setFooter((index + 1) + "/" + (total == 0 ? index + 1 : total) + " - " + notes,
+				"https://cdn.discordapp.com/emojis/432981158670630924.png");
+		return builder.build();
+	}
 
-//		sb = new StringBuilder();
-//		sb.append("Performance: **" + this.getPerformance() + "**");
-//		sb.append("\nTechnique: **" + this.getTechnique() + "**");
-//		sb.append("\nVisual: **" + this.getVisual() + "**");
-//		sb.append("\nOverall: **" + this.getOverall() + "**");
-//		builder.addField(new Field("**Statistics:**", sb.toString(), false));
+	public MessageEmbed getDetailedEmbededMessage() {
+		EmbedBuilder builder = new EmbedBuilder();
+		builder.setColor(this.getColor());
+		builder.setAuthor(this.getName());
+		builder.setThumbnail(this.getIconUrl());
+//		builder.setImage(this.getArtUrl());
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("Versions: " + this.getVersionsEmotes());
+		sb.append("\nMember: **" + this.getMember().getEmote() + " " + this.getMember().getDisplayName() + "**");
+		sb.append("\nRarity: **" + this.getRarityStars() + "**");
+		sb.append("\nAttribute: **" + this.getAttr().getEmote() + " " + this.getAttr().getDisplayName() + "**");
+		builder.addField(new Field("**Information:**", sb.toString(), false));
+
+		sb = new StringBuilder();
+		sb.append("Type: **" + this.getSkillName() + "**");
+		sb.append("\nName: **" + this.getSkillName() + "**");
+		sb.append("\nDesc: **" + this.getSkillDesc() + "**");
+		builder.addField(new Field("**Skill Info:**", sb.toString(), false));
+
+		sb = new StringBuilder();
+		sb.append("Performance: **" + this.getPerformance() + "**");
+		sb.append("\nTechnique: **" + this.getTechnique() + "**");
+		sb.append("\nVisual: **" + this.getVisual() + "**");
+		sb.append("\nOverall: **" + this.getOverall() + "**");
+		builder.addField(new Field("**Statistics:**", sb.toString(), true));
+
+		sb = new StringBuilder();
+		sb.append("`"
+				+ GeneralTools.getBar(this.getPerformance(), BandoriConfig.PERFORMANCE_MAX, BandoriConfig.BAR_LENGTH)
+				+ "`");
+		sb.append(
+				"\n`" + GeneralTools.getBar(this.getTechnique(), BandoriConfig.TECHNIQUE_MAX, BandoriConfig.BAR_LENGTH)
+						+ "`");
+		sb.append("\n`" + GeneralTools.getBar(this.getVisual(), BandoriConfig.VISUAL_MAX, BandoriConfig.BAR_LENGTH)
+				+ "`");
+		sb.append("\n`" + GeneralTools.getBar(this.getOverall(), BandoriConfig.OVERALL_MAX, BandoriConfig.BAR_LENGTH)
+				+ "`");
+		builder.addField(new Field("**Graph:**", sb.toString(), true));
 
 		builder.setFooter((index + 1) + "/" + (total == 0 ? index + 1 : total) + " - " + notes,
 				"https://cdn.discordapp.com/emojis/432981158670630924.png");
 		return builder.build();
+	}
+
+	public File getArtworks() {
+		try {
+			return ImageTools.mergeHoriz(this.artUrl, this.artUrl2);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public File getChibis() {
+		try {
+			return ImageTools.mergeHoriz(this.chibiUrl, this.chibiUrl2, this.chibiUrl3);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public String getRarityStars() {
@@ -158,8 +224,28 @@ public class BandoriCard {
 		return iconUrl;
 	}
 
+	public String getIconUrl2() {
+		return iconUrl2;
+	}
+
 	public String getArtUrl() {
 		return artUrl;
+	}
+
+	public String getArtUrl2() {
+		return artUrl2;
+	}
+
+	public String getChibiUrl() {
+		return chibiUrl;
+	}
+
+	public String getChibiUrl2() {
+		return chibiUrl2;
+	}
+
+	public String getChibiUrl3() {
+		return chibiUrl3;
 	}
 
 	public int getPerformance() {
@@ -228,8 +314,28 @@ public class BandoriCard {
 		this.iconUrl = iconUrl;
 	}
 
+	public void setIconUrl2(String iconUrl2) {
+		this.iconUrl2 = iconUrl2;
+	}
+
 	public void setArtUrl(String artUrl) {
 		this.artUrl = artUrl;
+	}
+
+	public void setArtUrl2(String artUrl2) {
+		this.artUrl2 = artUrl2;
+	}
+
+	public void setChibiUrl(String chibiUrl) {
+		this.chibiUrl = chibiUrl;
+	}
+
+	public void setChibiUrl2(String chibiUrl2) {
+		this.chibiUrl2 = chibiUrl2;
+	}
+
+	public void setChibiUrl3(String chibiUrl3) {
+		this.chibiUrl3 = chibiUrl3;
 	}
 
 	public void setPerformance(int performance) {

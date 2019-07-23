@@ -1,6 +1,12 @@
 package JProjects.BaseInfoBot.tools;
 
-public class StringSimilarity {
+public class StringTools {
+	public static String removeDoubleSpaces(String s) {
+		while (s.contains("  "))
+			s = s.replace("  ", " ");
+		return s;
+	}
+
 	/**
 	 * Calculates the similarity (a number within 0 and 1) between two strings.
 	 */

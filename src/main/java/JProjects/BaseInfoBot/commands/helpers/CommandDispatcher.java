@@ -8,9 +8,9 @@ import java.util.Random;
 import JProjects.BaseInfoBot.App;
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.Help;
-import JProjects.BaseInfoBot.database.BotConfig;
+import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.tools.GeneralTools;
-import JProjects.BaseInfoBot.tools.StringSimilarity;
+import JProjects.BaseInfoBot.tools.StringTools;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
@@ -83,7 +83,7 @@ public class CommandDispatcher {
 		// Disabled cause.. spam i guess?
 		// unknownCommand(userCmd, event);
 		App.bot.reactQuestion(e.getMessage());
-		EmoteDispatcher.register(e.getMessage(), new Help(App.bot), "◀", "▶");
+		EmoteDispatcher.register(e.getMessage(), new Help(App.bot), "kokoron_wut");
 	}
 
 	public static void unknownCommand(String cmd, User author, String command, String[] args, Message message,
@@ -139,13 +139,13 @@ public class CommandDispatcher {
 		String bestMatch = null;
 		double bestDist = 0;
 		for (String cmd : registeredCommands.keySet()) {
-			double dist = StringSimilarity.similarity(userCmd, cmd);
+			double dist = StringTools.similarity(userCmd, cmd);
 			if (dist > bestDist) {
 				bestDist = dist;
 				bestMatch = cmd;
 			}
 			for (String alias : registeredCommands.get(cmd)) {
-				dist = StringSimilarity.similarity(userCmd, alias);
+				dist = StringTools.similarity(userCmd, alias);
 				if (dist > bestDist) {
 					bestDist = dist;
 					bestMatch = cmd;

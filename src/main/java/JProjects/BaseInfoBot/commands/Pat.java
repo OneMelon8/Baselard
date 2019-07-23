@@ -14,8 +14,8 @@ import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
 import JProjects.BaseInfoBot.commands.helpers.ReactionEvent;
-import JProjects.BaseInfoBot.database.BotConfig;
 import JProjects.BaseInfoBot.database.Emotes;
+import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.database.files.FileEditor;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import JProjects.BaseInfoBot.tools.TimeFormatter;
@@ -238,7 +238,6 @@ public class Pat extends Command implements ReactionEvent {
 			return;
 		}
 		int cooldownTime = 5 * 60 * 1000 + r.nextInt(25 * 60 * 1000); // 5-60 minutes
-		cooldownTime /= 2;
 		if (r.nextInt(10) == 0) {
 			bot.sendMessage("Saaya: Thanks for the pat~ " + Emotes.SAAYA_MELT, channel);
 			bot.sendMessage("Where's my pat? " + Emotes.KOKORON_WUT_3, channel);

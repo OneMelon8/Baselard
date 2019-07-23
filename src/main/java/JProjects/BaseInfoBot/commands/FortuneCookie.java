@@ -5,8 +5,9 @@ import com.google.gson.JsonParser;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.database.BotConfig;
+import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.spider.HttpRequester;
+import JProjects.BaseInfoBot.tools.StringTools;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -35,7 +36,9 @@ public class FortuneCookie extends Command {
 		try {
 			JsonObject json = new JsonParser().parse(HttpRequester.get("http://yerkee.com/api/fortune"))
 					.getAsJsonObject();
-			sb.append(json.get("fortune").getAsString().replaceAll("\\\n\"", ""));
+			sb.append(StringTools
+					.removeDoubleSpaces(json.get("fortune").getAsString().replace("\n", " ").replace("\t", " "))
+					.trim());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

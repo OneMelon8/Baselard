@@ -1,4 +1,4 @@
-package JProjects.BaseInfoBot.database;
+package JProjects.BaseInfoBot.database.config;
 
 import java.awt.Color;
 

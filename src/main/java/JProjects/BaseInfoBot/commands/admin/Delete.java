@@ -1,7 +1,6 @@
 package JProjects.BaseInfoBot.commands.admin;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.ChatEventHandler;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -12,10 +11,10 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
 
-public class Toggle extends Command {
+public class Delete extends Command {
 
-	public Toggle(BaseInfoBot bot) {
-		super(bot, "toggle", "Administration toggle bot responses");
+	public Delete(BaseInfoBot bot) {
+		super(bot, "delete", new String[] { "del" }, "Delete message by ID");
 	}
 
 	@Override
@@ -25,17 +24,18 @@ public class Toggle extends Command {
 			bot.reactCross(message);
 			return;
 		}
-		ChatEventHandler.mute = !ChatEventHandler.mute;
-		bot.reactCheck(message);
+		String arg = String.join(" ", args);
+		bot.deleteMessage(message);
+		bot.deleteMessage(arg, channel);
 	}
 
 	@Override
 	public MessageEmbed getHelpEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(BotConfig.COLOR_MISC);
-		builder.setAuthor("Toggle Template");
-		builder.setDescription("Use the following template to enable/disable the bot");
-		builder.addField(new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + "```", false));
+		builder.setAuthor("Delete template");
+		builder.setDescription("Use the following template to delete messages by ID");
+		builder.addField(new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + " <ID>" + "```", false));
 		return builder.build();
 	}
 }

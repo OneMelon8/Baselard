@@ -46,6 +46,20 @@ public class GeneralTools {
 		}
 	}
 
+	public static String getBar(double current, double max, double length) {
+		length -= 2;
+		double percentage = Math.round(current / max * 100D) / 100D;
+		int hashCount = (int) (percentage * length);
+		int dashCount = (int) (length - hashCount);
+		StringBuilder sb = new StringBuilder("[");
+		for (int a = 0; a < hashCount; a++)
+			sb.append("#");
+		for (int a = 0; a < dashCount; a++)
+			sb.append("-");
+		sb.append("]");
+		return sb.toString();
+	}
+
 	public static double round(double d, int places) {
 		return Math.round(d * Math.pow(10, places)) / Math.pow(10, places);
 	}

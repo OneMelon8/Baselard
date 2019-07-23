@@ -6,10 +6,10 @@ import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
 import JProjects.BaseInfoBot.commands.helpers.ReactionEvent;
-import JProjects.BaseInfoBot.database.BotConfig;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.bandori.BandoriAttribute;
 import JProjects.BaseInfoBot.database.bandori.BandoriCard;
+import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.spider.bandori.BandoriCardSpider;
 import JProjects.BaseInfoBot.tools.EmbededUtil;
 import JProjects.BaseInfoBot.tools.ReactionUtil;
@@ -53,8 +53,9 @@ public class BandoriCards extends Command implements ReactionEvent {
 //			bot.addReaction(msg, bot.getJDA().getEmoteById(Emotes.getId(Emotes.getRarityEmote(card.getRarity()))));
 			bot.reactPrev(msg);
 			bot.reactNext(msg);
+			bot.reactDetails(msg);
 
-			EmoteDispatcher.register(msg, this, "◀", "▶");
+			EmoteDispatcher.register(msg, this, "◀", "▶", "🔍");
 			EmoteDispatcher.purgeReactions.put(msg, System.currentTimeMillis() / 1000 + BotConfig.REACTION_TIME_OUT);
 		} catch (IndexOutOfBoundsException ex) {
 			ex.printStackTrace();
@@ -84,6 +85,7 @@ public class BandoriCards extends Command implements ReactionEvent {
 		bot.editMessage(msg, EmbededUtil.getThinkingEmbeded());
 		try {
 			BandoriCard card = null;
+			boolean showDetails = false;
 			if (emoteName.equals("▶")) {
 				index = (index + 1) % total;
 				card = customQuery(query, index);
@@ -96,19 +98,27 @@ public class BandoriCards extends Command implements ReactionEvent {
 			} else if (emoteName.contains("bandori_rarity_")) {
 				rarity = rarity % 4 + 1;
 				card = customQuery(query, attr, rarity, 0);
+			} else if (emoteName.equals("🔍")) {
+				showDetails = true;
+				card = customQuery(query, index);
 			}
 
 			if (card == null)
 				throw new IndexOutOfBoundsException("No results!");
-			msg = bot.editMessage(msg, card.getEmbededMessage());
 
-//			bot.addReaction(msg, bot.getJDA().getEmoteById(Emotes.getId(attr.getEmote())));
-//			bot.addReaction(msg, bot.getJDA().getEmoteById(Emotes.getId(Emotes.getRarityEmote(rarity))));
-			bot.reactPrev(msg);
-			bot.reactNext(msg);
+			msg = bot.editMessage(msg, showDetails ? card.getDetailedEmbededMessage() : card.getEmbededMessage());
 
-			EmoteDispatcher.register(msg, this, "◀", "▶");
-			EmoteDispatcher.purgeReactions.put(msg, System.currentTimeMillis() / 1000 + BotConfig.REACTION_TIME_OUT);
+			if (!showDetails) {
+				bot.reactPrev(msg);
+				bot.reactNext(msg);
+				bot.reactDetails(msg);
+				EmoteDispatcher.register(msg, this, "◀", "▶", "🔍");
+				EmoteDispatcher.purgeReactions.put(msg,
+						System.currentTimeMillis() / 1000 + BotConfig.REACTION_TIME_OUT);
+			} else {
+				bot.sendFile(card.getArtworks(), channel);
+				bot.sendFile(card.getChibis(), channel);
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			bot.addReaction(msg, bot.getJDA().getEmoteById(Emotes.getId(Emotes.KOKORON_ERROR)));

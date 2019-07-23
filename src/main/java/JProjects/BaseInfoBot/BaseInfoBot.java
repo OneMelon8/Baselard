@@ -1,5 +1,6 @@
 package JProjects.BaseInfoBot;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -13,6 +14,7 @@ import JProjects.BaseInfoBot.commands.Lookup;
 import JProjects.BaseInfoBot.commands.Pat;
 import JProjects.BaseInfoBot.commands.Ping;
 import JProjects.BaseInfoBot.commands.Version;
+import JProjects.BaseInfoBot.commands.admin.Delete;
 import JProjects.BaseInfoBot.commands.admin.Gamemode;
 import JProjects.BaseInfoBot.commands.admin.Servers;
 import JProjects.BaseInfoBot.commands.admin.Test;
@@ -80,6 +82,7 @@ public class BaseInfoBot {
 		new Test(this);
 		new Toggle(this);
 		new Servers(this);
+		new Delete(this);
 
 		// MOE Commands
 		// new Hangar(this);
@@ -142,12 +145,20 @@ public class BaseInfoBot {
 		return msg.editMessage(msgNew).complete();
 	}
 
+	public Message editMessage(Message msg, Message msgNew) {
+		return msg.editMessage(msgNew).complete();
+	}
+
 	public Message editMessage(Message msg, MessageEmbed msgNew) {
 		return msg.editMessage(msgNew).complete();
 	}
 
 	public void deleteMessage(Message msg) {
 		msg.delete().queue();
+	}
+
+	public void deleteMessage(String id, MessageChannel channel) {
+		channel.deleteMessageById(id).queue();
 	}
 
 	public void addReaction(Message msg, String reaction) {
@@ -183,6 +194,10 @@ public class BaseInfoBot {
 		addReaction(msg, "⌛");
 	}
 
+	public void reactDetails(Message msg) {
+		addReaction(msg, "🔍");
+	}
+
 	public void reactPrev(Message msg) {
 		addReaction(msg, "◀");
 	}
@@ -193,6 +208,18 @@ public class BaseInfoBot {
 
 	public void reactError(Message msg) {
 		addReaction(msg, getJDA().getEmoteById(Emotes.getId(Emotes.KOKORON_ERROR)));
+	}
+
+	public Message sendFile(File file, MessageChannel channel) {
+		return channel.sendFile(file).complete();
+	}
+
+	public Message sendFile(File file, String description, MessageChannel channel) {
+		return channel.sendFile(file, description).complete();
+	}
+
+	public Message sendFile(File file, Message message, MessageChannel channel) {
+		return channel.sendFile(file, message).complete();
 	}
 
 	public void setMuted(boolean mute) {
