@@ -23,6 +23,7 @@ public class Help extends Command implements ReactionEvent {
 	@Override
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
 			Guild guild) {
+		bot.sendThinkingPacket(channel);
 		if (args.length != 1) {
 			// Send general help commands
 			bot.sendMessage(getAllHelpEmbeded(), channel);
@@ -80,6 +81,12 @@ public class Help extends Command implements ReactionEvent {
 		sb.append(String.format("%-8s >> %s", "member", "Show member list or a specific member\n"));
 		sb.append("```");
 		builder.addField(new Field("**Bandori Commands:**", sb.toString(), false));
+
+		sb = new StringBuilder("```");
+		sb.append(String.format("%-8s >> %s", "pat", "Give me some head pats =w=\n"));
+		sb.append(String.format("%-8s >> %s", "fortune", "Get a fortune cookie\n"));
+		sb.append("```");
+		builder.addField(new Field("**Fun Commands:**", sb.toString(), false));
 
 		builder.addField(
 				new Field("", "For more information, check out `" + BotConfig.PREFIX + command + " [command]`", false));

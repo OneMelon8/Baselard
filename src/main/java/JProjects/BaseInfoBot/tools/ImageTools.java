@@ -10,6 +10,9 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import JProjects.BaseInfoBot.App;
+import JProjects.BaseInfoBot.database.files.assets.ImageAssets;
+
 public class ImageTools {
 
 	public static File mergeHoriz(String... urlss) throws IOException {
@@ -39,6 +42,40 @@ public class ImageTools {
 		}
 		g2d.dispose();
 
+		File f = new File("./temp.png");
+		ImageIO.write(concatImage, "png", f);
+		return f;
+	}
+
+	public static File mergeBandoriRoom(ArrayList<String> participants) throws IOException {
+		BufferedImage concatImage = new BufferedImage(640, 128, BufferedImage.TYPE_INT_RGB);
+		Graphics2D g2d = concatImage.createGraphics();
+
+		// Create background
+		g2d.drawImage(ImageAssets.getImage(ImageAssets.GARUPA_BACKGROUND), 0, 0, null);
+
+		// Create users
+		int x = 0;
+		for (int a = 0; a < participants.size(); a++) {
+			g2d.drawImage(getImageFromUrl(App.bot.getJDA().getUserById(participants.get(a)).getAvatarUrl()), x, 0,
+					null);
+			x += 128;
+		}
+
+		// Create overlays
+		x = 0;
+		g2d.drawImage(ImageAssets.getImage(ImageAssets.RAINBOW_FRAME), x, 0, null);
+		x += 128;
+		for (int a = 1; a < participants.size(); a++) {
+			g2d.drawImage(ImageAssets.getImage(ImageAssets.GOLD_FRAME), x, 0, null);
+			x += 128;
+		}
+		for (int a = 0; a < 5 - participants.size(); a++) {
+			g2d.drawImage(ImageAssets.getImage(ImageAssets.SILVER_FRAME), x, 0, null);
+			x += 128;
+		}
+
+		g2d.dispose();
 		File f = new File("./temp.png");
 		ImageIO.write(concatImage, "png", f);
 		return f;

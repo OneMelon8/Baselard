@@ -21,6 +21,7 @@ public class Ping extends Command {
 	@Override
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
 			Guild guild) {
+		bot.sendThinkingPacket(channel);
 		bot.sendMessage(Emotes.RODY_BEAT + " Heartbeat " + Math.round(bot.getJDA().getPing()) + "ms", channel);
 	}
 

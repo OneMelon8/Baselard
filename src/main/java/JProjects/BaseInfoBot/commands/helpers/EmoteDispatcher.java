@@ -25,10 +25,6 @@ public class EmoteDispatcher {
 	private static ConcurrentHashMap<Object[], ReactionEvent> dynamicRegisteredListeners = new ConcurrentHashMap<Object[], ReactionEvent>();
 	public static HashMap<Message, Long> purgeReactions = new HashMap<Message, Long>();
 
-	public static void register(Message msg, ReactionEvent event, String emoteName) {
-		register(msg, event, emoteName);
-	}
-
 	public static void register(Message msg, ReactionEvent event, String... emoteName) {
 		register(msg, event, Arrays.asList(emoteName));
 	}
@@ -91,11 +87,7 @@ public class EmoteDispatcher {
 		if (timedOut)
 			return;
 
-		User sender = msg.getAuthor();
 		String emoteName = emo.getName();
-		if (!sender.getId().equals(BotConfig.BOT_ID))
-			return;
-
 		System.out.println(GeneralTools.getTime() + " >> " + user.getAsTag() + " reacted with " + emo.getName()
 				+ " on message " + msg.getContentRaw());
 

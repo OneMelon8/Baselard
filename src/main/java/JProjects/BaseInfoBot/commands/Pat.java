@@ -39,8 +39,8 @@ public class Pat extends Command implements ReactionEvent {
 	private static LinkedHashMap<Object, Long> patRanking;
 	long totalPats = 0;
 
-	private static final String[] responses = new String[] { "Hehe~ Fuwa fwah~", "(〃'▽'〃)", "Hehe~ Thanks!",
-			"Happy! Lucky! Smile! Yay! Thanks for the pat!" };
+	private static final String[] responses = new String[] { "Hehe~ Fuwa fwah~", "Hehe~ Thanks!",
+			"Happy! Lucky! Smile! Yay! Thanks for the pat!", " " + Emotes.KOKORON_SPARKLE };
 
 	public Pat(BaseInfoBot bot) {
 		super(bot, "pat", new String[] { "pats", "headpat", "patpat" }, "Pat base");
@@ -51,9 +51,9 @@ public class Pat extends Command implements ReactionEvent {
 	@Override
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
 			Guild guild) {
+		bot.sendThinkingPacket(channel);
 		String id = author.getId();
-		boolean isAdmin = BaseInfoBot.admins.contains(id);
-
+		boolean isAdmin = bot.isAdmin(author);
 		if (args.length == 0) {
 			pat(author, id, channel, guild);
 			return;
@@ -273,8 +273,12 @@ public class Pat extends Command implements ReactionEvent {
 			ex.printStackTrace();
 		}
 		bot.sendMessage(author.getAsMention() + " " + responses[r.nextInt(responses.length)], channel);
-		if (r.nextInt(20) == 0)
-			bot.sendMessage("\\*pats " + author.getAsMention() + " on the head too\\*", channel);
+		if (r.nextInt(20) == 0) {
+			if (author.getId().equals(BotConfig.ONE_ID)) {
+				bot.sendMessage("\\*kisses " + author.getAsMention() + "\\*", channel);
+			} else
+				bot.sendMessage("\\*pats " + author.getAsMention() + " on the head too\\*", channel);
+		}
 	}
 
 	private void calcTotalPats(MessageChannel channel) {

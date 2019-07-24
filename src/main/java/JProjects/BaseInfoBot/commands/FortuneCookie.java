@@ -1,13 +1,14 @@
 package JProjects.BaseInfoBot.commands;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import java.io.IOException;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.database.config.BotConfig;
-import JProjects.BaseInfoBot.spider.HttpRequester;
-import JProjects.BaseInfoBot.tools.StringTools;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -25,28 +26,28 @@ public class FortuneCookie extends Command {
 	@Override
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
 			Guild guild) {
-		bot.sendMessage("Let me get you a fortune cookie...", channel);
-
+		bot.sendThinkingPacket(channel);
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor(author.getName() + "'s Fortune Cookie");
-		builder.setDescription("What will the cookie monster say to " + author.getName() + "?");
 
-		StringBuilder sb = new StringBuilder("```");
+		StringBuilder sb = new StringBuilder();
 		try {
-			JsonObject json = new JsonParser().parse(HttpRequester.get("http://yerkee.com/api/fortune"))
-					.getAsJsonObject();
-			sb.append(StringTools
-					.removeDoubleSpaces(json.get("fortune").getAsString().replace("\n", " ").replace("\t", " "))
-					.trim());
-		} catch (Exception e) {
+			sb.append(getCookie());
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if (sb.length() == 3)
+		if (sb.length() == 0)
 			sb.append("Happy! Lucky! Smile! Yay!");
-		sb.append("```");
-		builder.addField(new Field("There is a message inside the fortune cookie:", sb.toString(), false));
+		builder.setDescription("*" + sb.toString() + "*");
 		bot.sendMessage(builder.build(), channel);
+	}
+
+	private String getCookie() throws IOException {
+		final String url = "http://www.fortunecookiemessage.com/";
+		Document doc = Jsoup.connect(url).userAgent("Chrome").timeout(20 * 1000).get();
+		Element wrapper = doc.getElementById("message").select("div.quote").first();
+		return wrapper.text();
 	}
 
 	@Override

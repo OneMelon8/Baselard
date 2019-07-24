@@ -22,6 +22,7 @@ import JProjects.BaseInfoBot.commands.admin.Toggle;
 import JProjects.BaseInfoBot.commands.bandori.BandoriCards;
 import JProjects.BaseInfoBot.commands.bandori.BandoriEvents;
 import JProjects.BaseInfoBot.commands.bandori.BandoriMembers;
+import JProjects.BaseInfoBot.commands.bandori.BandoriMultiLive;
 import JProjects.BaseInfoBot.commands.helpers.ChatEventHandler;
 import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
 import JProjects.BaseInfoBot.commands.misc.TableFlip;
@@ -35,6 +36,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageReaction;
+import net.dv8tion.jda.core.entities.User;
 
 public class BaseInfoBot {
 
@@ -100,6 +102,8 @@ public class BaseInfoBot {
 		new BandoriEvents(this);
 		new BandoriCards(this);
 		new BandoriMembers(this);
+
+		new BandoriMultiLive(this);
 		// new BandoriComics(this);
 
 		// Beta
@@ -220,6 +224,14 @@ public class BaseInfoBot {
 
 	public Message sendFile(File file, Message message, MessageChannel channel) {
 		return channel.sendFile(file, message).complete();
+	}
+
+	public boolean isAdmin(User user) {
+		return admins.contains(user.getId());
+	}
+
+	public User getUserById(String id) {
+		return getJDA().getUserById(id);
 	}
 
 	public void setMuted(boolean mute) {

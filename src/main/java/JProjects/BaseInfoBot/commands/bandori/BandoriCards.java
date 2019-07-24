@@ -31,6 +31,7 @@ public class BandoriCards extends Command implements ReactionEvent {
 	@Override
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
 			Guild guild) {
+		bot.sendThinkingPacket(channel);
 		if (args.length == 0) {
 			try {
 				bot.sendMessage(BandoriCardSpider.queryRandom().getEmbededMessage(), channel);

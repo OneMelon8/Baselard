@@ -20,6 +20,7 @@ public class Lookup extends Command {
 	@Override
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
 			Guild guild) {
+		bot.sendThinkingPacket(channel);
 		if (args.length != 1) {
 			// Send general help commands
 			bot.sendMessage(getHelpEmbeded(), channel);

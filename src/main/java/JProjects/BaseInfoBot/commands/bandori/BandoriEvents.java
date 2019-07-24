@@ -24,6 +24,7 @@ public class BandoriEvents extends Command {
 	@Override
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
 			Guild guild) {
+		bot.sendThinkingPacket(channel);
 		if (args.length == 0) {
 			try {
 				bot.sendMessage(getEventsEmbeded(BandoriEventSpider.queryEventList(false)), channel);
@@ -83,7 +84,8 @@ public class BandoriEvents extends Command {
 		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Bandori Events Query Template");
 		builder.setDescription("Use the following template to run the Bandori event query");
-		builder.addField(new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + " [name/c(urrent)]```", false));
+		builder.addField(
+				new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + " [name/c(urrent)]```", false));
 		StringBuilder sb = new StringBuilder("```");
 		for (String aliase : aliases)
 			sb.append(aliase + ", ");

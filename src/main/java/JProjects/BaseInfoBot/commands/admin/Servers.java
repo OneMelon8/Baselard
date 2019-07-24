@@ -26,6 +26,7 @@ public class Servers extends Command {
 			bot.reactCross(message);
 			return;
 		}
+		bot.sendThinkingPacket(channel);
 		List<Guild> servers = bot.getJDA().getGuilds();
 		StringBuilder sb = new StringBuilder("Servers: ");
 		for (Guild server : servers)

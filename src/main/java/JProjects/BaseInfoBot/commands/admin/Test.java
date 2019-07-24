@@ -26,6 +26,7 @@ public class Test extends Command {
 			bot.reactCross(message);
 			return;
 		}
+		bot.sendThinkingPacket(channel);
 		String msg = String.join(" ", args);
 		if (msg.isEmpty())
 			msg = "Ehehee, what are you trying to test?";
@@ -54,7 +55,8 @@ public class Test extends Command {
 		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Test template");
 		builder.setDescription("You sure you need a template for this?");
-		builder.addField(new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + " hello world" + "```", false));
+		builder.addField(
+				new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + " hello world" + "```", false));
 		return builder.build();
 	}
 }

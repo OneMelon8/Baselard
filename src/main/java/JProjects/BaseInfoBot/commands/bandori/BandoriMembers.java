@@ -24,6 +24,7 @@ public class BandoriMembers extends Command {
 	@Override
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
 			Guild guild) {
+		bot.sendThinkingPacket(channel);
 		if (args.length == 0) {
 			bot.sendMessage(getBandsEmbeded(), channel);
 			return;
@@ -71,9 +72,8 @@ public class BandoriMembers extends Command {
 		sb.delete(sb.length() - 2, sb.length());
 		sb.append("```");
 		builder.addField(new Field("Aliases:", sb.toString(), false));
-		builder.addField(new Field("Example:",
-				"```" + BotConfig.PREFIX + command + " (shows all members)\n" + BotConfig.PREFIX + command + " Kokoro```",
-				false));
+		builder.addField(new Field("Example:", "```" + BotConfig.PREFIX + command + " (shows all members)\n"
+				+ BotConfig.PREFIX + command + " Kokoro```", false));
 		return builder.build();
 	}
 }

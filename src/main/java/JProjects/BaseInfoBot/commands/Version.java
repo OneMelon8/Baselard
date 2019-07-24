@@ -20,6 +20,7 @@ public class Version extends Command {
 	@Override
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
 			Guild guild) {
+		bot.sendThinkingPacket(channel);
 		bot.sendMessage("Base ver " + BaseInfoBot.getVersion(), channel);
 	}
 

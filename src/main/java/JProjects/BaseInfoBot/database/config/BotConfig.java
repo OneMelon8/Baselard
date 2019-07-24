@@ -4,6 +4,7 @@ import java.awt.Color;
 
 public class BotConfig {
 	public static final String BOT_ID = "548973434437107751";
+	public static final String ONE_ID = "233735408737976320";
 
 	/*
 	 * Reaction time-out time in ms

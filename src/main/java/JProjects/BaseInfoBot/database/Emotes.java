@@ -5,8 +5,9 @@ public class Emotes {
 	public static final String KOKORON_WUT = "<:kokoron_wut:598387497155821579>";
 	public static final String KOKORON_WUT_3 = "<:kokoron_wut_3:599596808930459649>";
 	public static final String KOKORON_ERROR = "<:kokoron_error:598824542978441232>";
+	public static final String KOKORON_SPARKLE = "<:kokoron_sparkle:601045739203854364>";
 	public static final String SAAYA_MELT = "<:saaya_melt:600851841152188426>";
-
+	
 	public static final String MINECRAFT_GRASS = "<:mc_grass:575908022346579969>";
 	public static final String MINECRAFT_COMMAND_BLOCK = "<:mc_command:575908475888992266>";
 	public static final String MINECRAFT_COBBLESTONE = "<:mc_cobble:575908019783598130>";
@@ -18,6 +19,7 @@ public class Emotes {
 	public static final String ATTR_COOL = "<:attr_cool:578337887142281216>";
 	public static final String BANDORI_STAR = "<:bandori_star:578806302864572427>";
 	public static final String BANDORI_STAR2 = "<:bandori_star2:580847904508346378>";
+	public static final String LIVE_BOOST = "<:live_boost:603455894994550787>";
 
 	public static final String BANDORI_RARITY_1 = "<:bandori_rarity_1:599082647708237824>";
 	public static final String BANDORI_RARITY_2 = "<:bandori_rarity_2:599082647699980298>";
