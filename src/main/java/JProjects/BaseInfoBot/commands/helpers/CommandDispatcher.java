@@ -56,6 +56,10 @@ public class CommandDispatcher {
 		if (ChatEventHandler.mute)
 			return;
 
+		if (e.getChannel().getId().equals("562766797032652800")
+				&& (!userCmd.equals("card") && !userCmd.equals("cards")))
+			return;
+
 		String authorId = e.getAuthor().getId();
 		boolean isAdmin = BaseInfoBot.admins.contains(authorId);
 		int cooldownTime = 3000; // Milliseconds

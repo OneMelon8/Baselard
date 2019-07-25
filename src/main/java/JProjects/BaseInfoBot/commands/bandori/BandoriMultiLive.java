@@ -86,6 +86,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 				bot.sendMessage(author.getAsMention() + " Invalid room ID!", channel);
 				return;
 			}
+			preJoinCheck(author, channel);
 			BandoriRoom room = getRoomById(args[1]);
 			if (room == null || !room.join(author, null, channel))
 				bot.sendMessage(author.getAsMention() + " Failed to join the room!", channel);
@@ -103,10 +104,17 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		MessageEmbed msgEmbeded = message.getEmbeds().get(0);
 		String roomId = msgEmbeded.getFooter().getText();
 		if (emoteName.equals("live_boost")) {
+			preJoinCheck(user, channel);
 			BandoriRoom room = getRoomById(roomId);
 			if (!room.join(user, message, channel))
 				bot.sendMessage(user.getAsMention() + " Failed to join the room!", channel);
 		}
+	}
+
+	private void preJoinCheck(User author, MessageChannel channel) {
+		if (disband(author.getId()))
+			bot.sendMessage(author.getAsMention() + " Successfully disbanded your previous room!", channel);
+		leave(author, channel);
 	}
 
 	private boolean leave(User user, MessageChannel channel) {
@@ -202,7 +210,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 				String.format("%-20s >> %s", BotConfig.PREFIX + command + " leave/quit", "Leave your current room\n"));
 		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " list/l", "See all active rooms\n"));
 		sb.append("```");
-		builder.addField(new Field("**Regular Commands:**", sb.toString(), false));
+		builder.addField(new Field("Regular Commands:", sb.toString(), false));
 
 		sb = new StringBuilder("```");
 		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " create/c <ID>",
@@ -210,7 +218,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " disband/d", "Disband your room\n"));
 		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " ping", "Ping everyone in the room\n"));
 		sb.append("```");
-		builder.addField(new Field("**Room Owner Commands:**", sb.toString(), false));
+		builder.addField(new Field("Room Owner Commands:", sb.toString(), false));
 
 		sb = new StringBuilder("```");
 		for (String aliase : aliases)

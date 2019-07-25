@@ -102,7 +102,6 @@ public class BandoriRoom {
 			return false;
 
 		this.participants.remove(user.getId());
-		bot.sendMessage(user.getAsMention() + " Successfully left the multi-live room!", channel);
 		return true;
 	}
 
