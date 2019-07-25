@@ -8,7 +8,7 @@ import java.util.TimerTask;
 
 import javax.security.auth.login.LoginException;
 
-import JProjects.BaseInfoBot.commands.FortuneCookie;
+import JProjects.BaseInfoBot.commands.Fortune;
 import JProjects.BaseInfoBot.commands.Help;
 import JProjects.BaseInfoBot.commands.Lookup;
 import JProjects.BaseInfoBot.commands.Pat;
@@ -32,6 +32,8 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Emote;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -113,7 +115,7 @@ public class BaseInfoBot {
 		// Fun
 		new TableFlip(this);
 		new Pat(this);
-		new FortuneCookie(this);
+		new Fortune(this);
 	}
 
 //	public void registerReactions() {
@@ -182,6 +184,10 @@ public class BaseInfoBot {
 		}
 	}
 
+	public Emote getEmote(String emote) {
+		return getJDA().getEmoteById(Emotes.getId(emote));
+	}
+
 	public void reactCheck(Message msg) {
 		addReaction(msg, "✅");
 	}
@@ -232,6 +238,11 @@ public class BaseInfoBot {
 
 	public User getUserById(String id) {
 		return getJDA().getUserById(id);
+	}
+
+	public String getUserDisplayName(String id, Guild guild) {
+		Member m = guild.getMember(getUserById(id));
+		return m.getNickname() == null ? m.getUser().getName() : m.getNickname();
 	}
 
 	public void setMuted(boolean mute) {

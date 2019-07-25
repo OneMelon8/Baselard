@@ -17,9 +17,9 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
 
-public class FortuneCookie extends Command {
+public class Fortune extends Command {
 
-	public FortuneCookie(BaseInfoBot bot) {
+	public Fortune(BaseInfoBot bot) {
 		super(bot, "cookie", new String[] { "fortune", "cookies" }, "Get a fortune cookie!");
 	}
 

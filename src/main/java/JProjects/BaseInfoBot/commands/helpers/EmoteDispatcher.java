@@ -42,6 +42,10 @@ public class EmoteDispatcher {
 		}, BotConfig.REACTION_TIME_OUT_MS);
 	}
 
+	public static void registerCleanUp(Message message) {
+		purgeReactions.put(message, System.currentTimeMillis() / 1000 + BotConfig.REACTION_TIME_OUT);
+	}
+
 	public static void cleanUp() {
 		long now = System.currentTimeMillis() / 1000;
 		Message[] messages = (Message[]) purgeReactions.keySet().toArray(new Message[0]);

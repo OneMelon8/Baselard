@@ -47,7 +47,7 @@ public class ImageTools {
 		return f;
 	}
 
-	public static File mergeBandoriRoom(ArrayList<String> participants) throws IOException {
+	public static BufferedImage mergeBandoriRoom(ArrayList<String> participants) throws IOException {
 		BufferedImage concatImage = new BufferedImage(640, 128, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2d = concatImage.createGraphics();
 
@@ -76,12 +76,16 @@ public class ImageTools {
 		}
 
 		g2d.dispose();
+		return concatImage;
+	}
+
+	public static File imageToFile(BufferedImage img) throws IOException {
 		File f = new File("./temp.png");
-		ImageIO.write(concatImage, "png", f);
+		ImageIO.write(img, "png", f);
 		return f;
 	}
 
-	private static BufferedImage getImageFromUrl(String urlStr) throws IOException {
+	public static BufferedImage getImageFromUrl(String urlStr) throws IOException {
 		final URL url = new URL(urlStr);
 		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestProperty("User-Agent", "Chrome");

@@ -57,7 +57,7 @@ public class BandoriCards extends Command implements ReactionEvent {
 			bot.reactDetails(msg);
 
 			EmoteDispatcher.register(msg, this, "◀", "▶", "🔍");
-			EmoteDispatcher.purgeReactions.put(msg, System.currentTimeMillis() / 1000 + BotConfig.REACTION_TIME_OUT);
+			EmoteDispatcher.registerCleanUp(msg);
 		} catch (IndexOutOfBoundsException ex) {
 			ex.printStackTrace();
 			bot.sendMessage("I cannot find information on that card, maybe you spelled it wrong?", channel);
@@ -114,8 +114,7 @@ public class BandoriCards extends Command implements ReactionEvent {
 				bot.reactNext(msg);
 				bot.reactDetails(msg);
 				EmoteDispatcher.register(msg, this, "◀", "▶", "🔍");
-				EmoteDispatcher.purgeReactions.put(msg,
-						System.currentTimeMillis() / 1000 + BotConfig.REACTION_TIME_OUT);
+				EmoteDispatcher.registerCleanUp(msg);
 			} else {
 				bot.sendFile(card.getArtworks(), channel);
 				bot.sendFile(card.getChibis(), channel);

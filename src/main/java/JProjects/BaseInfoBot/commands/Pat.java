@@ -225,7 +225,7 @@ public class Pat extends Command implements ReactionEvent {
 		bot.reactNext(msg);
 
 		EmoteDispatcher.register(msg, this, "◀", "▶");
-		EmoteDispatcher.purgeReactions.put(msg, System.currentTimeMillis() / 1000 + BotConfig.REACTION_TIME_OUT);
+		EmoteDispatcher.registerCleanUp(msg);
 	}
 
 	private void pat(User author, String id, MessageChannel channel, Guild guild) {
