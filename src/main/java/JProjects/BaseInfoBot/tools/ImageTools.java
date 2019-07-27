@@ -15,7 +15,7 @@ import JProjects.BaseInfoBot.database.files.assets.ImageAssets;
 
 public class ImageTools {
 
-	public static File mergeHoriz(String... urlss) throws IOException {
+	public static BufferedImage mergeHoriz(String... urlss) throws IOException {
 		ArrayList<String> urlList = new ArrayList<String>();
 		for (String s : urlss) {
 			if (s == null || s.isEmpty())
@@ -41,10 +41,7 @@ public class ImageTools {
 			currentPosition += w;
 		}
 		g2d.dispose();
-
-		File f = new File("./temp.png");
-		ImageIO.write(concatImage, "png", f);
-		return f;
+		return concatImage;
 	}
 
 	public static BufferedImage mergeBandoriRoom(ArrayList<String> participants) throws IOException {

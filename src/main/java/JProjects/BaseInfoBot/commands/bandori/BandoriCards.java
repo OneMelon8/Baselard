@@ -115,9 +115,6 @@ public class BandoriCards extends Command implements ReactionEvent {
 				bot.reactDetails(msg);
 				EmoteDispatcher.register(msg, this, "◀", "▶", "🔍");
 				EmoteDispatcher.registerCleanUp(msg);
-			} else {
-				bot.sendFile(card.getArtworks(), channel);
-				bot.sendFile(card.getChibis(), channel);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();

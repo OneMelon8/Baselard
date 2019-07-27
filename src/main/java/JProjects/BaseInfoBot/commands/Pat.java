@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
@@ -35,7 +36,6 @@ public class Pat extends Command implements ReactionEvent {
 
 	private static Random r = new Random();
 
-	private static boolean patRankingUpdated = true;
 	private static LinkedHashMap<Object, Long> patRanking;
 	long totalPats = 0;
 
@@ -81,6 +81,8 @@ public class Pat extends Command implements ReactionEvent {
 			setPats(mentioned.get(0), args[2], guild.getId(), message, channel);
 		else if (subCommand.equals("calc") && isAdmin)
 			calcTotalPats(channel);
+		else if (subCommand.equals("merge") && isAdmin)
+			mergePats(String.join("", Arrays.copyOfRange(args, 1, args.length)), channel);
 		else
 			pat(author, id, channel, guild);
 	}
@@ -102,7 +104,6 @@ public class Pat extends Command implements ReactionEvent {
 	}
 
 	private void setPats(Member user, String count, String serverId, Message message, MessageChannel channel) {
-		patRankingUpdated = true;
 		JSONObject patData = null;
 		try {
 			patData = FileEditor.read(fileName);
@@ -163,29 +164,26 @@ public class Pat extends Command implements ReactionEvent {
 
 	private void patRank(String id, int page, Message message, MessageChannel channel, Guild guild) {
 		String serverId = guild.getId();
-		if (patRankingUpdated) {
-			JSONObject patData = null;
-			try {
-				patData = FileEditor.read(fileName);
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			} catch (ParseException ex) {
-				ex.printStackTrace();
-			}
-			if (patData == null || !patData.containsKey("total_pats")) {
-				bot.sendMessage("Nobody has patted me yet " + Emotes.KOKORON_WUT_3, channel);
-				return;
-			}
-			totalPats = Long.valueOf(patData.get("total_pats").toString());
-			JSONObject serversPatData = (JSONObject) patData.get("server_pats");
-			if (serversPatData == null || !serversPatData.containsKey(serverId)) {
-				bot.sendMessage("Nobody has patted me yet " + Emotes.KOKORON_WUT_3, channel);
-				return;
-			}
-			JSONObject usersPatData = (JSONObject) serversPatData.get(serverId);
-			patRanking = GeneralTools.sortByValueLong(usersPatData);
-			patRankingUpdated = false;
+		JSONObject patData = null;
+		try {
+			patData = FileEditor.read(fileName);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} catch (ParseException ex) {
+			ex.printStackTrace();
 		}
+		if (patData == null || !patData.containsKey("total_pats")) {
+			bot.sendMessage("Nobody has patted me yet " + Emotes.KOKORON_WUT_3, channel);
+			return;
+		}
+		totalPats = Long.valueOf(patData.get("total_pats").toString());
+		JSONObject serversPatData = (JSONObject) patData.get("server_pats");
+		if (serversPatData == null || !serversPatData.containsKey(serverId)) {
+			bot.sendMessage("Nobody has patted me yet " + Emotes.KOKORON_WUT_3, channel);
+			return;
+		}
+		JSONObject usersPatData = (JSONObject) serversPatData.get(serverId);
+		patRanking = GeneralTools.sortByValueLong(usersPatData);
 
 		String[] userIds = patRanking.keySet().toArray(new String[] {});
 		Long[] userPats = patRanking.values().toArray(new Long[] {});
@@ -229,7 +227,6 @@ public class Pat extends Command implements ReactionEvent {
 	}
 
 	private void pat(User author, String id, MessageChannel channel, Guild guild) {
-		patRankingUpdated = true;
 		String serverId = guild.getId();
 		long msLeft = cooldown.containsKey(serverId) ? cooldown.get(serverId) - System.currentTimeMillis() : 0;
 		if (msLeft > 0) {
@@ -281,8 +278,54 @@ public class Pat extends Command implements ReactionEvent {
 		}
 	}
 
+	private void mergePats(String jsonStr, MessageChannel channel) {
+		JSONObject patData1 = null, patData2 = null, patDataTotal = new JSONObject();
+		try {
+			patData1 = FileEditor.read(fileName);
+			patData2 = (JSONObject) new JSONParser().parse(jsonStr);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} catch (ParseException ex) {
+			ex.printStackTrace();
+		}
+		if (patData1 == null)
+			patData1 = new JSONObject();
+		if (patData2 == null)
+			patData2 = new JSONObject();
+
+		// Server pats
+		JSONObject serversPatData1 = patData1.containsKey("server_pats") ? (JSONObject) patData1.get("server_pats")
+				: new JSONObject();
+		JSONObject serversPatData2 = patData2.containsKey("server_pats") ? (JSONObject) patData2.get("server_pats")
+				: new JSONObject();
+		JSONObject serversPatDataTotal = new JSONObject();
+		for (Object serverId : serversPatData1.keySet()) {
+			JSONObject usersPatData1 = serversPatData1.containsKey(serverId)
+					? (JSONObject) serversPatData1.get(serverId)
+					: new JSONObject();
+			JSONObject usersPatData2 = serversPatData2.containsKey(serverId)
+					? (JSONObject) serversPatData2.get(serverId)
+					: new JSONObject();
+			for (Object userId : usersPatData2.keySet()) {
+				if (usersPatData1.containsKey(userId))
+					usersPatData1.put(userId, ((long) usersPatData1.get(userId)) + ((long) usersPatData2.get(userId)));
+				else
+					usersPatData1.put(userId, usersPatData2.get(userId));
+			}
+			serversPatDataTotal.put(serverId, usersPatData1);
+		}
+		patDataTotal.put("server_pats", serversPatDataTotal);
+
+		try {
+			FileEditor.write(fileName, patDataTotal);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		calcTotalPats(null);
+		bot.sendMessage("Success!", channel);
+	}
+
 	private void calcTotalPats(MessageChannel channel) {
-		patRankingUpdated = true;
 		JSONObject patData = null;
 		try {
 			patData = FileEditor.read(fileName);
@@ -309,6 +352,8 @@ public class Pat extends Command implements ReactionEvent {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
+		if (channel == null)
+			return;
 		bot.sendMessage("Success!", channel);
 	}
 

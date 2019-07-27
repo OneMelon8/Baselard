@@ -1,7 +1,7 @@
 package JProjects.BaseInfoBot.database.bandori;
 
 import java.awt.Color;
-import java.io.File;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import JProjects.BaseInfoBot.database.Emotes;
@@ -91,7 +91,6 @@ public class BandoriCard {
 		builder.setColor(this.getColor());
 		builder.setAuthor(this.getName());
 		builder.setThumbnail(this.getIconUrl());
-//		builder.setImage(this.getArtUrl());
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("Versions: " + this.getVersionsEmotes());
@@ -131,7 +130,7 @@ public class BandoriCard {
 		return builder.build();
 	}
 
-	public File getArtworks() {
+	public BufferedImage getArtworks() {
 		try {
 			return ImageTools.mergeHoriz(this.artUrl, this.artUrl2);
 		} catch (IOException e) {
@@ -140,7 +139,7 @@ public class BandoriCard {
 		}
 	}
 
-	public File getChibis() {
+	public BufferedImage getChibis() {
 		try {
 			return ImageTools.mergeHoriz(this.chibiUrl, this.chibiUrl2, this.chibiUrl3);
 		} catch (IOException e) {

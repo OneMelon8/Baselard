@@ -79,6 +79,7 @@ public class Help extends Command implements ReactionEvent {
 		sb.append(String.format("%-8s >> %s", "event", "Show event list or a specific event\n"));
 		sb.append(String.format("%-8s >> %s", "card", "Search for a specific (or random) card\n"));
 		sb.append(String.format("%-8s >> %s", "member", "Show member list or a specific member\n"));
+		sb.append(String.format("%-8s >> %s", "multi", "Show help for the multi-live command\n"));
 		sb.append("```");
 		builder.addField(new Field("**Bandori Commands:**", sb.toString(), false));
 
