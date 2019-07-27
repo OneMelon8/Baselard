@@ -308,7 +308,8 @@ public class Pat extends Command implements ReactionEvent {
 					: new JSONObject();
 			for (Object userId : usersPatData2.keySet()) {
 				if (usersPatData1.containsKey(userId))
-					usersPatData1.put(userId, ((long) usersPatData1.get(userId)) + ((long) usersPatData2.get(userId)));
+					usersPatData1.put(userId, Long.parseLong(String.valueOf(usersPatData1.get(userId)))
+							+ Long.parseLong(String.valueOf(usersPatData2.get(userId))));
 				else
 					usersPatData1.put(userId, usersPatData2.get(userId));
 			}
