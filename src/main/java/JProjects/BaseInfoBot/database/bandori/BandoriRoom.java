@@ -113,7 +113,7 @@ public class BandoriRoom {
 		}
 		if (sb.length() != 0)
 			sb.deleteCharAt(sb.length() - 1);
-		return "Room ping by " + pinger.getName() + "\n" + sb.toString();
+		return "Room ping by " + pinger.getName() + ":\n" + sb.toString();
 	}
 
 	/*

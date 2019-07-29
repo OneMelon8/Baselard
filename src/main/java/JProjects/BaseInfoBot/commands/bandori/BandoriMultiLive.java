@@ -60,13 +60,14 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 
 			multiRooms.put(authorId, room);
 			EmoteDispatcher.register(msg, this, "live_boost");
-			EmoteDispatcher.registerCleanUp(msg);
+			EmoteDispatcher.registerCleanUp(msg, 180);
 		} else if (args.length == 1 && (sub.equals("list") || sub.equals("l") || sub.equals("rooms"))) {
 			bot.sendMessage(getRoomList(guild), channel);
 		} else if (args.length == 1 && (sub.equals("ping") || sub.equals("mention"))) {
 			BandoriRoom room = getRoomByUser(authorId);
 			if (room == null) {
-				bot.sendMessage(author.getAsMention() + " You are not in a multi-live room!", channel);
+				Role readyRole = guild.getRolesByName("b-r", true).get(0);
+				bot.sendMessage("Ready ping by " + author.getAsMention() + ":\n" + readyRole.getAsMention(), channel);
 				return;
 			}
 			bot.sendMessage(room.getPingMessage(author), channel);
@@ -202,13 +203,13 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		builder.setDescription("Use the following template to use the multi-live feature");
 
 		StringBuilder sb = new StringBuilder("```");
-		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command, "Show this message\n"));
 		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " ready/r",
 				"Toggle your \"ready\" status\n"));
 		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " join/j <ID>", "Join a room by its ID\n"));
 		sb.append(
 				String.format("%-20s >> %s", BotConfig.PREFIX + command + " leave/quit", "Leave your current room\n"));
 		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " list/l", "See all active rooms\n"));
+		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " ping", "Ping everyone in your room\n"));
 		sb.append("```");
 		builder.addField(new Field("Regular Commands:", sb.toString(), false));
 
@@ -216,7 +217,6 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " create/c <ID>",
 				"Create a multi-live room\n"));
 		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " disband/d", "Disband your room\n"));
-		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " ping", "Ping everyone in the room\n"));
 		sb.append("```");
 		builder.addField(new Field("Room Owner Commands:", sb.toString(), false));
 
