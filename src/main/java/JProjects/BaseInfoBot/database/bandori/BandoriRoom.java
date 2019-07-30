@@ -3,6 +3,7 @@ package JProjects.BaseInfoBot.database.bandori;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import JProjects.BaseInfoBot.App;
 import JProjects.BaseInfoBot.BaseInfoBot;
@@ -81,7 +82,7 @@ public class BandoriRoom {
 	}
 
 	public boolean join(User user, Message message, MessageChannel channel) {
-		if (this.participants.contains(user.getId()))
+		if (this.participants.contains(user.getId()) || this.getParticipantsCount() + 1 > this.getCapacity())
 			return false;
 		this.participants.add(user.getId());
 
@@ -102,6 +103,14 @@ public class BandoriRoom {
 			return false;
 
 		this.participants.remove(user.getId());
+		return true;
+	}
+
+	public boolean transfer(String fromId, String toId) {
+		if (!this.participants.contains(toId))
+			return false;
+		this.setCreator(bot.getUserById(toId));
+		Collections.swap(this.participants, 0, this.participants.indexOf(toId));
 		return true;
 	}
 

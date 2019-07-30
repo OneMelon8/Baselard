@@ -33,4 +33,41 @@ public class EmbededUtil {
 		return builder.build();
 	}
 
+	public static MessageEmbed getErrorEmbeded() {
+		EmbedBuilder builder = new EmbedBuilder();
+		builder.setColor(Color.RED);
+		builder.setAuthor("Communication with the suits has been interrupted... ");
+		builder.setDescription("An unexpected exception has occured, please try again later or contact @One");
+
+		StringBuilder sb = new StringBuilder("```");
+		sb.append("[10:30] We saw a wild Michelle in the woods!!" + "\n[11:00] We have lost track of the Michelle!"
+				+ "\n[11:30] We found some footsteps, it's Michelle's!"
+				+ "\n[12:00] We found the Michelle! But where are we?");
+		sb.append("```");
+		builder.addField(new Field("Last known information:", sb.toString(), false));
+		return builder.build();
+	}
+
+	public static MessageEmbed getErrorEmbeded(Exception ex) {
+		EmbedBuilder builder = new EmbedBuilder();
+		builder.setColor(Color.RED);
+		builder.setAuthor("Communication with the suits has been interrupted... ");
+		builder.setDescription("An unexpected exception has occured, please try again later or contact @One");
+
+		StringBuilder sb = new StringBuilder("```");
+		sb.append(ex.getClass().getName() + "\n" + ex.getMessage());
+		sb.append("```");
+		builder.addField(new Field("Last known information:", sb.toString(), false));
+		return builder.build();
+	}
+
+	public static MessageEmbed getErrorEmbeded(String errorMessage) {
+		EmbedBuilder builder = new EmbedBuilder();
+		builder.setColor(Color.RED);
+		builder.setAuthor("Communication with the suits has been interrupted");
+		builder.setDescription("An unexpected error has occured, please try again later or contact @One");
+		builder.addField(new Field("Last known information:", "```" + errorMessage + "```", false));
+		return builder.build();
+	}
+
 }

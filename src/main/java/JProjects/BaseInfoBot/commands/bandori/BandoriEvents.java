@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
+import JProjects.BaseInfoBot.database.bandori.BandoriEvent;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.spider.bandori.BandoriEventSpider;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -26,8 +27,9 @@ public class BandoriEvents extends Command {
 			Guild guild) {
 		bot.sendThinkingPacket(channel);
 		if (args.length == 0) {
+			// Query event list
 			try {
-				bot.sendMessage(getEventsEmbeded(BandoriEventSpider.queryEventList(false)), channel);
+				bot.sendMessage(getEventsEmbeded(BandoriEventSpider.queryEventList(), 1), channel);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 				bot.sendMessage("Seems like bandori.party cannot be reached right now, try again later.", channel);
@@ -36,13 +38,14 @@ public class BandoriEvents extends Command {
 		}
 
 		String eventName = String.join(" ", args).trim().toLowerCase();
-		// If query current
 		if (eventName.equals("c") || eventName.equals("curr") || eventName.equals("current")) {
+			// Query current
 			try {
-				eventName = BandoriEventSpider.queryEventList(true).get(0);
+				eventName = BandoriEventSpider.queryLatest().getName();
 			} catch (IOException ex) {
 				ex.printStackTrace();
 				bot.sendMessage("Seems like bandori.party cannot be reached right now, try again later.", channel);
+				return;
 			}
 		} else if (eventName.equals("t") || eventName.equals("track") || eventName.equals("tracker")) {
 			MessageEmbed msg = BandoriEventSpider.queryEventTracking();
@@ -52,7 +55,7 @@ public class BandoriEvents extends Command {
 
 		// Show details on that event
 		try {
-			bot.sendMessage(BandoriEventSpider.queryEvent(eventName), channel);
+			bot.sendMessage(BandoriEventSpider.queryEvent(eventName).getEmbededMessages(), channel);
 		} catch (IndexOutOfBoundsException ex) {
 			ex.printStackTrace();
 			bot.sendMessage("I cannot find information on that event, maybe you spelled it wrong?", channel);
@@ -62,20 +65,14 @@ public class BandoriEvents extends Command {
 		}
 	}
 
-	public MessageEmbed getEventsEmbeded(ArrayList<String> events) {
+	public MessageEmbed getEventsEmbeded(ArrayList<BandoriEvent> events, int page) {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(BotConfig.COLOR_MISC);
-		builder.setAuthor("All Events in Chronological Order");
-		builder.setDescription("Global Server Event Count: " + events.size());
-		for (int index = 0; index < events.size(); index += 20) {
-			int max = index + 20 > events.size() ? events.size() : index + 20;
-			StringBuilder sb = new StringBuilder("```json\n");
-			for (int a = index; a < max; a++)
-				sb.append("\"" + events.get(a) + "\", ");
-			sb.delete(sb.length() - 2, sb.length());
-			sb.append("```");
-			builder.addField(new Field("Events " + (index + 1) + "-" + (max + 1) + ":", sb.toString(), false));
-		}
+		builder.setAuthor("Event List in Chronological Order");
+		builder.setDescription("These events are arranged in chronological order for the Bandori global server");
+		for (BandoriEvent event : events)
+			builder.addField("**" + event.getName() + "**", "`" + event.getCountdown(true) + "`", false);
+		builder.setFooter("Page " + page, "https://cdn.discordapp.com/emojis/432981158670630924.png");
 		return builder.build();
 	}
 

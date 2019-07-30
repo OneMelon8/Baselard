@@ -3,39 +3,15 @@ package JProjects.BaseInfoBot.tools;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class TimeFormatter {
-	private static HashMap<String, Integer> dateReplacer = new HashMap<String, Integer>() {
-		private static final long serialVersionUID = 5861217683916303222L;
-		{
-			put("January", 1);
-			put("February", 2);
-			put("March", 3);
-			put("April", 4);
-			put("May", 5);
-			put("June", 6);
-			put("July", 7);
-			put("August", 8);
-			put("September", 9);
-			put("October", 10);
-			put("November", 11);
-			put("December", 12);
-		}
-	};
-
 	// June 20, 2019 01:00:00
 	public static Calendar getDateFromBandoriString(String str) {
-		SimpleDateFormat sdf = new SimpleDateFormat("M dd, yyyy hh:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("MMMMM dd, yyyy hh:mm:ss");
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 		Calendar c = Calendar.getInstance();
-
-		for (Entry<String, Integer> entry : dateReplacer.entrySet())
-			str = str.replace(entry.getKey(), String.valueOf(entry.getValue()));
-
 		try {
 			c.setTime(sdf.parse(str));
 		} catch (ParseException e) {
@@ -45,7 +21,14 @@ public class TimeFormatter {
 		return c;
 	}
 
-	public static String getCountDown(long start, long end, long now) {
+	public static String formatCalendar(Calendar cal) {
+		SimpleDateFormat sdf = new SimpleDateFormat("MMMMM dd, yyyy hh:mm:ss");
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+		String formatted = sdf.format(cal.getTime());
+		return formatted;
+	}
+
+	public static String getCountDown(long start, long end, long now, boolean exact) {
 		long diff = 0;
 		String mode = "";
 		if (start > now) {
@@ -78,7 +61,7 @@ public class TimeFormatter {
 		if (seconds > 0)
 			sb.append(seconds + (seconds == 1 ? " second" : " seconds"));
 
-		if (days > 99)
+		if (days > 99 && !exact)
 			sb = new StringBuilder("a long time");
 
 		if (mode.equals("before"))

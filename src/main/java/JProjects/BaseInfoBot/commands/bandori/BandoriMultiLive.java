@@ -1,6 +1,7 @@
 package JProjects.BaseInfoBot.commands.bandori;
 
 import java.util.HashMap;
+import java.util.List;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
@@ -41,6 +42,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 
 		String sub = args[0];
 		String authorId = author.getId();
+		List<User> pingedUsers = message.getMentionedUsers();
 		if (args.length == 2 && (sub.equals("create") || sub.equals("c") || sub.equals("host"))) {
 			if (!idCheck(args[1])) {
 				bot.sendMessage(author.getAsMention() + " Invalid room ID!", channel);
@@ -63,6 +65,13 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 			EmoteDispatcher.registerCleanUp(msg, 180);
 		} else if (args.length == 1 && (sub.equals("list") || sub.equals("l") || sub.equals("rooms"))) {
 			bot.sendMessage(getRoomList(guild), channel);
+		} else if (args.length == 1 && (sub.equals("show") || sub.equals("s") || sub.equals("display"))) {
+			BandoriRoom room = getRoomByUser(authorId);
+			if (room == null) {
+				bot.sendMessage(author.getAsMention() + " You are not in a multi-live room!", channel);
+				return;
+			}
+			bot.sendMessage(room.getEmbededMessage(), channel);
 		} else if (args.length == 1 && (sub.equals("ping") || sub.equals("mention"))) {
 			BandoriRoom room = getRoomByUser(authorId);
 			if (room == null) {
@@ -77,18 +86,32 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 				bot.sendMessage(author.getAsMention() + " Successfully disbanded the room!", channel);
 			else
 				bot.sendMessage(author.getAsMention() + " You do not own a room!", channel);
+		} else if (pingedUsers.size() != 0 && args.length == 2 && (sub.equals("transfer") || sub.equals("t"))) {
+			User user = pingedUsers.get(0);
+			if (transfer(authorId, user))
+				bot.sendMessage(
+						author.getAsMention() + " Successfully transferred the room to " + user.getAsMention() + "!",
+						channel);
+			else
+				bot.sendMessage(author.getAsMention() + " You do not own a room or the target user is not in the room!",
+						channel);
 		} else if (args.length == 1 && (sub.equals("leave") || sub.equals("quit")) || sub.equals("exit")) {
 			if (!leave(author, channel))
 				bot.sendMessage(author.getAsMention() + " You are not in a multi-live room!", channel);
 		} else if (args.length == 1 && (sub.equals("ready") || sub.equals("r"))) {
 			toggleReady(message, channel, author, guild);
 		} else if (args.length == 2 && (sub.equals("join") || sub.equals("j"))) {
+			BandoriRoom room;
 			if (!idCheck(args[1])) {
-				bot.sendMessage(author.getAsMention() + " Invalid room ID!", channel);
-				return;
-			}
+				if (pingedUsers.size() == 0) {
+					bot.sendMessage(author.getAsMention() + " Invalid room ID!", channel);
+					return;
+				}
+				User pinged = pingedUsers.get(0);
+				room = getRoomByUser(pinged.getId());
+			} else
+				room = getRoomById(args[1]);
 			preJoinCheck(author, channel);
-			BandoriRoom room = getRoomById(args[1]);
 			if (room == null || !room.join(author, null, channel))
 				bot.sendMessage(author.getAsMention() + " Failed to join the room!", channel);
 		} else {
@@ -140,6 +163,13 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		return true;
 	}
 
+	private boolean transfer(String id, User user) {
+		if (!multiRooms.containsKey(id))
+			return false;
+		BandoriRoom room = multiRooms.get(id);
+		return room.transfer(id, user.getId());
+	}
+
 	private BandoriRoom getRoomById(String id) {
 		for (String creatorId : multiRooms.keySet()) {
 			BandoriRoom room = multiRooms.get(creatorId);
@@ -170,7 +200,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 			builder.addField(new Field(
 					"**" + count + ".** " + bot.getUserDisplayName(creatorId, guild) + "'s Room ("
 							+ room.getParticipantsCount() + "/" + room.getCapacity() + "): **" + room.getId() + "**",
-					">" + room.getParticipantsDisplay(guild), false));
+					"`" + room.getParticipantsDisplay(guild) + "`", false));
 			count++;
 		}
 
@@ -179,17 +209,20 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 	}
 
 	private void toggleReady(Message message, MessageChannel channel, User user, Guild guild) {
-		GuildController controller = new GuildController(guild);
 		Role readyRole = guild.getRolesByName("b-r", true).get(0);
 		Member userMember = guild.getMember(user);
 		boolean ready = guild.getMembersWithRoles(readyRole).contains(userMember);
-		if (ready) {
+		toggleReady(user, guild, !ready);
+	}
+
+	private void toggleReady(User user, Guild guild, boolean ready) {
+		GuildController controller = new GuildController(guild);
+		Role readyRole = guild.getRolesByName("b-r", true).get(0);
+		Member userMember = guild.getMember(user);
+		if (!ready)
 			controller.removeSingleRoleFromMember(userMember, readyRole).queue();
-			bot.reactCheck(message);
-		} else {
+		else
 			controller.addSingleRoleToMember(userMember, readyRole).queue();
-			bot.reactCheck(message);
-		}
 	}
 
 	private boolean idCheck(String id) {
@@ -203,20 +236,24 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		builder.setDescription("Use the following template to use the multi-live feature");
 
 		StringBuilder sb = new StringBuilder("```");
-		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " ready/r",
+		sb.append(String.format("%-22s >> %s", BotConfig.PREFIX + command + " ready/r",
 				"Toggle your \"ready\" status\n"));
-		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " join/j <ID>", "Join a room by its ID\n"));
+		sb.append(String.format("%-22s >> %s", BotConfig.PREFIX + command + " join/j <ID/@>",
+				"Join room by ID or @mention\n"));
 		sb.append(
-				String.format("%-20s >> %s", BotConfig.PREFIX + command + " leave/quit", "Leave your current room\n"));
-		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " list/l", "See all active rooms\n"));
-		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " ping", "Ping everyone in your room\n"));
+				String.format("%-22s >> %s", BotConfig.PREFIX + command + " leave/quit", "Leave your current room\n"));
+		sb.append(String.format("%-22s >> %s", BotConfig.PREFIX + command + " list/l", "See all active rooms\n"));
+		sb.append(String.format("%-22s >> %s", BotConfig.PREFIX + command + " show/s", "See your current room\n"));
+		sb.append(String.format("%-22s >> %s", BotConfig.PREFIX + command + " ping", "Ping everyone in your room\n"));
 		sb.append("```");
 		builder.addField(new Field("Regular Commands:", sb.toString(), false));
 
 		sb = new StringBuilder("```");
-		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " create/c <ID>",
+		sb.append(String.format("%-22s >> %s", BotConfig.PREFIX + command + " create/c <ID>",
 				"Create a multi-live room\n"));
-		sb.append(String.format("%-20s >> %s", BotConfig.PREFIX + command + " disband/d", "Disband your room\n"));
+		sb.append(String.format("%-22s >> %s", BotConfig.PREFIX + command + " disband/d", "Disband your room\n"));
+		sb.append(String.format("%-22s >> %s", BotConfig.PREFIX + command + " transfer/t <ID>",
+				"Transfer room ownership\n"));
 		sb.append("```");
 		builder.addField(new Field("Room Owner Commands:", sb.toString(), false));
 

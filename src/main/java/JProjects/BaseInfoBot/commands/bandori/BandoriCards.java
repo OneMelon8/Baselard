@@ -34,7 +34,7 @@ public class BandoriCards extends Command implements ReactionEvent {
 		bot.sendThinkingPacket(channel);
 		if (args.length == 0) {
 			try {
-				bot.sendMessage(BandoriCardSpider.queryRandom().getEmbededMessage(), channel);
+				bot.sendMessage(BandoriCardSpider.queryRandom().getEmbededMessage(false), channel);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 				bot.sendMessage("Seems like bandori.party cannot be reached right now, try again later.", channel);
@@ -49,7 +49,7 @@ public class BandoriCards extends Command implements ReactionEvent {
 				throw new IndexOutOfBoundsException("No results");
 			card.setIndex(0);
 			card.setNotes(query);
-			Message msg = bot.sendMessage(card.getEmbededMessage(), channel);
+			Message msg = bot.sendMessage(card.getEmbededMessage(true), channel);
 //			bot.addReaction(msg, bot.getJDA().getEmoteById(Emotes.getId(card.getAttr().getEmote())));
 //			bot.addReaction(msg, bot.getJDA().getEmoteById(Emotes.getId(Emotes.getRarityEmote(card.getRarity()))));
 			bot.reactPrev(msg);
@@ -107,7 +107,7 @@ public class BandoriCards extends Command implements ReactionEvent {
 			if (card == null)
 				throw new IndexOutOfBoundsException("No results!");
 
-			msg = bot.editMessage(msg, showDetails ? card.getDetailedEmbededMessage() : card.getEmbededMessage());
+			msg = bot.editMessage(msg, showDetails ? card.getDetailedEmbededMessage() : card.getEmbededMessage(true));
 
 			if (!showDetails) {
 				bot.reactPrev(msg);
@@ -118,7 +118,7 @@ public class BandoriCards extends Command implements ReactionEvent {
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			bot.addReaction(msg, bot.getJDA().getEmoteById(Emotes.getId(Emotes.KOKORON_ERROR)));
+			bot.editMessage(msg, EmbededUtil.getErrorEmbeded(ex));
 		}
 	}
 

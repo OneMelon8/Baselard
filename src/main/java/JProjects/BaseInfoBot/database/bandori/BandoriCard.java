@@ -68,7 +68,7 @@ public class BandoriCard {
 		this.overall = this.performance + this.technique + this.visual;
 	}
 
-	public MessageEmbed getEmbededMessage() {
+	public MessageEmbed getEmbededMessage(boolean showFooter) {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(this.getColor());
 		builder.setAuthor(this.getName());
@@ -81,8 +81,9 @@ public class BandoriCard {
 		builder.addField(
 				new Field(this.getMember().getEmote() + "・" + this.getAttr().getEmote() + "・" + this.getRarityStars(),
 						sb.toString(), false));
-		builder.setFooter((index + 1) + "/" + (total == 0 ? index + 1 : total) + " - " + notes,
-				"https://cdn.discordapp.com/emojis/432981158670630924.png");
+		if (showFooter)
+			builder.setFooter((index + 1) + "/" + (total == 0 ? index + 1 : total) + " - " + notes,
+					"https://cdn.discordapp.com/emojis/432981158670630924.png");
 		return builder.build();
 	}
 
@@ -285,6 +286,7 @@ public class BandoriCard {
 
 	public void setMember(BandoriMember member) {
 		this.member = member;
+		this.notes = this.member.getCatchPhrase();
 	}
 
 	public void setColor(String color) {
