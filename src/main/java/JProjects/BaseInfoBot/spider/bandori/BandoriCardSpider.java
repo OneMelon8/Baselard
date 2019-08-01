@@ -51,7 +51,7 @@ public class BandoriCardSpider {
 		while (true) {
 			Document doc = Jsoup.connect(
 					masterUrl + querySearchUrl + name.replace(" ", "+") + attrStr + rarityString + "&page=" + page)
-					.userAgent("Chrome").timeout(20 * 1000).get();
+					.userAgent("Chrome").timeout(60 * 1000).get();
 			if (total == -1) {
 				String searchCount = doc.getElementById("page-content-wrapper")
 						.select("div.collection-page-wrapper.as-container").select("div.padding20.total-search-results")
@@ -103,7 +103,7 @@ public class BandoriCardSpider {
 	}
 
 	public static BandoriCard queryCardDirect(String url) throws IOException {
-		Document doc = Jsoup.connect(url).userAgent("Chrome").timeout(20 * 1000).get();
+		Document doc = Jsoup.connect(url).userAgent("Chrome").timeout(60 * 1000).get();
 		Element table = doc.select("table.table.about-table").get(0);
 		BandoriCard card = new BandoriCard();
 		card.setName(table.select("tr[data-field=card_name]").select("td").get(1).text());
@@ -148,7 +148,7 @@ public class BandoriCardSpider {
 		doc = Jsoup
 				.connect(masterUrl
 						+ table.select("tr[data-field=member]").select("td").get(1).select("a").get(0).attr("href"))
-				.userAgent("Chrome").timeout(20 * 1000).get();
+				.userAgent("Chrome").timeout(60 * 1000).get();
 		table = doc.select("table.table.about-table").get(0);
 		card.setColor(table.select("tr[data-field=color]").select("td").get(1).select("span.text-muted").text());
 		return card;

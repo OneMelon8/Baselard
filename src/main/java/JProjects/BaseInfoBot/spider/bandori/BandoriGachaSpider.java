@@ -29,7 +29,7 @@ public class BandoriGachaSpider {
 		ArrayList<String> events = new ArrayList<String>();
 		while (true) {
 			Document doc = Jsoup.connect(masterUrl + queryAllUrl + "&page=" + page).userAgent("Chrome")
-					.timeout(20 * 1000).get();
+					.timeout(60 * 1000).get();
 			Elements rows = doc.select("div.collection-page-wrapper.as-container").get(0).select("div.row.items");
 			if (rows.size() == 0)
 				break;
@@ -46,11 +46,11 @@ public class BandoriGachaSpider {
 		List<MessageEmbed> output = new ArrayList<MessageEmbed>();
 
 		Document doc = Jsoup.connect(masterUrl + querySearchUrl + name.replace(" ", "+")).userAgent("Chrome")
-				.timeout(20 * 1000).get();
+				.timeout(60 * 1000).get();
 		doc = Jsoup
 				.connect(masterUrl + doc.select("div.collection-page-wrapper.as-container").get(0)
 						.select("div.row.items").select("a").get(0).attr("href"))
-				.userAgent("Chrome").timeout(20 * 1000).get();
+				.userAgent("Chrome").timeout(60 * 1000).get();
 		Element wrapper = doc.select("div.container.item-container").get(0);
 		Element table = wrapper.select("table.table.about-table").get(0);
 

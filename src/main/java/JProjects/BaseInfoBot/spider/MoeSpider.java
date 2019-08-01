@@ -22,7 +22,7 @@ public class MoeSpider {
 
 	// General query function
 	public static HashMap<String, String> query(String subUrl, MoeSuitType type, MoeGrade grade) throws IOException {
-		Document doc = Jsoup.connect(masterUrl + subUrl).userAgent("Chrome").timeout(20 * 1000).get();
+		Document doc = Jsoup.connect(masterUrl + subUrl).userAgent("Chrome").timeout(60 * 1000).get();
 		HashMap<String, String> stats = new HashMap<String, String>();
 		stats.put("name", subUrl.replace("_", " "));
 		stats.put("type", type.toString());

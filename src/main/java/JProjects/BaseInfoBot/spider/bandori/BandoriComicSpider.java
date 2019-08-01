@@ -19,7 +19,7 @@ public class BandoriComicSpider {
 	private static final String queryRandomUrl = "/assets/random/";
 
 	public static MessageEmbed queryRandom() throws IOException {
-		Document doc = Jsoup.connect(masterUrl + queryRandomUrl).userAgent("Chrome").timeout(20 * 1000).get();
+		Document doc = Jsoup.connect(masterUrl + queryRandomUrl).userAgent("Chrome").timeout(60 * 1000).get();
 		Element table = doc.select("table.table.about-table").get(0);
 
 		BandoriCard card = new BandoriCard(table.select("tr[data-field=card_name]").select("td").get(1).text(),
@@ -46,7 +46,7 @@ public class BandoriComicSpider {
 		doc = Jsoup
 				.connect(masterUrl
 						+ table.select("tr[data-field=member]").select("td").get(1).select("a").get(0).attr("href"))
-				.userAgent("Chrome").timeout(20 * 1000).get();
+				.userAgent("Chrome").timeout(60 * 1000).get();
 		table = doc.select("table.table.about-table").get(0);
 		card.setColor(table.select("tr[data-field=color]").select("td").get(1).select("span.text-muted").text());
 		return null;

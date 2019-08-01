@@ -22,11 +22,11 @@ public class BandoriMemberSpider {
 
 	public static MessageEmbed queryMember(String search, JDA jda) throws IOException {
 		Document doc = Jsoup.connect(masterUrl + querySearchUrl + search.replace(" ", "+")).userAgent("Chrome")
-				.timeout(20 * 1000).get();
+				.timeout(60 * 1000).get();
 		doc = Jsoup
 				.connect(masterUrl + doc.select("div.collection-page-wrapper.as-container").get(0)
 						.select("div.row.items").select("a").get(0).attr("href"))
-				.userAgent("Chrome").timeout(20 * 1000).get();
+				.userAgent("Chrome").timeout(60 * 1000).get();
 		Element wrapper = doc.select("div.container.item-container").get(0);
 		Element table = doc.select("table.table.about-table").get(0);
 

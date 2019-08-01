@@ -65,7 +65,8 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 			EmoteDispatcher.registerCleanUp(msg, 180);
 		} else if (args.length == 1 && (sub.equals("list") || sub.equals("l") || sub.equals("rooms"))) {
 			bot.sendMessage(getRoomList(guild), channel);
-		} else if (args.length == 1 && (sub.equals("show") || sub.equals("s") || sub.equals("display"))) {
+		} else if (args.length == 1
+				&& (sub.equals("show") || sub.equals("s") || sub.equals("display") || sub.contentEquals("d"))) {
 			BandoriRoom room = getRoomByUser(authorId);
 			if (room == null) {
 				bot.sendMessage(author.getAsMention() + " You are not in a multi-live room!", channel);
@@ -80,8 +81,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 				return;
 			}
 			bot.sendMessage(room.getPingMessage(author), channel);
-		} else if (args.length == 1
-				&& (sub.equals("disband") || sub.equals("delete") || sub.equals("del") || sub.contentEquals("d"))) {
+		} else if (args.length == 1 && (sub.equals("disband") || sub.equals("delete") || sub.equals("del"))) {
 			if (disband(authorId))
 				bot.sendMessage(author.getAsMention() + " Successfully disbanded the room!", channel);
 			else
@@ -99,7 +99,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 			if (!leave(author, channel))
 				bot.sendMessage(author.getAsMention() + " You are not in a multi-live room!", channel);
 		} else if (args.length == 1 && (sub.equals("ready") || sub.equals("r"))) {
-			toggleReady(message, channel, author, guild);
+			toggleReady(channel, author, guild);
 		} else if (args.length == 2 && (sub.equals("join") || sub.equals("j"))) {
 			BandoriRoom room;
 			if (!idCheck(args[1])) {
@@ -167,7 +167,12 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		if (!multiRooms.containsKey(id))
 			return false;
 		BandoriRoom room = multiRooms.get(id);
-		return room.transfer(id, user.getId());
+		boolean success = room.transfer(id, user.getId());
+		if (success) {
+			multiRooms.remove(id);
+			multiRooms.put(id, room);
+		}
+		return success;
 	}
 
 	private BandoriRoom getRoomById(String id) {
@@ -208,21 +213,28 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		return builder.build();
 	}
 
-	private void toggleReady(Message message, MessageChannel channel, User user, Guild guild) {
+	private void toggleReady(MessageChannel channel, User user, Guild guild) {
 		Role readyRole = guild.getRolesByName("b-r", true).get(0);
 		Member userMember = guild.getMember(user);
 		boolean ready = guild.getMembersWithRoles(readyRole).contains(userMember);
-		toggleReady(user, guild, !ready);
+		ready = toggleReady(user, guild, ready);
+		if (ready)
+			bot.sendMessage(user.getAsMention() + " is ready to multi-live!", channel);
+		else
+			bot.sendMessage(user.getAsMention() + " is no longer ready", channel);
 	}
 
-	private void toggleReady(User user, Guild guild, boolean ready) {
+	private boolean toggleReady(User user, Guild guild, boolean ready) {
 		GuildController controller = new GuildController(guild);
 		Role readyRole = guild.getRolesByName("b-r", true).get(0);
 		Member userMember = guild.getMember(user);
-		if (!ready)
+		if (ready) {
 			controller.removeSingleRoleFromMember(userMember, readyRole).queue();
-		else
+			return false;
+		} else {
 			controller.addSingleRoleToMember(userMember, readyRole).queue();
+			return true;
+		}
 	}
 
 	private boolean idCheck(String id) {
@@ -251,7 +263,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		sb = new StringBuilder("```");
 		sb.append(String.format("%-22s >> %s", BotConfig.PREFIX + command + " create/c <ID>",
 				"Create a multi-live room\n"));
-		sb.append(String.format("%-22s >> %s", BotConfig.PREFIX + command + " disband/d", "Disband your room\n"));
+		sb.append(String.format("%-22s >> %s", BotConfig.PREFIX + command + " disband/del", "Disband your room\n"));
 		sb.append(String.format("%-22s >> %s", BotConfig.PREFIX + command + " transfer/t <ID>",
 				"Transfer room ownership\n"));
 		sb.append("```");
