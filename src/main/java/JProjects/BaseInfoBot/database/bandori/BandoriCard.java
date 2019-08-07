@@ -134,8 +134,10 @@ public class BandoriCard {
 	public BufferedImage getArtworks() {
 		try {
 			return ImageTools.mergeHoriz(this.artUrl, this.artUrl2);
-		} catch (NullPointerException | IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
+		} catch (NullPointerException e) {
 			return null;
 		}
 	}
@@ -143,8 +145,10 @@ public class BandoriCard {
 	public BufferedImage getChibis() {
 		try {
 			return ImageTools.mergeHoriz(this.chibiUrl, this.chibiUrl2, this.chibiUrl3);
-		} catch (NullPointerException | IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
+		} catch (NullPointerException e) {
 			return null;
 		}
 	}
