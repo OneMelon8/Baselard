@@ -2,7 +2,7 @@ package JProjects.BaseInfoBot.database.config;
 
 public class BandoriConfig {
 	/*
-	 * Embed Builder
+	 * Embed Messages
 	 */
 	public static final int PERFORMANCE_MAX = 15000;
 	public static final int TECHNIQUE_MAX = 15000;

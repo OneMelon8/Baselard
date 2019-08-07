@@ -60,6 +60,10 @@ public class GeneralTools {
 		return sb.toString();
 	}
 
+	public static String signNumber(double d) {
+		return (d < 0 ? "" : "+") + d;
+	}
+
 	public static double round(double d, int places) {
 		return Math.round(d * Math.pow(10, places)) / Math.pow(10, places);
 	}

@@ -3,15 +3,18 @@ package JProjects.BaseInfoBot.commands.helpers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import JProjects.BaseInfoBot.App;
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.Help;
+import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import JProjects.BaseInfoBot.tools.StringTools;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
@@ -29,6 +32,33 @@ public class CommandDispatcher {
 			"Have you tried binary yet?", "Kono tensei Base-sama!" };
 	private static final Random r = new Random();
 
+	private static final String[] bdResponses = new String[] {
+			"Thanks! Don't forget to tell my master happy birthday too!",
+			Emotes.KOKORON_SPARKLE + " Here's a slice of cake~",
+			"Join me in the adventure of making the world smile!" };
+
+	private static boolean birthdayCheck(MessageReceivedEvent e) {
+		String msg = e.getMessage().getContentRaw().toLowerCase();
+		List<Member> mentioned = e.getMessage().getMentionedMembers();
+		boolean contains = false;
+		for (Member m : mentioned) {
+			if (!m.getUser().getId().equals(BotConfig.BOT_ID))
+				continue;
+			contains = true;
+			break;
+		}
+		if (!contains)
+			return false;
+		if (!msg.contains("happy") && !msg.contains("hpy"))
+			return false;
+		if (!msg.contains("birthday") && !msg.contains("bd") && !msg.contains("bday"))
+			return false;
+
+		App.bot.sendMessage(e.getAuthor().getAsMention() + " " + bdResponses[r.nextInt(bdResponses.length)],
+				e.getChannel());
+		return true;
+	}
+
 	/**
 	 * Tries to process the command (if registered)
 	 * 
@@ -36,6 +66,8 @@ public class CommandDispatcher {
 	 */
 	public static void fire(MessageReceivedEvent e) {
 		String msg = e.getMessage().getContentRaw();
+		if (birthdayCheck(e))
+			return;
 		if (!msg.startsWith(BotConfig.PREFIX))
 			return;
 

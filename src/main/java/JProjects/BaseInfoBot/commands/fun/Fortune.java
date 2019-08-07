@@ -1,4 +1,4 @@
-package JProjects.BaseInfoBot.commands;
+package JProjects.BaseInfoBot.commands.fun;
 
 import java.io.IOException;
 

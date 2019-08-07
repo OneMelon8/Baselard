@@ -8,10 +8,8 @@ import java.util.TimerTask;
 
 import javax.security.auth.login.LoginException;
 
-import JProjects.BaseInfoBot.commands.Fortune;
 import JProjects.BaseInfoBot.commands.Help;
 import JProjects.BaseInfoBot.commands.Lookup;
-import JProjects.BaseInfoBot.commands.Pat;
 import JProjects.BaseInfoBot.commands.Ping;
 import JProjects.BaseInfoBot.commands.Version;
 import JProjects.BaseInfoBot.commands.admin.Delete;
@@ -23,9 +21,11 @@ import JProjects.BaseInfoBot.commands.bandori.BandoriCards;
 import JProjects.BaseInfoBot.commands.bandori.BandoriEvents;
 import JProjects.BaseInfoBot.commands.bandori.BandoriMembers;
 import JProjects.BaseInfoBot.commands.bandori.BandoriMultiLive;
+import JProjects.BaseInfoBot.commands.fun.Fortune;
+import JProjects.BaseInfoBot.commands.fun.Pat;
+import JProjects.BaseInfoBot.commands.fun.TableFlip;
 import JProjects.BaseInfoBot.commands.helpers.ChatEventHandler;
 import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
-import JProjects.BaseInfoBot.commands.misc.TableFlip;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.tools.EnviroHandler;
 import net.dv8tion.jda.core.AccountType;
@@ -117,14 +117,6 @@ public class BaseInfoBot {
 		new Pat(this);
 		new Fortune(this);
 	}
-
-//	public void registerReactions() {
-//		EmoteDispatcher.register(new Help(this), "kokoron_wut", true);
-//		EmoteDispatcher.register(new BandoriCards(this), Arrays.asList("◀", "▶"), false);
-//		// "attr_power", "attr_pure", "attr_cool", "attr_happy", "bandori_rarity_1",
-//		// "bandori_rarity_2", "bandori_rarity_3", "bandori_rarity_4"
-//		EmoteDispatcher.register(new Pat(this), Arrays.asList("▶", "◀"), false);
-//	}
 
 	public void sendThinkingPacket(MessageChannel channel) {
 		channel.sendTyping().complete();
