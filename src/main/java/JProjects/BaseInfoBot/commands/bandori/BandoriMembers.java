@@ -51,12 +51,13 @@ public class BandoriMembers extends Command {
 				"Kasumi Toyama, Tae Hanazono, Rimi Ushigome, Saaya Yamabuki, Arisa Ichigaya", false));
 		builder.addField(new Field(Emotes.AFTERGLOW + " **Afterglow:**",
 				"Ran Mitake, Moca Aoba, Himari Uehara, Tomoe Udagawa, Tsugumi Hazawa", false));
-		builder.addField(new Field(Emotes.PASTEL_PALETTES + " **PASTEL✽PALETTES:**",
+		builder.addField(new Field(Emotes.PASTEL_PALETTES + " **Pastel✽Palettes:**",
 				"Aya Maruyama, Hina Hikawa, Chisato Shirasagi, Maya Yamato, Eve Wakamiya", false));
 		builder.addField(new Field(Emotes.ROSELIA + " **Roselia:**",
 				"Yukina Minato, Sayo Hikawa, Lisa Imai, Ako Udagawa, Rinko Shirokane", false));
-		builder.addField(new Field(Emotes.HELLO_HAPPY_WORLD + " **Hello Happy World:**",
+		builder.addField(new Field(Emotes.HELLO_HAPPY_WORLD + " **Hello, Happy World!:**",
 				"Kokoro Tsurumaki, Kaoru Seta, Hagumi Kitazawa, Kanon Matsubara, Misaki Okusawa", false));
+		builder.addField(new Field(Emotes.HELLO_HAPPY_WORLD + " **RAISE A SUILEN:**", "1, 2, 3, 4, 5", false));
 		return builder.build();
 	}
 

@@ -74,7 +74,7 @@ public enum BandoriMember {
 		case RIMI_USHIGOME:
 			return "Choco cornet~";
 		case SAAYA_YAMABUKI:
-			return "Yamabuki bakery's on sale~!";
+			return "";
 		case ARISA_ICHIGAYA:
 			return "Wha? No!";
 		case RAN_MITAKE:
@@ -108,7 +108,7 @@ public enum BandoriMember {
 		case EVE_WAKAMIYA:
 			return "Bushido!";
 		case YUKINA_MINATO:
-			return "Nya.. You saw nothing";
+			return "Nya..";
 		case SAYO_HIKAWA:
 			return "Fr... Fries";
 		case LISA_IMAI:

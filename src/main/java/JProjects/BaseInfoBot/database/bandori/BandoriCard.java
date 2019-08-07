@@ -134,7 +134,7 @@ public class BandoriCard {
 	public BufferedImage getArtworks() {
 		try {
 			return ImageTools.mergeHoriz(this.artUrl, this.artUrl2);
-		} catch (IOException e) {
+		} catch (NullPointerException | IOException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -143,7 +143,7 @@ public class BandoriCard {
 	public BufferedImage getChibis() {
 		try {
 			return ImageTools.mergeHoriz(this.chibiUrl, this.chibiUrl2, this.chibiUrl3);
-		} catch (IOException e) {
+		} catch (NullPointerException | IOException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -160,7 +160,6 @@ public class BandoriCard {
 		return sb.toString();
 	}
 
-	// Default Generated
 	public int getIndex() {
 		return index;
 	}

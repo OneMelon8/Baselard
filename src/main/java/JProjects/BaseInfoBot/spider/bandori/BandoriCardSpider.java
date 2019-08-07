@@ -127,17 +127,21 @@ public class BandoriCardSpider {
 			card.setIconUrl2("https:" + icons.get(0).select("img").last().attr("src"));
 		}
 
-		Elements arts = table.select("tr[data-field=arts]").select("td").get(1).select("a");
-		card.setArtUrl("https:" + arts.get(0).attr("href"));
-		if (arts.size() == 2)
-			card.setArtUrl2("https:" + arts.get(1).attr("href"));
+		if (!table.select("tr[data-field=arts]").isEmpty()) {
+			Elements arts = table.select("tr[data-field=arts]").select("td").get(1).select("a");
+			card.setArtUrl("https:" + arts.get(0).attr("href"));
+			if (arts.size() == 2)
+				card.setArtUrl2("https:" + arts.get(1).attr("href"));
+		}
 
-		card.setChibiUrl("https:" + table.select("tr[data-field=chibis]").select("td").get(1).select("a").get(0)
-				.select("img").last().attr("src"));
-		card.setChibiUrl2("https:" + table.select("tr[data-field=chibis]").select("td").get(1).select("a").get(1)
-				.select("img").last().attr("src"));
-		card.setChibiUrl3("https:" + table.select("tr[data-field=chibis]").select("td").get(1).select("a").get(2)
-				.select("img").last().attr("src"));
+		if (!table.select("tr[data-field=chibis]").isEmpty()) {
+			card.setChibiUrl("https:" + table.select("tr[data-field=chibis]").select("td").get(1).select("a").get(0)
+					.select("img").last().attr("src"));
+			card.setChibiUrl2("https:" + table.select("tr[data-field=chibis]").select("td").get(1).select("a").get(1)
+					.select("img").last().attr("src"));
+			card.setChibiUrl3("https:" + table.select("tr[data-field=chibis]").select("td").get(1).select("a").get(2)
+					.select("img").last().attr("src"));
+		}
 
 		Elements statsWrapper = doc.select("div.card-statistics").select("div.tab-content").select("div.tab-pane");
 		Elements stats = statsWrapper.get(statsWrapper.size() - 1).select("div.row");
