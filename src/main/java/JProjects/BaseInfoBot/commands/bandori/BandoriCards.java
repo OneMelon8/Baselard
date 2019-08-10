@@ -56,7 +56,7 @@ public class BandoriCards extends Command implements ReactionEvent {
 			bot.reactNext(msg);
 			bot.reactDetails(msg);
 
-			EmoteDispatcher.register(msg, this, "◀", "▶", "🔍");
+			EmoteDispatcher.register(msg, this, "◀", "▶", "🔍", "🎨", "🖼"); // magnifier, paint, picture
 			EmoteDispatcher.registerCleanUp(msg);
 		} catch (IndexOutOfBoundsException ex) {
 			ex.printStackTrace();

@@ -9,8 +9,6 @@ import com.markozajc.akiwrapper.Akiwrapper.Answer;
 import com.markozajc.akiwrapper.AkiwrapperBuilder;
 import com.markozajc.akiwrapper.core.entities.Guess;
 import com.markozajc.akiwrapper.core.entities.Question;
-import com.markozajc.akiwrapper.core.entities.Server.Language;
-import com.markozajc.akiwrapper.core.utils.Servers;
 
 import JProjects.BaseInfoBot.database.config.AkinatorConfig;
 import JProjects.BaseInfoBot.tools.GeneralTools;
@@ -20,15 +18,21 @@ import net.dv8tion.jda.core.entities.User;
 
 public class Akinator {
 
-	private User user;
-	private long startTime;
 	private Akiwrapper aw;
+	private User user;
+
+	private long startTime;
+	private boolean isActive;
 
 	private HashMap<Question, Integer> log;
 	private int round;
-	private int status; // 0=normal, 1=stuck
+	private boolean isStuck; // 0=normal, 1=stuck
+	private boolean isGuessing;
 	private Question question;
+	private List<Guess> guesses;
 	private Guess guess;
+	private double progress;
+	private double gain;
 
 	public Akinator(User user) {
 		this(user, false);
@@ -37,63 +41,125 @@ public class Akinator {
 	public Akinator(User user, boolean enableNsfw) {
 		this.user = user;
 		this.startTime = System.currentTimeMillis();
-		this.aw = new AkiwrapperBuilder().setName(this.user.getName()).setFilterProfanity(!enableNsfw)
-				.setLocalization(Language.ENGLISH).setServer(Servers.getFirstAvailableServer(Language.ENGLISH))
-				.setUserAgent("Chrome").build();
+		this.aw = new AkiwrapperBuilder().build();
 
 		this.log = new HashMap<Question, Integer>();
 		this.round = 1;
+		this.isActive = true;
 		this.question = aw.getCurrentQuestion();
 	}
 
-	// Answer codes: 0=no, 1=prob not, 2=dunno, 3=prob, 4=yes, 5=stuck
+	// Code: 0=no, 1=prob not, 2=dunno, 3=prob, 4=yes
+	// >>>>: 5=guess no, 6=guess yes
 	public MessageEmbed next(int answer) throws IOException {
+		if (answer == 6) {
+			this.isActive = false;
+			return this.getLoseEmbeded();
+		}
+		this.isGuessing = false;
 		this.round++;
 		this.log.put(this.question, answer);
-		this.question = this.aw.answerCurrentQuestion(this.getAnswerFromIndex(answer));
-		List<Guess> guesses = this.aw.getGuessesAboveProbability(AkinatorConfig.CONFIDENCE);
 
-		if (!guesses.isEmpty()) {
-			this.guess = guesses.get(0);
-			return this.getGuessEmbeded();
-		}
-
-		if (this.question == null) {
-			// TODO: handle stuck
-			this.status = 1;
-			guesses = this.aw.getGuesses(); // get all guesses regardless of probability
-
-			if (guesses.isEmpty()) {
-				return null; // return win embeded!
+		if (!this.isStuck) {
+			if (answer <= 4) {
+				this.isGuessing = false;
+				this.question = this.aw.answerCurrentQuestion(this.getAnswerFromIndex(answer));
+				this.guesses = this.aw.getGuessesAboveProbability(AkinatorConfig.CONFIDENCE);
 			}
 
-			return null; // guesses embeded
+			if (!this.guesses.isEmpty()) {
+				this.isGuessing = true;
+				this.guess = this.guesses.get(0);
+				this.guesses.remove(0);
+				return this.getGuessEmbeded();
+			}
+		}
+		// If no more questions, the Akinator is stuck
+		if (this.question == null && !this.isStuck) {
+			this.isStuck = true;
+			this.isGuessing = true;
+			this.guesses = this.aw.getGuesses(); // get all guesses regardless of probability
+		}
+		// Handle stuck
+		if (this.isStuck) {
+			this.isGuessing = true;
+			if (this.guesses.isEmpty()) {
+				this.isActive = false;
+				return this.getWinEmbeded(); // return win embeded!
+			}
+
+			this.guess = this.guesses.get(0);
+			this.guesses.remove(0);
+			return this.getGuessEmbeded(); // guesses embeded
 		}
 
 		return this.getQuestionEmbeded();
 	}
 
-	private MessageEmbed getQuestionEmbeded() {
+	public MessageEmbed getAnswerEmbeded(int answer) {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(AkinatorConfig.COLOR_EMBEDED);
 		builder.setAuthor("Akinator Round " + this.round + " -- " + this.user.getName());
-		builder.setDescription("Current Progress: " + GeneralTools.round(this.question.getProgression(), 2) + "% ("
-				+ GeneralTools.signNumber(GeneralTools.round(this.question.getProgression(), 2)) + "%)");
+		builder.setDescription("Current Progress: " + GeneralTools.round(this.progress, 2) + "% ("
+				+ GeneralTools.signNumber(GeneralTools.round(this.gain, 2)) + "%)");
 
 		builder.addField("**" + this.question.getQuestion() + "**",
-				"Choices: No / Probably Not / Don't Know / Probably / Yes", false);
+				"Your Answer: **" + this.getAnswerStringFromIndex(answer) + "**", false);
 		return builder.build();
 	}
 
-	private MessageEmbed getGuessEmbeded() {
+	public MessageEmbed getQuestionEmbeded() {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(AkinatorConfig.COLOR_EMBEDED);
 		builder.setAuthor("Akinator Round " + this.round + " -- " + this.user.getName());
-		builder.setDescription("Confidence: " + GeneralTools.round(this.guess.getProbability(), 2));
+		double progression = this.question.getProgression();
+		this.gain = progression - this.progress;
+		builder.setDescription("Current Progress: " + GeneralTools.round(progression, 2) + "% ("
+				+ GeneralTools.signNumber(GeneralTools.round(this.gain, 2)) + "%)");
+		this.progress = progression;
+
+		builder.addField("**" + this.question.getQuestion() + "**",
+				"***1** = No / **2** = Probably Not / **3** = Don't Know / **4** = Probably / **5** = Yes*", false);
+		return builder.build();
+	}
+
+	public MessageEmbed getGuessEmbeded() {
+		EmbedBuilder builder = new EmbedBuilder();
+		builder.setColor(AkinatorConfig.COLOR_EMBEDED);
+		builder.setAuthor("Akinator Round " + this.round + " -- " + this.user.getName());
+		builder.setDescription("Confidence: " + GeneralTools.round(this.guess.getProbability() * 100, 2) / 100D + "%");
 		if (this.guess.getImage() != null)
 			builder.setImage(this.guess.getImage().toString());
+		builder.addField("**I think of:**", "**" + this.guess.getName() + "** -- " + this.guess.getDescription(),
+				false);
+		return builder.build();
+	}
 
+	public MessageEmbed getWinEmbeded() {
+		EmbedBuilder builder = new EmbedBuilder();
+		builder.setColor(AkinatorConfig.COLOR_EMBEDED);
+		builder.setAuthor("Akinator Round " + this.round + " -- " + this.user.getName());
+		builder.setDescription("You've beat the Akinator at round " + this.round + "!");
+		builder.setImage(AkinatorConfig.IMAGE_WIN);
+		return builder.build();
+	}
+
+	public MessageEmbed getLoseEmbeded() {
+		EmbedBuilder builder = new EmbedBuilder();
+		builder.setColor(AkinatorConfig.COLOR_EMBEDED);
+		builder.setAuthor("Akinator Round " + this.round + " -- " + this.user.getName());
+		builder.setDescription("The Akinator guessed it at round " + this.round + "!");
+		if (this.guess.getImage() != null)
+			builder.setImage(this.guess.getImage().toString());
 		builder.addField("**" + this.guess.getName() + "**", this.guess.getDescription(), false);
+		return builder.build();
+	}
+
+	public MessageEmbed getTimeOutEmbeded() {
+		EmbedBuilder builder = new EmbedBuilder();
+		builder.setColor(AkinatorConfig.COLOR_EMBEDED);
+		builder.setAuthor("Akinator Round " + this.round + " -- " + this.user.getName());
+		builder.setDescription(this.user.getName() + " has been disqualified (idle time exceeded 30 seconds)");
 		return builder.build();
 	}
 
@@ -114,6 +180,27 @@ public class Akinator {
 		}
 	}
 
+	private String getAnswerStringFromIndex(int index) {
+		switch (index) {
+		case 0:
+			return "No";
+		case 1:
+			return "Probably Not";
+		case 2:
+			return "Don't Know";
+		case 3:
+			return "Probably";
+		case 4:
+			return "Yes";
+		case 5:
+			return "You are wrong";
+		case 6:
+			return "You are right";
+		default:
+			return "Invalid answer";
+		}
+	}
+
 	// GENERATED
 	public static double getConfidence() {
 		return AkinatorConfig.CONFIDENCE;
@@ -125,6 +212,10 @@ public class Akinator {
 
 	public long getStartTime() {
 		return startTime;
+	}
+
+	public boolean isActive() {
+		return isActive;
 	}
 
 	public Akiwrapper getAw() {
@@ -139,8 +230,12 @@ public class Akinator {
 		return round;
 	}
 
-	public int getStatus() {
-		return status;
+	public boolean isStuck() {
+		return isStuck;
+	}
+
+	public boolean isGuessing() {
+		return isGuessing;
 	}
 
 	public Question getQuestion() {
@@ -159,6 +254,10 @@ public class Akinator {
 		this.startTime = startTime;
 	}
 
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
 	public void setAw(Akiwrapper aw) {
 		this.aw = aw;
 	}
@@ -171,8 +270,12 @@ public class Akinator {
 		this.round = round;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public void setStuck(boolean stuck) {
+		this.isStuck = stuck;
+	}
+
+	public void setGuessing(boolean guessing) {
+		this.isGuessing = guessing;
 	}
 
 	public void setQuestion(Question question) {

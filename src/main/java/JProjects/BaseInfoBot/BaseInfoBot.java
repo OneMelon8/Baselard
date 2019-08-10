@@ -21,6 +21,7 @@ import JProjects.BaseInfoBot.commands.bandori.BandoriCards;
 import JProjects.BaseInfoBot.commands.bandori.BandoriEvents;
 import JProjects.BaseInfoBot.commands.bandori.BandoriMembers;
 import JProjects.BaseInfoBot.commands.bandori.BandoriMultiLive;
+import JProjects.BaseInfoBot.commands.fun.AkinatorCmd;
 import JProjects.BaseInfoBot.commands.fun.Fortune;
 import JProjects.BaseInfoBot.commands.fun.Pat;
 import JProjects.BaseInfoBot.commands.fun.TableFlip;
@@ -63,6 +64,7 @@ public class BaseInfoBot {
 			@Override
 			public void run() {
 				EmoteDispatcher.cleanUp();
+				AkinatorCmd.timerTick();
 			}
 		}, 0, 1000);
 	}
@@ -116,6 +118,7 @@ public class BaseInfoBot {
 		new TableFlip(this);
 		new Pat(this);
 		new Fortune(this);
+		new AkinatorCmd(this);
 	}
 
 	public void sendThinkingPacket(MessageChannel channel) {
@@ -163,8 +166,18 @@ public class BaseInfoBot {
 		msg.addReaction(reaction).queue();
 	}
 
+	public void addReaction(Message msg, String... reactions) {
+		for (String reaction : reactions)
+			this.addReaction(msg, reaction);
+	}
+
 	public void addReaction(Message msg, Emote reaction) {
 		msg.addReaction(reaction).queue();
+	}
+
+	public void addReaction(Message msg, Emote... reactions) {
+		for (Emote reaction : reactions)
+			this.addReaction(msg, reaction);
 	}
 
 	public void removeReaction(Message msg, String reaction) {
