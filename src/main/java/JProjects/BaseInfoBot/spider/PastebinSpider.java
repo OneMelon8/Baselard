@@ -19,7 +19,7 @@ public class PastebinSpider {
 		PasteBuilder pasteBuilder = factory.createPaste();
 		pasteBuilder.setTitle(title);
 		pasteBuilder.setRaw(message);
-		pasteBuilder.setMachineFriendlyLanguage("markdown???");
+		pasteBuilder.setMachineFriendlyLanguage("text");
 		pasteBuilder.setVisiblity(PasteVisiblity.Unlisted);
 		pasteBuilder.setExpire(PasteExpire.OneHour);
 
