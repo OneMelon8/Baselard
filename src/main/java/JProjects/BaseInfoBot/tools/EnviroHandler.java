@@ -7,8 +7,14 @@ public class EnviroHandler {
 
 	public static String getBotToken() {
 		return System.getenv("token");
-	}public static String getImgbbToken() {
+	}
+
+	public static String getImgbbToken() {
 		return System.getenv("imgbb");
+	}
+
+	public static String getPastebinToken() {
+		return System.getenv("pastebin");
 	}
 
 	public static ArrayList<String> getAdministrators() {

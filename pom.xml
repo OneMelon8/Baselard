@@ -49,7 +49,12 @@
 			<name>jcenter-bintray</name>
 			<url>http://jcenter.bintray.com</url>
 		</repository>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
 	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -101,6 +106,13 @@
 			<groupId>com.google.cloud</groupId>
 			<artifactId>google-cloud-translate</artifactId>
 			<version>1.70.0</version>
+		</dependency>
+
+		<!-- Paste Bin -->
+		<dependency>
+			<groupId>com.github.marcoacierno</groupId>
+			<artifactId>pastebin-java-api</artifactId>
+			<version>0.2.1</version>
 		</dependency>
 
 	</dependencies>

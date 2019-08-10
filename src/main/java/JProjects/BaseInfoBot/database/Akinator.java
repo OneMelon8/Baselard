@@ -3,6 +3,7 @@ package JProjects.BaseInfoBot.database;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.markozajc.akiwrapper.Akiwrapper;
 import com.markozajc.akiwrapper.Akiwrapper.Answer;
@@ -11,6 +12,7 @@ import com.markozajc.akiwrapper.core.entities.Guess;
 import com.markozajc.akiwrapper.core.entities.Question;
 
 import JProjects.BaseInfoBot.database.config.AkinatorConfig;
+import JProjects.BaseInfoBot.spider.PastebinSpider;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -26,7 +28,7 @@ public class Akinator {
 
 	private HashMap<Question, Integer> log;
 	private int round;
-	private boolean isStuck; // 0=normal, 1=stuck
+	private boolean isStuck;
 	private boolean isGuessing;
 	private Question question;
 	private List<Guess> guesses;
@@ -141,6 +143,7 @@ public class Akinator {
 		builder.setAuthor("Akinator Round " + this.round + " -- " + this.user.getName());
 		builder.setDescription("You've beat the Akinator at round " + this.round + "!");
 		builder.setImage(AkinatorConfig.IMAGE_WIN);
+		builder.setDescription(getHistoryUrl());
 		return builder.build();
 	}
 
@@ -152,6 +155,7 @@ public class Akinator {
 		if (this.guess.getImage() != null)
 			builder.setImage(this.guess.getImage().toString());
 		builder.addField("**" + this.guess.getName() + "**", this.guess.getDescription(), false);
+		builder.setDescription(getHistoryUrl());
 		return builder.build();
 	}
 
@@ -160,7 +164,17 @@ public class Akinator {
 		builder.setColor(AkinatorConfig.COLOR_EMBEDED);
 		builder.setAuthor("Akinator Round " + this.round + " -- " + this.user.getName());
 		builder.setDescription(this.user.getName() + " has been disqualified (idle time exceeded 30 seconds)");
+		builder.setDescription(getHistoryUrl());
 		return builder.build();
+	}
+
+	public String getHistoryUrl() {
+		StringBuilder sb = new StringBuilder("Total Rounds: " + this.getRound());
+		int count = 1;
+		for (Map.Entry<Question, Integer> entry : this.getLog().entrySet())
+			sb.append("\nRound " + count + ": " + entry.getKey().getQuestion() + " -- "
+					+ getAnswerStringFromIndex(entry.getValue()));
+		return PastebinSpider.uploadText(this.getUser().getAsTag() + "'s Akinator Game", sb.toString());
 	}
 
 	private Answer getAnswerFromIndex(int index) {
