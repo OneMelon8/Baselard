@@ -143,7 +143,7 @@ public class Akinator {
 		builder.setAuthor("Akinator Round " + this.round + " -- " + this.user.getName());
 		builder.setDescription("You've beat the Akinator at round " + this.round + "!");
 		builder.setImage(AkinatorConfig.IMAGE_WIN);
-		builder.setDescription(getHistoryUrl());
+		builder.setFooter(getHistoryUrl(), AkinatorConfig.IMAGE_ICON);
 		return builder.build();
 	}
 
@@ -155,7 +155,7 @@ public class Akinator {
 		if (this.guess.getImage() != null)
 			builder.setImage(this.guess.getImage().toString());
 		builder.addField("**" + this.guess.getName() + "**", this.guess.getDescription(), false);
-		builder.setDescription(getHistoryUrl());
+		builder.setFooter(getHistoryUrl(), AkinatorConfig.IMAGE_ICON);
 		return builder.build();
 	}
 
@@ -164,16 +164,18 @@ public class Akinator {
 		builder.setColor(AkinatorConfig.COLOR_EMBEDED);
 		builder.setAuthor("Akinator Round " + this.round + " -- " + this.user.getName());
 		builder.setDescription(this.user.getName() + " has been disqualified (idle time exceeded 30 seconds)");
-		builder.setDescription(getHistoryUrl());
+		builder.setFooter(getHistoryUrl(), AkinatorConfig.IMAGE_ICON);
 		return builder.build();
 	}
 
 	public String getHistoryUrl() {
 		StringBuilder sb = new StringBuilder("Total Rounds: " + this.getRound());
 		int count = 1;
-		for (Map.Entry<Question, Integer> entry : this.getLog().entrySet())
+		for (Map.Entry<Question, Integer> entry : this.getLog().entrySet()) {
 			sb.append("\nRound " + count + ": " + entry.getKey().getQuestion() + " -- "
 					+ getAnswerStringFromIndex(entry.getValue()));
+			count++;
+		}
 		return PastebinSpider.uploadText(this.getUser().getAsTag() + "'s Akinator Game", sb.toString());
 	}
 

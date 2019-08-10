@@ -20,7 +20,7 @@ public class PastebinSpider {
 		pasteBuilder.setTitle(title);
 		pasteBuilder.setRaw(message);
 		pasteBuilder.setMachineFriendlyLanguage("text");
-		pasteBuilder.setVisiblity(PasteVisiblity.Unlisted);
+		pasteBuilder.setVisiblity(PasteVisiblity.Public);
 		pasteBuilder.setExpire(PasteExpire.OneHour);
 
 		final Paste paste = pasteBuilder.build();

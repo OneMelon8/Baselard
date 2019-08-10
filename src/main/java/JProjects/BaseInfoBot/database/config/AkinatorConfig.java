@@ -17,6 +17,7 @@ public class AkinatorConfig {
 	/*
 	 * Images
 	 */
+	public static final String IMAGE_ICON = "https://i.imgur.com/PMrYAWe.jpg";
 	public static final String IMAGE_WIN = "https://i.imgur.com/PyQiKs0.jpg";
 
 }
