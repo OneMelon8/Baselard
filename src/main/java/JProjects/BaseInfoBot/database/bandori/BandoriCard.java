@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.config.BandoriConfig;
+import JProjects.BaseInfoBot.spider.ImgbbSpider;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import JProjects.BaseInfoBot.tools.ImageTools;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -83,7 +84,7 @@ public class BandoriCard {
 						sb.toString(), false));
 		if (showFooter)
 			builder.setFooter((index + 1) + "/" + (total == 0 ? index + 1 : total) + " - " + notes,
-					"https://cdn.discordapp.com/emojis/432981158670630924.png");
+					BandoriConfig.URL_CRAFT_EGG);
 		return builder.build();
 	}
 
@@ -127,7 +128,33 @@ public class BandoriCard {
 		builder.addField(new Field("**Graph:**", sb.toString(), true));
 
 		builder.setFooter((index + 1) + "/" + (total == 0 ? index + 1 : total) + " - " + notes,
-				"https://cdn.discordapp.com/emojis/432981158670630924.png");
+				BandoriConfig.URL_CRAFT_EGG);
+		return builder.build();
+	}
+
+	public MessageEmbed getArtworksEmbeded() {
+		EmbedBuilder builder = new EmbedBuilder();
+		builder.setColor(this.getColor());
+		builder.setAuthor(this.getName());
+		builder.setDescription("Artworks for " + this.getName());
+		String url = ImgbbSpider.uploadImage(getArtworks());
+		if (url != null)
+			builder.setImage(url);
+		builder.setFooter((index + 1) + "/" + (total == 0 ? index + 1 : total) + " - " + notes,
+				BandoriConfig.URL_CRAFT_EGG);
+		return builder.build();
+	}
+
+	public MessageEmbed getChibisEmbeded() {
+		EmbedBuilder builder = new EmbedBuilder();
+		builder.setColor(this.getColor());
+		builder.setAuthor(this.getName());
+		builder.setDescription("Stage outfits for " + this.getName());
+		String url = ImgbbSpider.uploadImage(getChibis());
+		if (url != null)
+			builder.setImage(url);
+		builder.setFooter((index + 1) + "/" + (total == 0 ? index + 1 : total) + " - " + notes,
+				BandoriConfig.URL_CRAFT_EGG);
 		return builder.build();
 	}
 

@@ -21,6 +21,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.tools.EnviroHandler;
 
 public class ImgbbSpider {
@@ -53,7 +54,7 @@ public class ImgbbSpider {
 			return url;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return BotConfig.URL_404;
 		}
 	}
 

@@ -86,6 +86,7 @@ public class Help extends Command implements ReactionEvent {
 		sb = new StringBuilder("```");
 		sb.append(String.format("%-8s >> %s", "pat", "Give me some head pats =w=\n"));
 		sb.append(String.format("%-8s >> %s", "fortune", "Get a fortune cookie\n"));
+		sb.append(String.format("%-8s >> %s", "akinator", "Play a game with the Akinator\n"));
 		sb.append("```");
 		builder.addField(new Field("**Fun Commands:**", sb.toString(), false));
 

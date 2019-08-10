@@ -25,4 +25,10 @@ public class BotConfig {
 	 * Miscellaneous
 	 */
 	public static final Color COLOR_MISC = new Color(66, 244, 66);
+
+	/*
+	 * URLs
+	 */
+	public static final String URL_404 = "https://i.imgur.com/nYJtkaS.png";
+
 }

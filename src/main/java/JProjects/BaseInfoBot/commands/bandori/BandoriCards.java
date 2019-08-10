@@ -56,7 +56,7 @@ public class BandoriCards extends Command implements ReactionEvent {
 			bot.reactNext(msg);
 			bot.reactDetails(msg);
 
-			EmoteDispatcher.register(msg, this, "◀", "▶", "🔍", "🎨", "🖼"); // magnifier, paint, picture
+			EmoteDispatcher.register(msg, this, "◀", "▶", "🔍"); // magnifier, paint, picture
 			EmoteDispatcher.registerCleanUp(msg);
 		} catch (IndexOutOfBoundsException ex) {
 			ex.printStackTrace();
@@ -103,6 +103,23 @@ public class BandoriCards extends Command implements ReactionEvent {
 				showDetails = true;
 				card = customQuery(query, index);
 			}
+			// DETAILED MODE!!
+			else if (emoteName.equals("🎨") || emoteName.equals("🖼")) {
+				card = customQuery(query, index);
+				if (emoteName.equals("🎨")) {
+					// Chibi
+					msg = bot.editMessage(msg, card.getChibisEmbeded());
+					bot.addReaction(msg, "🔍", "🖼"); // magnifier, picture
+					EmoteDispatcher.register(msg, this, "🔍", "🖼");
+				} else {
+					// Artwork
+					msg = bot.editMessage(msg, card.getArtworksEmbeded());
+					bot.addReaction(msg, "🔍", "🎨"); // magnifier, painting
+					EmoteDispatcher.register(msg, this, "🔍", "🎨");
+				}
+				EmoteDispatcher.registerCleanUp(msg);
+				return;
+			}
 
 			if (card == null)
 				throw new IndexOutOfBoundsException("No results!");
@@ -113,9 +130,12 @@ public class BandoriCards extends Command implements ReactionEvent {
 				bot.reactPrev(msg);
 				bot.reactNext(msg);
 				bot.reactDetails(msg);
-				EmoteDispatcher.register(msg, this, "◀", "▶", "🔍");
-				EmoteDispatcher.registerCleanUp(msg);
+				EmoteDispatcher.register(msg, this, "◀", "▶", "🔍"); // magnifier
+			} else {
+				bot.addReaction(msg, "🎨", "🖼"); // painting, picture
+				EmoteDispatcher.register(msg, this, "🎨", "🖼");
 			}
+			EmoteDispatcher.registerCleanUp(msg);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			bot.editMessage(msg, EmbededUtil.getErrorEmbeded(ex));
