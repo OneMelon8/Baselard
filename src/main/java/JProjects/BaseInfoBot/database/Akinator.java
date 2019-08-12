@@ -143,7 +143,7 @@ public class Akinator {
 		builder.setAuthor("Akinator Round " + this.round + " -- " + this.user.getName());
 		builder.setDescription("You've beat the Akinator at round " + this.round + "!");
 		builder.setImage(AkinatorConfig.IMAGE_WIN);
-		builder.setFooter(getHistoryUrl(), AkinatorConfig.IMAGE_ICON);
+		builder.setFooter("Log: " + getHistoryUrl(), AkinatorConfig.IMAGE_ICON);
 		return builder.build();
 	}
 
@@ -155,7 +155,7 @@ public class Akinator {
 		if (this.guess.getImage() != null)
 			builder.setImage(this.guess.getImage().toString());
 		builder.addField("**" + this.guess.getName() + "**", this.guess.getDescription(), false);
-		builder.setFooter(getHistoryUrl(), AkinatorConfig.IMAGE_ICON);
+		builder.setFooter("Log: " + getHistoryUrl(), AkinatorConfig.IMAGE_ICON);
 		return builder.build();
 	}
 
@@ -164,7 +164,7 @@ public class Akinator {
 		builder.setColor(AkinatorConfig.COLOR_EMBEDED);
 		builder.setAuthor("Akinator Round " + this.round + " -- " + this.user.getName());
 		builder.setDescription(this.user.getName() + " has been disqualified (idle time exceeded 30 seconds)");
-		builder.setFooter(getHistoryUrl(), AkinatorConfig.IMAGE_ICON);
+		builder.setFooter("Log: " + getHistoryUrl(), AkinatorConfig.IMAGE_ICON);
 		return builder.build();
 	}
 
