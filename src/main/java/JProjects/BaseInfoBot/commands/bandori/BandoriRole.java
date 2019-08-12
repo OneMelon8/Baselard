@@ -60,7 +60,7 @@ public class BandoriRole extends Command {
 		builder.setDescription("Use the following template to use the Bandori feature");
 
 		StringBuilder sb = new StringBuilder("```");
-		sb.append(String.format("%-22s >> %s", BotConfig.PREFIX + command, "Join/leave the @Bang Dream role\n"));
+		sb.append(String.format("%-15s >> %s", BotConfig.PREFIX + command, "Join/leave the @Bang Dream role\n"));
 		builder.addField(new Field("Regular Commands:", sb.toString(), false));
 
 		for (String aliase : aliases)
