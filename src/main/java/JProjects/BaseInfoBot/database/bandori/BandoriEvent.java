@@ -80,6 +80,8 @@ public class BandoriEvent {
 		else
 			builder.setDescription("UTC: " + TimeFormatter.formatCalendar(this.getStartTime()) + " - "
 					+ TimeFormatter.formatCalendar(this.getEndTime()));
+		builder.setImage(this.getImageUrl());
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("Countdown: **" + this.getCountdown(false) + "**");
 		sb.append("\nEvent Type: **" + this.getType().getEmote() + " " + this.getType().getDisplayName() + "**");

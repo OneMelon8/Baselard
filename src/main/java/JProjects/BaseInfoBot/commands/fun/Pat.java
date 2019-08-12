@@ -201,7 +201,8 @@ public class Pat extends Command implements ReactionEvent {
 				break;
 			if (a > 0)
 				sb.append("\n");
-			sb.append("#" + String.format("%02d", a + 1) + ": " + bot.getJDA().getUserById(userIds[a]).getName() + " - "
+			User user = bot.getJDA().getUserById(userIds[a]);
+			sb.append("#" + String.format("%02d", a + 1) + ": " + (user == null ? "Unknown" : user.getName()) + " - "
 					+ userPats[a]);
 		}
 		sb.append("```");
