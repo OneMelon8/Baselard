@@ -7,7 +7,6 @@ import java.util.Collections;
 
 import JProjects.BaseInfoBot.App;
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.spider.ImgbbSpider;
@@ -91,10 +90,11 @@ public class BandoriRoom {
 					+ this.getParticipantsDisplay() + ")", channel);
 			return true;
 		}
+		// bot.removeAllReactions(message);
 
 		message = bot.editMessage(message, this.getEmbededMessage());
-		bot.addReaction(message, bot.getEmote(Emotes.LIVE_BOOST));
-		EmoteDispatcher.registerCleanUp(message);
+		// bot.addReaction(message, bot.getEmote(Emotes.LIVE_BOOST));
+		// EmoteDispatcher.registerCleanUp(message);
 		return true;
 	}
 

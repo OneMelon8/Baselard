@@ -2,8 +2,11 @@ package JProjects.BaseInfoBot.commands.helpers;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.database.config.BotConfig;
+import JProjects.BaseInfoBot.database.config.ServerChannelConfig;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Game.GameType;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
@@ -20,13 +23,23 @@ public class ChatEventHandler extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(MessageReceivedEvent e) {
+		if (!channelCheck(e.getChannel(), e.getGuild()))
+			return;
 		CommandDispatcher.fire(e);
 	}
 
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent e) {
-		if (mute)
+		if (mute || !channelCheck(e.getChannel(), e.getGuild()))
 			return;
 		EmoteDispatcher.fire(e.getUser(), e.getReactionEmote(), e.getMessageId(), e.getChannel(), e.getGuild());
+	}
+
+	private boolean channelCheck(MessageChannel channel, Guild guild) {
+		if (!ServerChannelConfig.whitelistedChannels.containsKey(guild.getId()))
+			return true;
+		if (ServerChannelConfig.whitelistedChannels.get(guild.getId()).contains(channel.getId()))
+			return true;
+		return false;
 	}
 }

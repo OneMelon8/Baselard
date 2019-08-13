@@ -20,12 +20,14 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.MessageReaction.ReactionEmote;
 import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.managers.GuildController;
 
 public class BandoriMultiLive extends Command implements ReactionEvent {
 
-	public static HashMap<String, BandoriRoom> multiRooms = new HashMap<String, BandoriRoom>();
+	// SERVER ID >> { CREATOR ID >> ROOM }
+	public static HashMap<String, HashMap<String, BandoriRoom>> multiRooms = new HashMap<String, HashMap<String, BandoriRoom>>();
 
 	public BandoriMultiLive(BaseInfoBot bot) {
 		super(bot, "multi", new String[] { "mul", "m" }, "Parent command for multi-live features");
@@ -49,9 +51,9 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 				return;
 			}
 
-			if (disband(authorId))
+			if (disband(authorId, guild))
 				bot.sendMessage(author.getAsMention() + " Successfully disbanded your previous room!", channel);
-			leave(author, channel);
+			leave(author, channel, guild);
 
 			BandoriRoom room = new BandoriRoom(args[1], author);
 			Role readyRole = guild.getRolesByName("b-r", true).get(0);
@@ -60,21 +62,24 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 			Message msg = bot.sendMessage(room.getEmbededMessage(), channel);
 			bot.addReaction(msg, bot.getEmote(Emotes.LIVE_BOOST));
 
+			HashMap<String, BandoriRoom> multiRooms = getOrCreateServerRooms(guild);
 			multiRooms.put(authorId, room);
+			updateOrCreateServerRooms(guild, multiRooms);
+
 			EmoteDispatcher.register(msg, this, "live_boost");
 			EmoteDispatcher.registerCleanUp(msg, 180);
 		} else if (args.length == 1 && (sub.equals("list") || sub.equals("l") || sub.equals("rooms"))) {
 			bot.sendMessage(getRoomList(guild), channel);
 		} else if (args.length == 1
 				&& (sub.equals("show") || sub.equals("s") || sub.equals("display") || sub.contentEquals("d"))) {
-			BandoriRoom room = getRoomByUser(authorId);
+			BandoriRoom room = getRoomByUser(authorId, guild);
 			if (room == null) {
 				bot.sendMessage(author.getAsMention() + " You are not in a multi-live room!", channel);
 				return;
 			}
 			bot.sendMessage(room.getEmbededMessage(), channel);
 		} else if (args.length == 1 && (sub.equals("ping") || sub.equals("mention"))) {
-			BandoriRoom room = getRoomByUser(authorId);
+			BandoriRoom room = getRoomByUser(authorId, guild);
 			if (room == null) {
 				Role readyRole = guild.getRolesByName("b-r", true).get(0);
 				bot.sendMessage("Ready ping by " + author.getAsMention() + ":\n" + readyRole.getAsMention(), channel);
@@ -82,13 +87,13 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 			}
 			bot.sendMessage(room.getPingMessage(author), channel);
 		} else if (args.length == 1 && (sub.equals("disband") || sub.equals("delete") || sub.equals("del"))) {
-			if (disband(authorId))
+			if (disband(authorId, guild))
 				bot.sendMessage(author.getAsMention() + " Successfully disbanded the room!", channel);
 			else
 				bot.sendMessage(author.getAsMention() + " You do not own a room!", channel);
 		} else if (pingedUsers.size() != 0 && args.length == 2 && (sub.equals("transfer") || sub.equals("t"))) {
 			User user = pingedUsers.get(0);
-			if (transfer(authorId, user))
+			if (transfer(authorId, user, guild))
 				bot.sendMessage(
 						author.getAsMention() + " Successfully transferred the room to " + user.getAsMention() + "!",
 						channel);
@@ -96,7 +101,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 				bot.sendMessage(author.getAsMention() + " You do not own a room or the target user is not in the room!",
 						channel);
 		} else if (args.length == 1 && (sub.equals("leave") || sub.equals("quit")) || sub.equals("exit")) {
-			if (!leave(author, channel))
+			if (!leave(author, channel, guild))
 				bot.sendMessage(author.getAsMention() + " You are not in a multi-live room!", channel);
 		} else if (args.length == 1 && (sub.equals("ready") || sub.equals("r"))) {
 			toggleReady(channel, author, guild);
@@ -108,16 +113,17 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 					return;
 				}
 				User pinged = pingedUsers.get(0);
-				room = getRoomByUser(pinged.getId());
+				room = getRoomByUser(pinged.getId(), guild);
 			} else
-				room = getRoomById(args[1]);
-			preJoinCheck(author, channel);
+				room = getRoomById(args[1], guild);
+			preJoinCheck(author, channel, guild);
 			if (room == null || !room.join(author, null, channel))
 				bot.sendMessage(author.getAsMention() + " Failed to join the room!", channel);
 		} else {
 			bot.sendMessage(getHelpEmbeded(), channel);
 			return;
 		}
+		updateChannelTopic(guild);
 	}
 
 	@Override
@@ -128,25 +134,47 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		MessageEmbed msgEmbeded = message.getEmbeds().get(0);
 		String roomId = msgEmbeded.getFooter().getText();
 		if (emoteName.equals("live_boost")) {
-			preJoinCheck(user, channel);
-			BandoriRoom room = getRoomById(roomId);
+			preJoinCheck(user, channel, guild);
+			BandoriRoom room = getRoomById(roomId, guild);
 			if (!room.join(user, message, channel))
 				bot.sendMessage(user.getAsMention() + " Failed to join the room!", channel);
 		}
 	}
 
-	private void preJoinCheck(User author, MessageChannel channel) {
-		if (disband(author.getId()))
-			bot.sendMessage(author.getAsMention() + " Successfully disbanded your previous room!", channel);
-		leave(author, channel);
+	private HashMap<String, BandoriRoom> getOrCreateServerRooms(Guild guild) {
+		if (multiRooms.containsKey(guild.getId()))
+			return multiRooms.get(guild.getId());
+		return new HashMap<String, BandoriRoom>();
 	}
 
-	private boolean leave(User user, MessageChannel channel) {
-		BandoriRoom room = getRoomByUser(user.getId());
+	private void updateOrCreateServerRooms(Guild guild, HashMap<String, BandoriRoom> data) {
+		multiRooms.put(guild.getId(), data);
+	}
+
+	private void updateChannelTopic(Guild guild) {
+		if (!guild.getId().equals("423512363765989378"))
+			return;
+		TextChannel tc = bot.getJDA().getTextChannelById("605289350447759403");
+		StringBuilder sb = new StringBuilder("Multi Rooms (/m r): ");
+		HashMap<String, BandoriRoom> multiRooms = getOrCreateServerRooms(guild);
+		for (BandoriRoom room : multiRooms.values())
+			sb.append(room.getId() + " (" + room.getParticipantsCount() + "), ");
+		sb.delete(sb.length() - 2, sb.length());
+		tc.getManager().setTopic(sb.substring(0, Math.min(sb.length(), 950)).toString()).queue();
+	}
+
+	private void preJoinCheck(User author, MessageChannel channel, Guild guild) {
+		if (disband(author.getId(), guild))
+			bot.sendMessage(author.getAsMention() + " Successfully disbanded your previous room!", channel);
+		leave(author, channel, guild);
+	}
+
+	private boolean leave(User user, MessageChannel channel, Guild guild) {
+		BandoriRoom room = getRoomByUser(user.getId(), guild);
 		if (room == null)
 			return false;
 		if (user.getId().equals(room.getCreator().getId())) {
-			disband(user.getId());
+			disband(user.getId(), guild);
 			bot.sendMessage(user.getAsMention() + " Successfully disbanded the room!", channel);
 			return true;
 		}
@@ -156,14 +184,16 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		return true;
 	}
 
-	private boolean disband(String id) {
+	private boolean disband(String id, Guild guild) {
+		HashMap<String, BandoriRoom> multiRooms = getOrCreateServerRooms(guild);
 		if (!multiRooms.containsKey(id))
 			return false;
 		multiRooms.remove(id);
 		return true;
 	}
 
-	private boolean transfer(String id, User user) {
+	private boolean transfer(String id, User user, Guild guild) {
+		HashMap<String, BandoriRoom> multiRooms = getOrCreateServerRooms(guild);
 		if (!multiRooms.containsKey(id))
 			return false;
 		BandoriRoom room = multiRooms.get(id);
@@ -171,11 +201,13 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		if (success) {
 			multiRooms.remove(id);
 			multiRooms.put(id, room);
+			updateOrCreateServerRooms(guild, multiRooms);
 		}
 		return success;
 	}
 
-	private BandoriRoom getRoomById(String id) {
+	private BandoriRoom getRoomById(String id, Guild guild) {
+		HashMap<String, BandoriRoom> multiRooms = getOrCreateServerRooms(guild);
 		for (String creatorId : multiRooms.keySet()) {
 			BandoriRoom room = multiRooms.get(creatorId);
 			if (room.getId().equals(id))
@@ -184,7 +216,8 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		return null;
 	}
 
-	private BandoriRoom getRoomByUser(String userId) {
+	private BandoriRoom getRoomByUser(String userId, Guild guild) {
+		HashMap<String, BandoriRoom> multiRooms = getOrCreateServerRooms(guild);
 		for (String creatorId : multiRooms.keySet()) {
 			BandoriRoom room = multiRooms.get(creatorId);
 			if (room.getParticipants().contains(userId))
@@ -194,6 +227,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 	}
 
 	private MessageEmbed getRoomList(Guild guild) {
+		HashMap<String, BandoriRoom> multiRooms = getOrCreateServerRooms(guild);
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Bandori Multi-Live Rooms");

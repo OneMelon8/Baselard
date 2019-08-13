@@ -46,7 +46,7 @@ public class AkinatorCmd extends Command implements ReactionEvent {
 			bot.addReaction(AkinatorCmd.message, "1⃣", "2⃣", "3⃣", "4⃣", "5⃣");
 
 			EmoteDispatcher.register(AkinatorCmd.message, this, "1⃣", "2⃣", "3⃣", "4⃣", "5⃣");
-			EmoteDispatcher.registerCleanUp(AkinatorCmd.message);
+			EmoteDispatcher.registerCleanUp(AkinatorCmd.message, AkinatorConfig.MAX_IDLE_TIME_SECONDS);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			bot.sendMessage(EmbededUtil.getErrorEmbeded("The Genie is not available now, try again later"), channel);
@@ -96,7 +96,7 @@ public class AkinatorCmd extends Command implements ReactionEvent {
 					EmoteDispatcher.register(message, this, "1⃣", "2⃣", "3⃣", "4⃣", "5⃣");
 				}
 
-			EmoteDispatcher.registerCleanUp(message);
+			EmoteDispatcher.registerCleanUp(message, AkinatorConfig.MAX_IDLE_TIME_SECONDS);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			bot.editMessage(msg, EmbededUtil.getErrorEmbeded(ex));

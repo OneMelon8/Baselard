@@ -6,7 +6,8 @@ public class AkinatorConfig {
 	/*
 	 * Logic
 	 */
-	public static final long MAX_IDLE_TIME = 30 * 1000; // 30 seconds
+	public static final long MAX_IDLE_TIME_SECONDS = 60; // 60 seconds
+	public static final long MAX_IDLE_TIME = MAX_IDLE_TIME_SECONDS * 1000;
 	public static final double CONFIDENCE = 0.85; // 0-1
 
 	/*
