@@ -116,7 +116,10 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 				room = getRoomByUser(pinged.getId(), guild);
 			} else
 				room = getRoomById(args[1], guild);
-			preJoinCheck(author, channel, guild);
+			if (preJoinCheck(room, author, channel, guild)) {
+				bot.sendMessage(author.getAsMention() + " You are already in the room!", channel);
+				return;
+			}
 			if (room == null || !room.join(author, null, channel, this))
 				bot.sendMessage(author.getAsMention() + " Failed to join the room!", channel);
 		} else {
@@ -134,7 +137,8 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		MessageEmbed msgEmbeded = message.getEmbeds().get(0);
 		String roomId = msgEmbeded.getFooter().getText();
 		if (emoteName.equals("live_boost")) {
-			preJoinCheck(user, channel, guild);
+			if (preJoinCheck(getRoomById(roomId, guild), user, channel, guild))
+				return;
 			BandoriRoom room = getRoomById(roomId, guild);
 			if (!room.join(user, message, channel, this))
 				bot.sendMessage(user.getAsMention() + " Failed to join the room!", channel);
@@ -169,10 +173,27 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		tc.getManager().setTopic(sb.substring(0, Math.min(sb.length(), 950)).toString()).queue();
 	}
 
-	private void preJoinCheck(User author, MessageChannel channel, Guild guild) {
+	/**
+	 * Returns true if the current room is the same as the one that the user is
+	 * attempting to join
+	 * 
+	 * @param targetRoom the BandoriRoom to join
+	 * @param author     the user to join
+	 * @param channel    the channel to send the response
+	 * @param guild      the guild that this happened in
+	 * @return True if user is in the target room
+	 */
+	private boolean preJoinCheck(BandoriRoom targetRoom, User author, MessageChannel channel, Guild guild) {
+		BandoriRoom currentRoom = getRoomByUser(author.getId(), guild);
+		if (currentRoom == null)
+			return false;
+		if (currentRoom.getId().equals(targetRoom.getId()))
+			return true;
+
 		if (disband(author.getId(), guild))
 			bot.sendMessage(author.getAsMention() + " Successfully disbanded your previous room!", channel);
 		leave(author, channel, guild);
+		return false;
 	}
 
 	private boolean leave(User user, MessageChannel channel, Guild guild) {
