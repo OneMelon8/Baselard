@@ -66,6 +66,7 @@ public class BaseInfoBot {
 			public void run() {
 				EmoteDispatcher.cleanUp();
 				AkinatorCmd.timerTick();
+				BandoriMultiLive.autoDisband();
 			}
 		}, 0, 1000);
 	}

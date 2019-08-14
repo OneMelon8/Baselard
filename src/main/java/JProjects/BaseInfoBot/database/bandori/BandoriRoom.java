@@ -7,6 +7,8 @@ import java.util.Collections;
 
 import JProjects.BaseInfoBot.App;
 import JProjects.BaseInfoBot.BaseInfoBot;
+import JProjects.BaseInfoBot.commands.bandori.BandoriMultiLive;
+import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.spider.ImgbbSpider;
@@ -80,21 +82,21 @@ public class BandoriRoom {
 		}
 	}
 
-	public boolean join(User user, Message message, MessageChannel channel) {
+	public boolean join(User user, Message message, MessageChannel channel, BandoriMultiLive listener) {
 		if (this.participants.contains(user.getId()) || this.getParticipantsCount() + 1 > this.getCapacity())
 			return false;
 		this.participants.add(user.getId());
 
 		if (message == null) {
 			bot.sendMessage(user.getAsMention() + " Successfully joined " + this.creator.getName() + "'s room ("
-					+ this.getParticipantsDisplay() + ")", channel);
+					+ this.getParticipantsCountDisplay() + ")", channel);
 			return true;
 		}
 		// bot.removeAllReactions(message);
 
 		message = bot.editMessage(message, this.getEmbededMessage());
-		// bot.addReaction(message, bot.getEmote(Emotes.LIVE_BOOST));
-		// EmoteDispatcher.registerCleanUp(message);
+		EmoteDispatcher.register(message, listener, "live_boost");
+		EmoteDispatcher.registerCleanUp(message);
 		return true;
 	}
 
@@ -148,7 +150,7 @@ public class BandoriRoom {
 		return participants.size();
 	}
 
-	public String getParticipantsDisplay() {
+	public String getParticipantsCountDisplay() {
 		return this.getParticipantsCount() == this.capacity ? "Full" : getParticipantsCount() + "/" + getCapacity();
 	}
 
