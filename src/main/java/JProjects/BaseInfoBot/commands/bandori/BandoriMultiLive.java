@@ -67,7 +67,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 			updateOrCreateServerRooms(guild, multiRooms);
 
 			EmoteDispatcher.register(msg, this, "live_boost");
-			EmoteDispatcher.registerCleanUp(msg, 180);
+			EmoteDispatcher.registerCleanUp(msg, 300);
 		} else if (args.length == 1 && (sub.equals("list") || sub.equals("l") || sub.equals("rooms"))) {
 			bot.sendMessage(getRoomList(guild), channel);
 		} else if (args.length == 1

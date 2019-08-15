@@ -96,7 +96,6 @@ public class BandoriRoom {
 
 		message = bot.editMessage(message, this.getEmbededMessage());
 		EmoteDispatcher.register(message, listener, "live_boost");
-		EmoteDispatcher.registerCleanUp(message);
 		return true;
 	}
 
