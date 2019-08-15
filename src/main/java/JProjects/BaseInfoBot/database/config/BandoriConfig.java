@@ -2,6 +2,11 @@ package JProjects.BaseInfoBot.database.config;
 
 public class BandoriConfig {
 	/*
+	 * Timings
+	 */
+	public static final long MULTI_ROOM_TIME_OUT = 4 * 60 * 60 * 1000; // 4 hours
+
+	/*
 	 * Embed Messages
 	 */
 	public static final int PERFORMANCE_MAX = 15000;

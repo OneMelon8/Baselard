@@ -163,7 +163,8 @@ public class Akinator {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(AkinatorConfig.COLOR_EMBEDED);
 		builder.setAuthor("Akinator Round " + this.round + " -- " + this.user.getName());
-		builder.setDescription(this.user.getName() + " has been disqualified (idle time exceeded 30 seconds)");
+		builder.setDescription(this.user.getName() + " has been disqualified (idle time exceeded "
+				+ AkinatorConfig.MAX_IDLE_TIME_SECONDS + " seconds)");
 		builder.setFooter("Log: " + getHistoryUrl(), AkinatorConfig.IMAGE_ICON);
 		return builder.build();
 	}

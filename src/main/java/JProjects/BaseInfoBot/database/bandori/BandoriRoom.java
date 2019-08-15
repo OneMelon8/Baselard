@@ -28,7 +28,7 @@ public class BandoriRoom {
 
 	private String id;
 	private User creator;
-	private long creationTime;
+	private long creationTime, lastActiveTime;
 	private ArrayList<String> participants;
 
 	private final int capacity = 5;
@@ -36,13 +36,15 @@ public class BandoriRoom {
 	public BandoriRoom(String id, User creator) {
 		this.id = id;
 		this.creator = creator;
-		this.creationTime = System.currentTimeMillis();
+		this.creationTime = this.lastActiveTime = System.currentTimeMillis();
 
 		this.participants = new ArrayList<String>();
 		this.participants.add(creator.getId());
 	}
 
 	public MessageEmbed getEmbededMessage() {
+		updateLastActiveTime();
+
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor(this.creator.getName() + "'s Multi-Live Room");
@@ -74,6 +76,7 @@ public class BandoriRoom {
 	}
 
 	public BufferedImage getRoomImage() {
+		updateLastActiveTime();
 		try {
 			return ImageTools.mergeBandoriRoom(this.participants);
 		} catch (IOException e) {
@@ -83,6 +86,7 @@ public class BandoriRoom {
 	}
 
 	public boolean join(User user, Message message, MessageChannel channel, BandoriMultiLive listener) {
+		updateLastActiveTime();
 		if (this.participants.contains(user.getId()) || this.getParticipantsCount() + 1 > this.getCapacity())
 			return false;
 		this.participants.add(user.getId());
@@ -100,6 +104,7 @@ public class BandoriRoom {
 	}
 
 	public boolean leave(User user, MessageChannel channel) {
+		updateLastActiveTime();
 		if (!this.participants.contains(user.getId()))
 			return false;
 
@@ -108,6 +113,7 @@ public class BandoriRoom {
 	}
 
 	public boolean transfer(String fromId, String toId) {
+		updateLastActiveTime();
 		if (!this.participants.contains(toId))
 			return false;
 		this.setCreator(bot.getUserById(toId));
@@ -116,6 +122,7 @@ public class BandoriRoom {
 	}
 
 	public String getPingMessage(User pinger) {
+		updateLastActiveTime();
 		StringBuilder sb = new StringBuilder();
 		for (String id : this.getParticipants()) {
 			User user = bot.getUserById(id);
@@ -124,6 +131,10 @@ public class BandoriRoom {
 		if (sb.length() != 0)
 			sb.deleteCharAt(sb.length() - 1);
 		return "Room ping by " + pinger.getName() + ":\n" + sb.toString();
+	}
+
+	public void updateLastActiveTime() {
+		this.lastActiveTime = System.currentTimeMillis();
 	}
 
 	/*
@@ -139,6 +150,10 @@ public class BandoriRoom {
 
 	public long getCreationTime() {
 		return creationTime;
+	}
+
+	public long getLastActiveTime() {
+		return lastActiveTime;
 	}
 
 	public ArrayList<String> getParticipants() {

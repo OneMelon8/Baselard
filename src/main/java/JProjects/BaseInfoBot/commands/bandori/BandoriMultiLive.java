@@ -2,13 +2,16 @@ package JProjects.BaseInfoBot.commands.bandori;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
+import JProjects.BaseInfoBot.App;
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.Command;
 import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
 import JProjects.BaseInfoBot.commands.helpers.ReactionEvent;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.bandori.BandoriRoom;
+import JProjects.BaseInfoBot.database.config.BandoriConfig;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -147,24 +150,48 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		updateChannelTopic(guild);
 	}
 
-	public static void autoDisband() {
+	private static int checkDelay = 0;
 
+	public static void autoDisband() {
+		if (checkDelay > 0) {
+			checkDelay--;
+			return;
+		}
+		checkDelay = 300;
+
+		long now = System.currentTimeMillis();
+		HashMap<String, BandoriRoom> toDisband = new HashMap<String, BandoriRoom>();
+		for (Entry<String, HashMap<String, BandoriRoom>> guildRooms : multiRooms.entrySet()) {
+			String guildId = guildRooms.getKey();
+			for (Entry<String, BandoriRoom> roomEntry : guildRooms.getValue().entrySet()) {
+				BandoriRoom room = roomEntry.getValue();
+				if (room.getLastActiveTime() + BandoriConfig.MULTI_ROOM_TIME_OUT > now)
+					continue;
+				toDisband.put(guildId, room);
+			}
+			updateChannelTopic(App.bot.getJDA().getGuildById(guildId));
+		}
+
+		for (Entry<String, BandoriRoom> roomEntry : toDisband.entrySet()) {
+			Guild guild = App.bot.getJDA().getGuildById(roomEntry.getKey());
+			disband(roomEntry.getValue().getCreator().getId(), guild);
+		}
 	}
 
-	private HashMap<String, BandoriRoom> getOrCreateServerRooms(Guild guild) {
+	private static HashMap<String, BandoriRoom> getOrCreateServerRooms(Guild guild) {
 		if (multiRooms.containsKey(guild.getId()))
 			return multiRooms.get(guild.getId());
 		return new HashMap<String, BandoriRoom>();
 	}
 
-	private void updateOrCreateServerRooms(Guild guild, HashMap<String, BandoriRoom> data) {
+	private static void updateOrCreateServerRooms(Guild guild, HashMap<String, BandoriRoom> data) {
 		multiRooms.put(guild.getId(), data);
 	}
 
-	private void updateChannelTopic(Guild guild) {
+	private static void updateChannelTopic(Guild guild) {
 		if (!guild.getId().equals("423512363765989378"))
 			return;
-		TextChannel tc = bot.getJDA().getTextChannelById("605289350447759403");
+		TextChannel tc = App.bot.getJDA().getTextChannelById("605289350447759403");
 		StringBuilder sb = new StringBuilder("Multi Rooms (/m r): ");
 		HashMap<String, BandoriRoom> multiRooms = getOrCreateServerRooms(guild);
 		for (BandoriRoom room : multiRooms.values())
@@ -211,7 +238,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		return true;
 	}
 
-	private boolean disband(String id, Guild guild) {
+	private static boolean disband(String id, Guild guild) {
 		HashMap<String, BandoriRoom> multiRooms = getOrCreateServerRooms(guild);
 		if (!multiRooms.containsKey(id))
 			return false;
