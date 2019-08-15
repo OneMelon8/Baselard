@@ -301,18 +301,18 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		return builder.build();
 	}
 
-	private void toggleReady(MessageChannel channel, User user, Guild guild) {
+	public static void toggleReady(MessageChannel channel, User user, Guild guild) {
 		Role readyRole = guild.getRolesByName("Bang Dream", true).get(0);
 		Member userMember = guild.getMember(user);
 		boolean ready = guild.getMembersWithRoles(readyRole).contains(userMember);
 		ready = toggleReady(user, guild, ready);
 		if (ready)
-			bot.sendMessage(user.getAsMention() + " is ready to multi-live!", channel);
+			App.bot.sendMessage(user.getAsMention() + " is ready to multi-live!", channel);
 		else
-			bot.sendMessage(user.getAsMention() + " is no longer ready", channel);
+			App.bot.sendMessage(user.getAsMention() + " is no longer ready", channel);
 	}
 
-	private boolean toggleReady(User user, Guild guild, boolean ready) {
+	private static boolean toggleReady(User user, Guild guild, boolean ready) {
 		GuildController controller = new GuildController(guild);
 		Role readyRole = guild.getRolesByName("Bang Dream", true).get(0);
 		Member userMember = guild.getMember(user);
