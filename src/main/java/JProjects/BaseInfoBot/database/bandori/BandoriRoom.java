@@ -165,6 +165,19 @@ public class BandoriRoom {
 		return sb.toString();
 	}
 
+	public String getParticipantsDisplayTaskBar(Guild guild) {
+		StringBuilder sb = new StringBuilder();
+		if (this.getParticipantsCount() == this.getCapacity())
+			return "full";
+		for (String id : this.participants)
+			sb.append(bot.getUserDisplayName(id, guild) + ", ");
+		if (sb.length() != 0)
+			sb.delete(sb.length() - 2, sb.length());
+		else
+			sb.append("Empty");
+		return sb.toString();
+	}
+
 	public int getCapacity() {
 		return capacity;
 	}

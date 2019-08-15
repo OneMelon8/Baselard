@@ -56,7 +56,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 			leave(author, channel, guild);
 
 			BandoriRoom room = new BandoriRoom(args[1], author);
-			Role readyRole = guild.getRolesByName("b-r", true).get(0);
+			Role readyRole = guild.getRolesByName("Bang Dream", true).get(0);
 			bot.sendMessage(readyRole.getAsMention() + " " + author.getAsMention() + " has created a multi-live room!",
 					channel);
 			Message msg = bot.sendMessage(room.getEmbededMessage(), channel);
@@ -81,7 +81,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		} else if (args.length == 1 && (sub.equals("ping") || sub.equals("mention"))) {
 			BandoriRoom room = getRoomByUser(authorId, guild);
 			if (room == null) {
-				Role readyRole = guild.getRolesByName("b-r", true).get(0);
+				Role readyRole = guild.getRolesByName("Bang Dream", true).get(0);
 				bot.sendMessage("Ready ping by " + author.getAsMention() + ":\n" + readyRole.getAsMention(), channel);
 				return;
 			}
@@ -168,7 +168,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		StringBuilder sb = new StringBuilder("Multi Rooms (/m r): ");
 		HashMap<String, BandoriRoom> multiRooms = getOrCreateServerRooms(guild);
 		for (BandoriRoom room : multiRooms.values())
-			sb.append(room.getId() + " (" + room.getParticipantsDisplay(guild) + "), ");
+			sb.append(room.getId() + " (" + room.getParticipantsDisplayTaskBar(guild) + "), ");
 		sb.delete(sb.length() - 2, sb.length());
 		tc.getManager().setTopic(sb.substring(0, Math.min(sb.length(), 950)).toString()).queue();
 	}
@@ -275,7 +275,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 	}
 
 	private void toggleReady(MessageChannel channel, User user, Guild guild) {
-		Role readyRole = guild.getRolesByName("b-r", true).get(0);
+		Role readyRole = guild.getRolesByName("Bang Dream", true).get(0);
 		Member userMember = guild.getMember(user);
 		boolean ready = guild.getMembersWithRoles(readyRole).contains(userMember);
 		ready = toggleReady(user, guild, ready);
@@ -287,7 +287,7 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 
 	private boolean toggleReady(User user, Guild guild, boolean ready) {
 		GuildController controller = new GuildController(guild);
-		Role readyRole = guild.getRolesByName("b-r", true).get(0);
+		Role readyRole = guild.getRolesByName("Bang Dream", true).get(0);
 		Member userMember = guild.getMember(user);
 		if (ready) {
 			controller.removeSingleRoleFromMember(userMember, readyRole).queue();
