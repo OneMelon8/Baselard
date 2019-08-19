@@ -96,10 +96,13 @@ public class BandoriRoom {
 					+ this.getParticipantsCountDisplay() + ")", channel);
 			return true;
 		}
-		// bot.removeAllReactions(message);
 
 		message = bot.editMessage(message, this.getEmbededMessage());
-		EmoteDispatcher.register(message, listener, "live_boost");
+		if (this.getParticipantsCount() < this.getCapacity()) {
+			EmoteDispatcher.register(message, listener, 300, "live_boost");
+			EmoteDispatcher.registerCleanUp(message, 300);
+		} else
+			bot.removeAllReactions(message);
 		return true;
 	}
 

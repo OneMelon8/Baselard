@@ -48,11 +48,12 @@ public class BandoriReady extends Command {
 		builder.setAuthor("Ready List");
 		builder.setDescription("/multi create <Room Code> (/m c 88888)");
 
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder("*");
 		for (Member member : readyList)
 			sb.append(bot.getUserDisplayName(member.getUser().getId(), guild) + ", ");
-		if (sb.length() != 0)
+		if (sb.length() != 1)
 			sb.delete(sb.length() - 2, sb.length());
+		sb.append("*");
 		builder.addField(new Field("There are " + readyList.size() + " people who are ready to multi-live",
 				sb.toString(), false));
 		return builder.build();

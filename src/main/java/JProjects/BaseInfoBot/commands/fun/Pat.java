@@ -236,7 +236,7 @@ public class Pat extends Command implements ReactionEvent {
 			return;
 		}
 		int cooldownTime = 5 * 60 * 1000 + r.nextInt(25 * 60 * 1000); // 5-60 minutes
-		if (r.nextInt(10) == 0) {
+		if (r.nextInt(20) == 0) {
 			bot.sendMessage("Saaya: Thanks for the pat~ " + Emotes.SAAYA_MELT, channel);
 			bot.sendMessage("Where's my pat? " + Emotes.KOKORON_WUT_3, channel);
 			return;
@@ -271,11 +271,8 @@ public class Pat extends Command implements ReactionEvent {
 			ex.printStackTrace();
 		}
 		bot.sendMessage(author.getAsMention() + " " + responses[r.nextInt(responses.length)], channel);
-		if (r.nextInt(20) == 0) {
-			if (author.getId().equals(BotConfig.ONE_ID)) {
-				bot.sendMessage("\\*kisses " + author.getAsMention() + "\\*", channel);
-			} else
-				bot.sendMessage("\\*pats " + author.getAsMention() + " on the head too\\*", channel);
+		if (r.nextInt(50) == 0) {
+			bot.sendMessage("\\*pats " + author.getAsMention() + " on the head too\\*", channel);
 		}
 	}
 

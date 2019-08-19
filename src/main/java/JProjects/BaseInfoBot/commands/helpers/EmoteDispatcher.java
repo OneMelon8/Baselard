@@ -26,10 +26,14 @@ public class EmoteDispatcher {
 	public static HashMap<Message, Long> purgeReactions = new HashMap<Message, Long>();
 
 	public static void register(Message msg, ReactionEvent event, String... emoteName) {
-		register(msg, event, Arrays.asList(emoteName));
+		register(msg, event, Arrays.asList(emoteName), BotConfig.REACTION_TIME_OUT);
 	}
 
-	public static void register(Message msg, ReactionEvent event, List<String> emoteNames) {
+	public static void register(Message msg, ReactionEvent event, long timeoutInSeconds, String... emoteName) {
+		register(msg, event, Arrays.asList(emoteName), timeoutInSeconds);
+	}
+
+	public static void register(Message msg, ReactionEvent event, List<String> emoteNames, long timeoutInSeconds) {
 		final Object[] info = new Object[] { msg, new ArrayList<String>(emoteNames) };
 		dynamicRegisteredListeners.put(info, event);
 		App.bot.scheduleDelayedTask(new TimerTask() {
@@ -39,7 +43,7 @@ public class EmoteDispatcher {
 					return;
 				dynamicRegisteredListeners.remove(info);
 			}
-		}, BotConfig.REACTION_TIME_OUT_MS);
+		}, timeoutInSeconds * 1000);
 	}
 
 	public static void registerCleanUp(Message message) {
