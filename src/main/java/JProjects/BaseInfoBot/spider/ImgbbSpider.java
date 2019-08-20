@@ -30,6 +30,8 @@ public class ImgbbSpider {
 
 	public static String uploadImage(BufferedImage image) {
 		try {
+			if (image == null)
+				return null;
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ImageIO.write(image, "png", baos);
 

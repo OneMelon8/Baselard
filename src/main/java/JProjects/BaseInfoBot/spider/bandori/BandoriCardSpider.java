@@ -11,6 +11,7 @@ import org.jsoup.select.Elements;
 import JProjects.BaseInfoBot.database.bandori.BandoriAttribute;
 import JProjects.BaseInfoBot.database.bandori.BandoriCard;
 import JProjects.BaseInfoBot.database.bandori.BandoriMember;
+import JProjects.BaseInfoBot.tools.StringTools;
 
 public class BandoriCardSpider {
 
@@ -106,7 +107,8 @@ public class BandoriCardSpider {
 		Document doc = Jsoup.connect(url).userAgent("Chrome").timeout(60 * 1000).get();
 		Element table = doc.select("table.table.about-table").get(0);
 		BandoriCard card = new BandoriCard();
-		card.setName(table.select("tr[data-field=card_name]").select("td").get(1).text());
+		card.setName(StringTools
+				.smartReplaceNonEnglish(table.select("tr[data-field=card_name]").select("td").get(1).text()));
 		card.setAttr(BandoriAttribute.fromString(table.select("tr[data-field=attribute]").select("td").get(1).text()));
 		card.setMember(
 				BandoriMember.valueOf(String
@@ -116,7 +118,8 @@ public class BandoriCardSpider {
 						.toUpperCase()));
 		card.setRarity(table.select("tr[data-field=rarity]").select("td").get(1).select("img").size());
 		card.setVersions(table.select("tr[data-field=versions]").select("td").get(1).text());
-		card.setSkillName(table.select("tr[data-field=skill_name]").select("td").get(1).text());
+		card.setSkillName(StringTools
+				.smartReplaceNonEnglish(table.select("tr[data-field=skill_name]").select("td").get(1).text()));
 		card.setSkillDesc(table.select("tr[data-field=skill_type]").select("td").get(1).text());
 
 		Elements icons = table.select("tr[data-field=images]").select("td").get(1).select("img");

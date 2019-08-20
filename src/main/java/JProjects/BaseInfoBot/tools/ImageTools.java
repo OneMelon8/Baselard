@@ -32,6 +32,9 @@ public class ImageTools {
 				maxHeight = images[a].getHeight();
 		}
 
+		if (totalWidth == 0 || maxHeight == 0)
+			return null;
+
 		BufferedImage concatImage = new BufferedImage(totalWidth, maxHeight, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2d = concatImage.createGraphics();
 		int currentPosition = 0;

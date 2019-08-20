@@ -26,6 +26,7 @@ public class BandoriCard {
 	private int rarity;
 	private String versions;
 	private String skillName;
+	private BandoriSkillType skillType;
 	private String skillDesc;
 	private String iconUrl;
 	private String iconUrl2;
@@ -78,7 +79,7 @@ public class BandoriCard {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Versions: " + this.getVersionsEmotes());
 		sb.append("\nSkill: **" + this.getSkillName() + "**");
-		sb.append("\nDetail: **" + this.getSkillDesc() + "**");
+		sb.append("\nDetail: **" + this.getSkillType().getEmote() + " " + this.getSkillDesc() + "**");
 		builder.addField(
 				new Field(this.getMember().getEmote() + "・" + this.getAttr().getEmote() + "・" + this.getRarityStars(),
 						sb.toString(), false));
@@ -102,7 +103,7 @@ public class BandoriCard {
 		builder.addField(new Field("**Information:**", sb.toString(), false));
 
 		sb = new StringBuilder();
-		sb.append("Type: **" + this.getSkillName() + "**");
+		sb.append("Type: **" + this.getSkillType().getEmote() + " " + this.getSkillType().getDisplayName() + "**");
 		sb.append("\nName: **" + this.getSkillName() + "**");
 		sb.append("\nDesc: **" + this.getSkillDesc() + "**");
 		builder.addField(new Field("**Skill Info:**", sb.toString(), false));
@@ -140,6 +141,8 @@ public class BandoriCard {
 		String url = ImgbbSpider.uploadImage(getArtworks());
 		if (url != null)
 			builder.setImage(url);
+		else
+			builder.setDescription("There are no artworks for " + this.getName());
 		builder.setFooter((index + 1) + "/" + (total == 0 ? index + 1 : total) + " - " + notes,
 				BandoriConfig.URL_CRAFT_EGG);
 		return builder.build();
@@ -153,6 +156,8 @@ public class BandoriCard {
 		String url = ImgbbSpider.uploadImage(getChibis());
 		if (url != null)
 			builder.setImage(url);
+		else
+			builder.setDescription("There are no stage outfits for " + this.getName());
 		builder.setFooter((index + 1) + "/" + (total == 0 ? index + 1 : total) + " - " + notes,
 				BandoriConfig.URL_CRAFT_EGG);
 		return builder.build();
@@ -246,8 +251,23 @@ public class BandoriCard {
 		return skillName;
 	}
 
+	public BandoriSkillType getSkillType() {
+		return skillType;
+	}
+
 	public String getSkillDesc() {
-		return skillDesc;
+		StringBuilder sb = new StringBuilder();
+		int count = 0;
+		for (String s : this.skillDesc.replace("(Score up)", "").split(" ")) {
+			if (count++ < 2)
+				continue;
+			boolean ital = false;
+			if (s.matches(".*\\d.*") || s.contains("PERFECT") || s.contains("GREAT") || s.contains("GOOD")
+					|| s.contains("BAD") || s.contains("MISS"))
+				ital = true;
+			sb.append((ital ? "*" + s + "*" : s) + " ");
+		}
+		return sb.toString().trim();
 	}
 
 	public String getIconUrl() {
@@ -339,6 +359,7 @@ public class BandoriCard {
 
 	public void setSkillDesc(String skillDesc) {
 		this.skillDesc = skillDesc;
+		this.skillType = BandoriSkillType.fromClutterString(skillDesc);
 	}
 
 	public void setIconUrl(String iconUrl) {

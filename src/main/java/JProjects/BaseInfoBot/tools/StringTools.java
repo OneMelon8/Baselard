@@ -1,6 +1,16 @@
 package JProjects.BaseInfoBot.tools;
 
 public class StringTools {
+
+	public static String smartReplaceNonEnglish(String s) {
+		String result = s.replaceAll("[^\\x00-\\x7F]", "");
+		return result.isEmpty() ? s : result;
+	}
+
+	public static String replaceNonEnglish(String s) {
+		return s.replaceAll("[^\\x00-\\x7F]", "");
+	}
+
 	public static String removeDoubleSpaces(String s) {
 		while (s.contains("  "))
 			s = s.replace("  ", " ");
