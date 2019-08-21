@@ -49,7 +49,7 @@ public class BandoriEventSpider {
 				Element bodyWrapper = eventWrapper.select("table.table.about-table").first();
 				Calendar start = TimeFormatter
 						.getDateFromBandoriString(bodyWrapper.select("tr[data-field=english_start_date]")
-								.select("span.datetime").first().text().replace(":00 +0000", ""));
+								.select("span.datetime").first().text().replace(" +0000", ""));
 				events.add(new BandoriEvent(name, start, start));
 			}
 		return events;
@@ -75,10 +75,10 @@ public class BandoriEventSpider {
 				.smartReplaceNonEnglish(table.select("tr[data-field=name]").text().replace("Title", "").trim());
 		String imageUrl = "https:" + wrapper.select("img.event-image").attr("src");
 
-		Calendar start = TimeFormatter.getDateFromBandoriString(table.select("tr[data-field=english_start_date]")
-				.select("span.datetime").text().replace(":00 +0000", ""));
-		Calendar end = TimeFormatter.getDateFromBandoriString(table.select("tr[data-field=english_end_date]")
-				.select("span.datetime").text().replace(":00 +0000", ""));
+		Calendar start = TimeFormatter.getDateFromBandoriString(
+				table.select("tr[data-field=english_start_date]").select("span.datetime").text().replace(" +0000", ""));
+		Calendar end = TimeFormatter.getDateFromBandoriString(
+				table.select("tr[data-field=english_end_date]").select("span.datetime").text().replace(" +0000", ""));
 
 		BandoriEvent event = new BandoriEvent(eventName, start, end);
 		event.setType(BandoriEventType.fromString(table.select("tr[data-field=type]").select("td").get(1).text()));
