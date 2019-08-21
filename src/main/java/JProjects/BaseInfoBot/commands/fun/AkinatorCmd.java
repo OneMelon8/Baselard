@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import JProjects.BaseInfoBot.App;
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
-import JProjects.BaseInfoBot.commands.helpers.ReactionEvent;
+import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
+import JProjects.BaseInfoBot.commands.helpers.ReactionDispatcher;
+import JProjects.BaseInfoBot.commands.helpers.ReactionHandler;
 import JProjects.BaseInfoBot.database.Akinator;
 import JProjects.BaseInfoBot.database.config.AkinatorConfig;
 import JProjects.BaseInfoBot.database.config.BotConfig;
@@ -20,7 +20,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.MessageReaction.ReactionEmote;
 import net.dv8tion.jda.core.entities.User;
 
-public class AkinatorCmd extends Command implements ReactionEvent {
+public class AkinatorCmd extends CommandHandler implements ReactionHandler {
 
 	private static Akinator akinator;
 	private static Message message;
@@ -45,8 +45,8 @@ public class AkinatorCmd extends Command implements ReactionEvent {
 			AkinatorCmd.message = bot.sendMessage(akinator.getQuestionEmbeded(), channel);
 			bot.addReaction(AkinatorCmd.message, "1⃣", "2⃣", "3⃣", "4⃣", "5⃣");
 
-			EmoteDispatcher.register(AkinatorCmd.message, this, "1⃣", "2⃣", "3⃣", "4⃣", "5⃣");
-			EmoteDispatcher.registerCleanUp(AkinatorCmd.message, AkinatorConfig.MAX_IDLE_TIME_SECONDS);
+			ReactionDispatcher.register(AkinatorCmd.message, this, "1⃣", "2⃣", "3⃣", "4⃣", "5⃣");
+			ReactionDispatcher.registerCleanUp(AkinatorCmd.message, AkinatorConfig.MAX_IDLE_TIME_SECONDS);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			bot.sendMessage(EmbededUtil.getErrorEmbeded("The Genie is not available now, try again later"), channel);
@@ -90,13 +90,13 @@ public class AkinatorCmd extends Command implements ReactionEvent {
 			if (akinator.isActive())
 				if (akinator.isGuessing()) {
 					bot.addReaction(message, "❌", "✔");
-					EmoteDispatcher.register(message, this, "❌", "✔");
+					ReactionDispatcher.register(message, this, "❌", "✔");
 				} else {
 					bot.addReaction(message, "1⃣", "2⃣", "3⃣", "4⃣", "5⃣");
-					EmoteDispatcher.register(message, this, "1⃣", "2⃣", "3⃣", "4⃣", "5⃣");
+					ReactionDispatcher.register(message, this, "1⃣", "2⃣", "3⃣", "4⃣", "5⃣");
 				}
 
-			EmoteDispatcher.registerCleanUp(message, AkinatorConfig.MAX_IDLE_TIME_SECONDS);
+			ReactionDispatcher.registerCleanUp(message, AkinatorConfig.MAX_IDLE_TIME_SECONDS);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			bot.editMessage(msg, EmbededUtil.getErrorEmbeded(ex));

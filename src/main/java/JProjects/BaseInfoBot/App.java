@@ -3,7 +3,7 @@ package JProjects.BaseInfoBot;
 import java.io.IOException;
 
 import JProjects.BaseInfoBot.commands.fun.Pat;
-import JProjects.BaseInfoBot.commands.helpers.ChatEventHandler;
+import JProjects.BaseInfoBot.commands.helpers.ChatEventListener;
 import JProjects.BaseInfoBot.database.config.ServerChannelConfig;
 import JProjects.BaseInfoBot.google.GTranslate;
 import JProjects.BaseInfoBot.google.GVision;
@@ -14,8 +14,8 @@ public class App {
 	public static void main(String[] args) {
 		try {
 			System.out.println("Hello, Happy World!");
-			bot = new BaseInfoBot("3.3.1.1");
-			bot.addListener(new ChatEventHandler());
+			bot = new BaseInfoBot("3.3.2.0");
+			bot.addListener(new ChatEventListener());
 
 			// initGoogle();
 			initShutDown();

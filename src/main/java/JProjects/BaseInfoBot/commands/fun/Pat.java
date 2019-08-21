@@ -12,9 +12,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
-import JProjects.BaseInfoBot.commands.helpers.ReactionEvent;
+import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
+import JProjects.BaseInfoBot.commands.helpers.ReactionDispatcher;
+import JProjects.BaseInfoBot.commands.helpers.ReactionHandler;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.database.files.FileEditor;
@@ -31,7 +31,7 @@ import net.dv8tion.jda.core.entities.MessageReaction.ReactionEmote;
 import net.dv8tion.jda.core.entities.User;
 
 @SuppressWarnings("unchecked")
-public class Pat extends Command implements ReactionEvent {
+public class Pat extends CommandHandler implements ReactionHandler {
 	private static HashMap<String, Long> cooldown = new HashMap<String, Long>();
 
 	private static Random r = new Random();
@@ -223,8 +223,8 @@ public class Pat extends Command implements ReactionEvent {
 		bot.reactPrev(msg);
 		bot.reactNext(msg);
 
-		EmoteDispatcher.register(msg, this, "◀", "▶");
-		EmoteDispatcher.registerCleanUp(msg);
+		ReactionDispatcher.register(msg, this, "◀", "▶");
+		ReactionDispatcher.registerCleanUp(msg);
 	}
 
 	private void pat(User author, String id, MessageChannel channel, Guild guild) {

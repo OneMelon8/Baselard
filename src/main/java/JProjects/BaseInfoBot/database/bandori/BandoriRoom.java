@@ -8,7 +8,7 @@ import java.util.Collections;
 import JProjects.BaseInfoBot.App;
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.bandori.BandoriMultiLive;
-import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
+import JProjects.BaseInfoBot.commands.helpers.ReactionDispatcher;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.spider.ImgbbSpider;
@@ -99,8 +99,8 @@ public class BandoriRoom {
 
 		message = bot.editMessage(message, this.getEmbededMessage());
 		if (this.getParticipantsCount() < this.getCapacity()) {
-			EmoteDispatcher.register(message, listener, 300, "live_boost");
-			EmoteDispatcher.registerCleanUp(message, 300);
+			ReactionDispatcher.register(message, listener, 300, "live_boost");
+			ReactionDispatcher.registerCleanUp(message, 300);
 		} else
 			bot.removeAllReactions(message);
 		return true;

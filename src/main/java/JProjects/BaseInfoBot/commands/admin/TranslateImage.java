@@ -3,7 +3,7 @@ package JProjects.BaseInfoBot.commands.admin;
 import java.util.List;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.Command;
+import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.google.GTranslate;
 import JProjects.BaseInfoBot.google.GVision;
@@ -16,7 +16,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
 
-public class TranslateImage extends Command {
+public class TranslateImage extends CommandHandler {
 
 	public TranslateImage(BaseInfoBot bot) {
 		super(bot, "itranslate", new String[] { "it", "itrans" }, "Image translation using Google API");

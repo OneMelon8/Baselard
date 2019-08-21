@@ -20,20 +20,20 @@ import net.dv8tion.jda.core.entities.MessageReaction;
 import net.dv8tion.jda.core.entities.MessageReaction.ReactionEmote;
 import net.dv8tion.jda.core.entities.User;
 
-public class EmoteDispatcher {
+public class ReactionDispatcher {
 
-	private static ConcurrentHashMap<Object[], ReactionEvent> dynamicRegisteredListeners = new ConcurrentHashMap<Object[], ReactionEvent>();
+	private static ConcurrentHashMap<Object[], ReactionHandler> dynamicRegisteredListeners = new ConcurrentHashMap<Object[], ReactionHandler>();
 	public static HashMap<Message, Long> purgeReactions = new HashMap<Message, Long>();
 
-	public static void register(Message msg, ReactionEvent event, String... emoteName) {
+	public static void register(Message msg, ReactionHandler event, String... emoteName) {
 		register(msg, event, Arrays.asList(emoteName), BotConfig.REACTION_TIME_OUT);
 	}
 
-	public static void register(Message msg, ReactionEvent event, long timeoutInSeconds, String... emoteName) {
+	public static void register(Message msg, ReactionHandler event, long timeoutInSeconds, String... emoteName) {
 		register(msg, event, Arrays.asList(emoteName), timeoutInSeconds);
 	}
 
-	public static void register(Message msg, ReactionEvent event, List<String> emoteNames, long timeoutInSeconds) {
+	public static void register(Message msg, ReactionHandler event, List<String> emoteNames, long timeoutInSeconds) {
 		final Object[] info = new Object[] { msg, new ArrayList<String>(emoteNames) };
 		dynamicRegisteredListeners.put(info, event);
 		App.bot.scheduleDelayedTask(new TimerTask() {
@@ -103,15 +103,15 @@ public class EmoteDispatcher {
 		System.out.println(GeneralTools.getTime() + " >> " + user.getAsTag() + " reacted with " + emo.getName()
 				+ " on message " + msg.getContentRaw());
 
-		Iterator<Map.Entry<Object[], ReactionEvent>> iter = dynamicRegisteredListeners.entrySet().iterator();
+		Iterator<Map.Entry<Object[], ReactionHandler>> iter = dynamicRegisteredListeners.entrySet().iterator();
 		while (iter.hasNext()) {
-			Entry<Object[], ReactionEvent> entry = iter.next();
+			Entry<Object[], ReactionHandler> entry = iter.next();
 			Object[] info = entry.getKey();
 			Message storedMessage = (Message) info[0];
 			ArrayList<String> emoteMatchers = (ArrayList<String>) info[1];
 			if (!storedMessage.getId().equals(messageId) || !emoteMatchers.contains(emoteName))
 				continue;
-			ReactionEvent event = entry.getValue();
+			ReactionHandler event = entry.getValue();
 			event.onReact(user, emo, msg, channel, guild);
 			iter.remove();
 		}

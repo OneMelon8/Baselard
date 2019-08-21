@@ -3,7 +3,7 @@ package JProjects.BaseInfoBot.commands.bandori;
 import java.util.List;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.Command;
+import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -15,7 +15,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 
-public class BandoriReady extends Command {
+public class BandoriReady extends CommandHandler {
 
 	public BandoriReady(BaseInfoBot bot) {
 		super(bot, "ready", new String[] { "r" }, "Alias for /multi ready command");

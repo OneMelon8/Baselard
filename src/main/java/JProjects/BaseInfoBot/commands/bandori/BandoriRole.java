@@ -3,7 +3,7 @@ package JProjects.BaseInfoBot.commands.bandori;
 import java.util.HashMap;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.Command;
+import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.bandori.BandoriRoom;
 import JProjects.BaseInfoBot.database.config.BotConfig;
@@ -18,7 +18,7 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.managers.GuildController;
 
-public class BandoriRole extends Command {
+public class BandoriRole extends CommandHandler {
 
 	public static HashMap<String, BandoriRoom> multiRooms = new HashMap<String, BandoriRoom>();
 

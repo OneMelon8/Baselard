@@ -1,9 +1,9 @@
 package JProjects.BaseInfoBot.commands;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.Command;
+import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.commands.helpers.CommandDispatcher;
-import JProjects.BaseInfoBot.commands.helpers.ReactionEvent;
+import JProjects.BaseInfoBot.commands.helpers.ReactionHandler;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -14,7 +14,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.MessageReaction.ReactionEmote;
 import net.dv8tion.jda.core.entities.User;
 
-public class Help extends Command implements ReactionEvent {
+public class Help extends CommandHandler implements ReactionHandler {
 
 	public Help(BaseInfoBot bot) {
 		super(bot, "help", new String[] { "?" }, "List of commands and usage");
@@ -30,7 +30,7 @@ public class Help extends Command implements ReactionEvent {
 			return;
 		}
 		String sub = args[0];
-		Command cmdHandler = CommandDispatcher.registeredListeners.get(sub);
+		CommandHandler cmdHandler = CommandDispatcher.registeredListeners.get(sub);
 		if (cmdHandler == null)
 			for (String key : CommandDispatcher.registeredCommands.keySet()) {
 				String[] lstAliases = CommandDispatcher.registeredCommands.get(key);

@@ -3,9 +3,9 @@ package JProjects.BaseInfoBot.commands.bandori;
 import java.io.IOException;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
-import JProjects.BaseInfoBot.commands.helpers.ReactionEvent;
+import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
+import JProjects.BaseInfoBot.commands.helpers.ReactionDispatcher;
+import JProjects.BaseInfoBot.commands.helpers.ReactionHandler;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.bandori.BandoriAttribute;
 import JProjects.BaseInfoBot.database.bandori.BandoriCard;
@@ -22,7 +22,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.MessageReaction.ReactionEmote;
 import net.dv8tion.jda.core.entities.User;
 
-public class BandoriCards extends Command implements ReactionEvent {
+public class BandoriCards extends CommandHandler implements ReactionHandler {
 
 	public BandoriCards(BaseInfoBot bot) {
 		super(bot, "card", new String[] { "cards" }, "Search for cards on bandori.party");
@@ -56,8 +56,8 @@ public class BandoriCards extends Command implements ReactionEvent {
 			bot.reactNext(msg);
 			bot.reactDetails(msg);
 
-			EmoteDispatcher.register(msg, this, "◀", "▶", "🔍"); // magnifier, paint, picture
-			EmoteDispatcher.registerCleanUp(msg);
+			ReactionDispatcher.register(msg, this, "◀", "▶", "🔍"); // magnifier, paint, picture
+			ReactionDispatcher.registerCleanUp(msg);
 		} catch (IndexOutOfBoundsException ex) {
 			ex.printStackTrace();
 			bot.sendMessage("I cannot find information on that card, maybe you spelled it wrong?", channel);
@@ -110,14 +110,14 @@ public class BandoriCards extends Command implements ReactionEvent {
 					// Chibi
 					msg = bot.editMessage(msg, card.getChibisEmbeded());
 					bot.addReaction(msg, "🔍", "🖼"); // magnifier, picture
-					EmoteDispatcher.register(msg, this, "🔍", "🖼");
+					ReactionDispatcher.register(msg, this, "🔍", "🖼");
 				} else {
 					// Artwork
 					msg = bot.editMessage(msg, card.getArtworksEmbeded());
 					bot.addReaction(msg, "🔍", "🎨"); // magnifier, painting
-					EmoteDispatcher.register(msg, this, "🔍", "🎨");
+					ReactionDispatcher.register(msg, this, "🔍", "🎨");
 				}
-				EmoteDispatcher.registerCleanUp(msg);
+				ReactionDispatcher.registerCleanUp(msg);
 				return;
 			}
 
@@ -130,12 +130,12 @@ public class BandoriCards extends Command implements ReactionEvent {
 				bot.reactPrev(msg);
 				bot.reactNext(msg);
 				bot.reactDetails(msg);
-				EmoteDispatcher.register(msg, this, "◀", "▶", "🔍"); // magnifier
+				ReactionDispatcher.register(msg, this, "◀", "▶", "🔍"); // magnifier
 			} else {
 				bot.addReaction(msg, "🎨", "🖼"); // painting, picture
-				EmoteDispatcher.register(msg, this, "🎨", "🖼");
+				ReactionDispatcher.register(msg, this, "🎨", "🖼");
 			}
-			EmoteDispatcher.registerCleanUp(msg);
+			ReactionDispatcher.registerCleanUp(msg);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			bot.editMessage(msg, EmbededUtil.getErrorEmbeded(ex));

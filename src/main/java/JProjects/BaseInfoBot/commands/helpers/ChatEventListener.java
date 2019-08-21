@@ -12,7 +12,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-public class ChatEventHandler extends ListenerAdapter {
+public class ChatEventListener extends ListenerAdapter {
 	public static boolean mute = false;
 
 	@Override
@@ -23,16 +23,23 @@ public class ChatEventHandler extends ListenerAdapter {
 
 	@Override
 	public void onMessageReceived(MessageReceivedEvent e) {
-		if (!channelCheck(e.getChannel(), e.getGuild()))
+		if (!channelCheck(e.getChannel(), e.getGuild()) || e.getAuthor().isBot())
 			return;
+		boolean isCommand = e.getMessage().getContentRaw().startsWith(BotConfig.PREFIX);
+		if (!isCommand && !mute) {
+			ChatIntentDispatcher.fire(e);
+			return;
+		}
+
+		// Don't need to mute check here, cause /toggle command
 		CommandDispatcher.fire(e);
 	}
 
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent e) {
-		if (mute || !channelCheck(e.getChannel(), e.getGuild()))
+		if (mute || !channelCheck(e.getChannel(), e.getGuild()) || e.getUser().isBot())
 			return;
-		EmoteDispatcher.fire(e.getUser(), e.getReactionEmote(), e.getMessageId(), e.getChannel(), e.getGuild());
+		ReactionDispatcher.fire(e.getUser(), e.getReactionEmote(), e.getMessageId(), e.getChannel(), e.getGuild());
 	}
 
 	private boolean channelCheck(MessageChannel channel, Guild guild) {

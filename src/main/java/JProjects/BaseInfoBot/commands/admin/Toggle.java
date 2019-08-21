@@ -1,8 +1,8 @@
 package JProjects.BaseInfoBot.commands.admin;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.ChatEventHandler;
-import JProjects.BaseInfoBot.commands.helpers.Command;
+import JProjects.BaseInfoBot.commands.helpers.ChatEventListener;
+import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -12,7 +12,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
 
-public class Toggle extends Command {
+public class Toggle extends CommandHandler {
 
 	public Toggle(BaseInfoBot bot) {
 		super(bot, "toggle", "Administration toggle bot responses");
@@ -25,7 +25,7 @@ public class Toggle extends Command {
 			bot.reactCross(message);
 			return;
 		}
-		ChatEventHandler.mute = !ChatEventHandler.mute;
+		ChatEventListener.mute = !ChatEventListener.mute;
 		bot.reactCheck(message);
 	}
 

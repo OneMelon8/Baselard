@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.Command;
+import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.tools.EnviroHandler;
@@ -16,7 +16,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
 
-public class Gamemode extends Command {
+public class Gamemode extends CommandHandler {
 
 	public Gamemode(BaseInfoBot bot) {
 		super(bot, "gamemode", new String[] { "gm" }, "Administrative action mode accessor");

@@ -7,7 +7,7 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 
-public abstract class Command {
+public abstract class CommandHandler {
 	protected String command;
 	protected String[] aliases;
 
@@ -21,7 +21,7 @@ public abstract class Command {
 	 * @param command - the command string
 	 * @param helpMsg - the help message
 	 */
-	public Command(BaseInfoBot bot, String command, String helpMsg) {
+	public CommandHandler(BaseInfoBot bot, String command, String helpMsg) {
 		this.bot = bot;
 		this.command = command;
 		this.aliases = new String[0];
@@ -37,7 +37,7 @@ public abstract class Command {
 	 * @param aliases - aliases to the command
 	 * @param helpMsg - the help message
 	 */
-	public Command(BaseInfoBot bot, String command, String[] aliases, String helpMsg) {
+	public CommandHandler(BaseInfoBot bot, String command, String[] aliases, String helpMsg) {
 		this.bot = bot;
 		this.command = command;
 		this.aliases = aliases;

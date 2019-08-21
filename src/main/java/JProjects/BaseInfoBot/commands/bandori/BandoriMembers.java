@@ -3,7 +3,7 @@ package JProjects.BaseInfoBot.commands.bandori;
 import java.io.IOException;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.Command;
+import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.spider.bandori.BandoriMemberSpider;
@@ -15,7 +15,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
 
-public class BandoriMembers extends Command {
+public class BandoriMembers extends CommandHandler {
 
 	public BandoriMembers(BaseInfoBot bot) {
 		super(bot, "member", new String[] { "members" }, "Searches for member list or a specific member");

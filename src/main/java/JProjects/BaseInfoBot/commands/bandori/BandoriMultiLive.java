@@ -6,9 +6,14 @@ import java.util.Map.Entry;
 
 import JProjects.BaseInfoBot.App;
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
-import JProjects.BaseInfoBot.commands.helpers.ReactionEvent;
+import JProjects.BaseInfoBot.commands.helpers.ChatIntent;
+import JProjects.BaseInfoBot.commands.helpers.ChatIntentDispatcher;
+import JProjects.BaseInfoBot.commands.helpers.ChatIntentHandler;
+import JProjects.BaseInfoBot.commands.helpers.ChatIntentPattern;
+import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
+import JProjects.BaseInfoBot.commands.helpers.ReactionDispatcher;
+import JProjects.BaseInfoBot.commands.helpers.ReactionHandler;
+import JProjects.BaseInfoBot.database.Emojis;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.bandori.BandoriRoom;
 import JProjects.BaseInfoBot.database.config.BandoriConfig;
@@ -27,18 +32,23 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.managers.GuildController;
 
-public class BandoriMultiLive extends Command implements ReactionEvent {
+public class BandoriMultiLive extends CommandHandler implements ReactionHandler, ChatIntentHandler {
 
-	// SERVER ID >> { CREATOR ID >> ROOM }
+	// SERVER ID >> {CREATOR ID >> ROOM}
 	public static HashMap<String, HashMap<String, BandoriRoom>> multiRooms = new HashMap<String, HashMap<String, BandoriRoom>>();
+
+	// MESSAGE WITH REACTION >> INTENT
+	public static HashMap<String, ChatIntent> reactionIntent = new HashMap<String, ChatIntent>();
 
 	public BandoriMultiLive(BaseInfoBot bot) {
 		super(bot, "multi", new String[] { "mul", "m" }, "Parent command for multi-live features");
+		ChatIntentDispatcher.register(ChatIntentPattern.BANDORI_CREATE_ROOM, this);
 	}
 
 	@Override
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
 			Guild guild) {
+		updateChannelTopic(guild);
 		bot.sendThinkingPacket(channel);
 		if (args.length == 0) {
 			bot.sendMessage(getHelpEmbeded(), channel);
@@ -69,8 +79,8 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 			multiRooms.put(authorId, room);
 			updateOrCreateServerRooms(guild, multiRooms);
 
-			EmoteDispatcher.register(msg, this, 300, "live_boost");
-			EmoteDispatcher.registerCleanUp(msg, 300);
+			ReactionDispatcher.register(msg, this, 300, "live_boost");
+			ReactionDispatcher.registerCleanUp(msg, 300);
 		} else if (args.length == 1 && (sub.equals("list") || sub.equals("l") || sub.equals("rooms"))) {
 			bot.sendMessage(getRoomList(guild), channel);
 		} else if (args.length == 1
@@ -129,25 +139,82 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 			bot.sendMessage(getHelpEmbeded(), channel);
 			return;
 		}
-		updateChannelTopic(guild);
 	}
 
 	@Override
 	public void onReact(User user, ReactionEmote emote, Message message, MessageChannel channel, Guild guild) {
-		if (message.getEmbeds() == null || message.getEmbeds().size() == 0)
-			return;
+		updateChannelTopic(guild);
 		String emoteName = emote.getName();
-		MessageEmbed msgEmbeded = message.getEmbeds().get(0);
-		String roomId = msgEmbeded.getFooter().getText();
 		if (emoteName.equals("live_boost")) {
+			if (message.getEmbeds() == null || message.getEmbeds().size() == 0)
+				return;
+			MessageEmbed msgEmbeded = message.getEmbeds().get(0);
+			String roomId = msgEmbeded.getFooter().getText();
 			if (preJoinCheck(getRoomById(roomId, guild), user, channel, guild))
 				return;
 			BandoriRoom room = getRoomById(roomId, guild);
 			if (!room.join(user, message, channel, this))
 				bot.sendMessage(user.getAsMention() + " Failed to join the room!", channel);
-		}
+		} else if (emoteName.equals(Emojis.CHECK) && reactionIntent.containsKey(message.getId())) {
+			// If this reaction is caused by chat intent detection
+			ChatIntent intent = reactionIntent.get(message.getId());
+			if (intent == null)
+				return;
+			String authorId = user.getId();
+			if (!message.getMentionedMembers().get(0).getUser().getId().equals(authorId))
+				return;
 
-		updateChannelTopic(guild);
+			reactionIntent.remove(message.getId());
+			bot.removeAllReactions(message);
+			bot.editMessage(message, user.getAsMention() + " Creating a new room...");
+
+			// Get room ID from intent
+			String roomId = (String) intent.getData("ROOM_ID");
+
+			// Create new room using room ID
+			if (disband(authorId, guild))
+				bot.sendMessage(user.getAsMention() + " Successfully disbanded your previous room!", channel);
+			leave(user, channel, guild);
+
+			BandoriRoom room = new BandoriRoom(roomId, user);
+			Role readyRole = guild.getRolesByName("Bang Dream", true).get(0);
+			bot.sendMessage(readyRole.getAsMention() + " " + user.getAsMention() + " has created a multi-live room!",
+					channel);
+			message = bot.sendMessage(room.getEmbededMessage(), channel);
+			bot.addReaction(message, bot.getEmote(Emotes.LIVE_BOOST));
+
+			HashMap<String, BandoriRoom> multiRooms = getOrCreateServerRooms(guild);
+			multiRooms.put(authorId, room);
+			updateOrCreateServerRooms(guild, multiRooms);
+
+			ReactionDispatcher.register(message, this, 300, "live_boost");
+			ReactionDispatcher.registerCleanUp(message, 300);
+		} else if (emoteName.equals(Emojis.CROSS) && reactionIntent.containsKey(message.getId())) {
+			// If this reaction is caused by chat intent detection
+			ChatIntent intent = reactionIntent.get(message.getId());
+			if (intent == null)
+				return;
+			String authorId = user.getId();
+			if (!message.getMentionedMembers().get(0).getUser().getId().equals(authorId))
+				return;
+			bot.deleteMessage(message);
+		}
+	}
+
+	@Override
+	public void onIntentDetected(ChatIntent intent, User author, Message message, String messageRaw,
+			MessageChannel channel, Guild guild) {
+		if (intent == null || intent.getPattern() != ChatIntentPattern.BANDORI_CREATE_ROOM)
+			return;
+		String roomId = (String) intent.getData("ROOM_ID");
+		if (getRoomById(roomId, guild) != null)
+			return;
+		message = bot.sendMessage(author.getAsMention() + " New Bandori room ID detected, create a new room?", channel);
+		bot.addReaction(message, Emojis.CHECK, Emojis.CROSS);
+		reactionIntent.put(message.getId(), intent);
+
+		ReactionDispatcher.register(message, this, Emojis.CHECK, Emojis.CROSS);
+		ReactionDispatcher.registerCleanUp(message);
 	}
 
 	private static int checkDelay = 0;
@@ -369,5 +436,4 @@ public class BandoriMultiLive extends Command implements ReactionEvent {
 		builder.addField(new Field("Example:", "```" + BotConfig.PREFIX + command + " create 88888```", false));
 		return builder.build();
 	}
-
 }

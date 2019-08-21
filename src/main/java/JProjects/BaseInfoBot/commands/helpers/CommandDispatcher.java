@@ -20,14 +20,9 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public class CommandDispatcher {
 
 	public static HashMap<String, String[]> registeredCommands = new HashMap<String, String[]>();
-	public static HashMap<String, Command> registeredListeners = new HashMap<String, Command>();
+	public static HashMap<String, CommandHandler> registeredListeners = new HashMap<String, CommandHandler>();
 
 	private static HashMap<String, Long> cooldown = new HashMap<String, Long>();
-
-	private static final String[] botResponses = new String[] {
-			"Hmm, you know what? Lets talk like this so the hoomans doesn't understand us >w<", "Beep boop beep boop!",
-			"Have you tried binary yet?", "Kono tensei Base-sama!" };
-	private static final Random r = new Random();
 
 	/**
 	 * Tries to process the command (if registered)
@@ -39,21 +34,16 @@ public class CommandDispatcher {
 		if (!msg.startsWith(BotConfig.PREFIX))
 			return;
 
-		if (e.getAuthor().isBot()) {
-			App.bot.sendMessage(e.getAuthor().getAsMention() + " "
-					+ GeneralTools.toBinary(botResponses[r.nextInt(botResponses.length)]), e.getChannel());
-			return;
-		}
 		String[] msgArr = msg.split(" ");
 		String userCmd = msgArr[0].substring(BotConfig.PREFIX.length()).toLowerCase();
 		System.out.println(GeneralTools.getTime() + " >> " + e.getAuthor().getAsTag() + " executed " + msg);
 
-		if (ChatEventHandler.mute && userCmd.equalsIgnoreCase("toggle")) {
+		if (ChatEventListener.mute && userCmd.equalsIgnoreCase("toggle")) {
 			registeredListeners.get("toggle").onCommand(e.getAuthor(), userCmd, null, e.getMessage(), e.getChannel(),
 					e.getGuild());
 			return;
 		}
-		if (ChatEventHandler.mute)
+		if (ChatEventListener.mute)
 			return;
 
 		if (e.getChannel().getId().equals("562766797032652800")
@@ -77,7 +67,7 @@ public class CommandDispatcher {
 		// Loop thru all the registered commands
 		for (String cmd : registeredCommands.keySet()) {
 			ArrayList<String> aliases = new ArrayList<String>(Arrays.asList(registeredCommands.get(cmd)));
-			if ((userCmd.equals(cmd) || aliases.contains(userCmd)) && !ChatEventHandler.mute) {
+			if ((userCmd.equals(cmd) || aliases.contains(userCmd)) && !ChatEventListener.mute) {
 				// Dispatch command
 				registeredListeners.get(cmd).onCommand(e.getAuthor(), userCmd, args, e.getMessage(), e.getChannel(),
 						e.getGuild());
@@ -87,7 +77,7 @@ public class CommandDispatcher {
 		// Disabled cause.. spam i guess?
 		// unknownCommand(userCmd, event);
 		App.bot.reactQuestion(e.getMessage());
-		EmoteDispatcher.register(e.getMessage(), new Help(App.bot), "kokoron_wut");
+		ReactionDispatcher.register(e.getMessage(), new Help(App.bot), "kokoron_wut");
 	}
 
 	public static void unknownCommand(String cmd, User author, String command, String[] args, Message message,
@@ -115,7 +105,7 @@ public class CommandDispatcher {
 	 * @param command  - command to register
 	 * @param instance
 	 */
-	public static void register(String command, Command instance) {
+	public static void register(String command, CommandHandler instance) {
 		registeredCommands.put(command, new String[0]);
 		registeredListeners.put(command, instance);
 	}
@@ -127,7 +117,7 @@ public class CommandDispatcher {
 	 * @param command - command to register
 	 * @param aliases - command's aliases
 	 */
-	public static void register(String command, String[] aliases, Command instance) {
+	public static void register(String command, String[] aliases, CommandHandler instance) {
 		registeredCommands.put(command, aliases);
 		registeredListeners.put(command, instance);
 

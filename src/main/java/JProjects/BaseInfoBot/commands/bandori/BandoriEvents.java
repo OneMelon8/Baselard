@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.Command;
-import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
-import JProjects.BaseInfoBot.commands.helpers.ReactionEvent;
+import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
+import JProjects.BaseInfoBot.commands.helpers.ReactionDispatcher;
+import JProjects.BaseInfoBot.commands.helpers.ReactionHandler;
 import JProjects.BaseInfoBot.database.Emojis;
 import JProjects.BaseInfoBot.database.bandori.BandoriEvent;
 import JProjects.BaseInfoBot.database.config.BotConfig;
@@ -21,7 +21,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.MessageReaction.ReactionEmote;
 import net.dv8tion.jda.core.entities.User;
 
-public class BandoriEvents extends Command implements ReactionEvent {
+public class BandoriEvents extends CommandHandler implements ReactionHandler {
 
 	public BandoriEvents(BaseInfoBot bot) {
 		super(bot, "event", new String[] { "ev" }, "Shows the events that are now live and future events");
@@ -37,8 +37,8 @@ public class BandoriEvents extends Command implements ReactionEvent {
 				message = bot.sendMessage(getEventsEmbeded(1), channel);
 				bot.reactPrev(message);
 				bot.reactNext(message);
-				EmoteDispatcher.register(message, this, "◀", "▶");
-				EmoteDispatcher.registerCleanUp(message);
+				ReactionDispatcher.register(message, this, "◀", "▶");
+				ReactionDispatcher.registerCleanUp(message);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 				bot.sendMessage("Seems like bandori.party cannot be reached right now, try again later.", channel);
@@ -105,8 +105,8 @@ public class BandoriEvents extends Command implements ReactionEvent {
 
 		bot.reactPrev(message);
 		bot.reactNext(message);
-		EmoteDispatcher.register(message, this, "◀", "▶");
-		EmoteDispatcher.registerCleanUp(message);
+		ReactionDispatcher.register(message, this, "◀", "▶");
+		ReactionDispatcher.registerCleanUp(message);
 	}
 
 	public MessageEmbed getEventsEmbeded(int page) throws IOException {

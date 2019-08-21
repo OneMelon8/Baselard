@@ -1,7 +1,7 @@
 package JProjects.BaseInfoBot.commands;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.Command;
+import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -12,7 +12,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
 
-public class Ping extends Command {
+public class Ping extends CommandHandler {
 
 	public Ping(BaseInfoBot bot) {
 		super(bot, "ping", "Check if the bot is currently active");

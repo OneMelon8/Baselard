@@ -27,8 +27,9 @@ import JProjects.BaseInfoBot.commands.fun.AkinatorCmd;
 import JProjects.BaseInfoBot.commands.fun.Fortune;
 import JProjects.BaseInfoBot.commands.fun.Pat;
 import JProjects.BaseInfoBot.commands.fun.TableFlip;
-import JProjects.BaseInfoBot.commands.helpers.ChatEventHandler;
-import JProjects.BaseInfoBot.commands.helpers.EmoteDispatcher;
+import JProjects.BaseInfoBot.commands.helpers.ChatEventListener;
+import JProjects.BaseInfoBot.commands.helpers.ReactionDispatcher;
+import JProjects.BaseInfoBot.database.Emojis;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.tools.EnviroHandler;
 import net.dv8tion.jda.core.AccountType;
@@ -57,7 +58,7 @@ public class BaseInfoBot {
 		version = ver;
 
 		this.startTimer();
-		this.registerCommands();
+		this.registerHandlers();
 	}
 
 	public void startTimer() {
@@ -65,7 +66,7 @@ public class BaseInfoBot {
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				EmoteDispatcher.cleanUp();
+				ReactionDispatcher.cleanUp();
 				AkinatorCmd.timerTick();
 				BandoriMultiLive.autoDisband();
 			}
@@ -80,7 +81,7 @@ public class BaseInfoBot {
 		api.addEventListener(listener);
 	}
 
-	public void registerCommands() {
+	private void registerHandlers() {
 		// General Commands
 		new Help(this);
 		new Ping(this);
@@ -93,18 +94,6 @@ public class BaseInfoBot {
 		new Servers(this);
 		new Delete(this);
 
-		// MOE Commands
-		// new Hangar(this);
-		// new MoeSuitStats(this);
-		// new MoeSuitComp(this);
-		// new MoeStatTop(this);
-		// new MoeCodex(this);
-		// MOE Combat
-
-		// MOE Administration
-		// new AddSuitAliases(this);
-		// new RegisterDB(this);
-
 		// Bandori Commands
 		new BandoriEvents(this);
 		new BandoriCards(this);
@@ -115,8 +104,6 @@ public class BaseInfoBot {
 		// new BandoriComics(this);
 
 		// Beta
-		// new TranslateImage(this);
-		// new Translate(this);
 
 		// Fun
 		new TableFlip(this);
@@ -198,11 +185,11 @@ public class BaseInfoBot {
 	}
 
 	public void reactCheck(Message msg) {
-		addReaction(msg, "✅");
+		addReaction(msg, Emojis.CHECK);
 	}
 
 	public void reactCross(Message msg) {
-		addReaction(msg, "❌");
+		addReaction(msg, Emojis.CROSS);
 	}
 
 	public void reactQuestion(Message msg) {
@@ -255,7 +242,7 @@ public class BaseInfoBot {
 	}
 
 	public void setMuted(boolean mute) {
-		ChatEventHandler.mute = mute;
+		ChatEventListener.mute = mute;
 	}
 
 	public JDA getJDA() {

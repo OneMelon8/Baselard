@@ -1,7 +1,7 @@
 package JProjects.BaseInfoBot.commands.admin;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.Command;
+import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -11,7 +11,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
 
-public class Delete extends Command {
+public class Delete extends CommandHandler {
 
 	public Delete(BaseInfoBot bot) {
 		super(bot, "delete", new String[] { "del" }, "Delete message by ID");
