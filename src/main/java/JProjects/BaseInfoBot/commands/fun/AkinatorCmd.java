@@ -62,8 +62,8 @@ public class AkinatorCmd extends CommandHandler implements ReactionHandler {
 			bot.addReaction(AkinatorCmd.message, Emojis.NUMBER_1, Emojis.NUMBER_2, Emojis.NUMBER_3, Emojis.NUMBER_4,
 					Emojis.NUMBER_5);
 
-			ReactionDispatcher.register(AkinatorCmd.message, this, Emojis.NUMBER_1, Emojis.NUMBER_2, Emojis.NUMBER_3,
-					Emojis.NUMBER_4, Emojis.NUMBER_5);
+			ReactionDispatcher.register(AkinatorCmd.message, this, AkinatorConfig.MAX_IDLE_TIME_SECONDS,
+					Emojis.NUMBER_1, Emojis.NUMBER_2, Emojis.NUMBER_3, Emojis.NUMBER_4, Emojis.NUMBER_5);
 			ReactionDispatcher.registerCleanUp(AkinatorCmd.message, AkinatorConfig.MAX_IDLE_TIME_SECONDS);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -109,12 +109,13 @@ public class AkinatorCmd extends CommandHandler implements ReactionHandler {
 			if (akinator.isActive())
 				if (akinator.isGuessing()) {
 					bot.addReaction(message, Emojis.CROSS, Emojis.CHECK);
-					ReactionDispatcher.register(message, this, Emojis.CROSS, Emojis.CHECK);
+					ReactionDispatcher.register(message, this, AkinatorConfig.MAX_IDLE_TIME_SECONDS, Emojis.CROSS,
+							Emojis.CHECK);
 				} else {
 					bot.addReaction(message, Emojis.NUMBER_1, Emojis.NUMBER_2, Emojis.NUMBER_3, Emojis.NUMBER_4,
 							Emojis.NUMBER_5);
-					ReactionDispatcher.register(message, this, Emojis.NUMBER_1, Emojis.NUMBER_2, Emojis.NUMBER_3,
-							Emojis.NUMBER_4, Emojis.NUMBER_5);
+					ReactionDispatcher.register(message, this, AkinatorConfig.MAX_IDLE_TIME_SECONDS, Emojis.NUMBER_1,
+							Emojis.NUMBER_2, Emojis.NUMBER_3, Emojis.NUMBER_4, Emojis.NUMBER_5);
 				}
 
 			ReactionDispatcher.registerCleanUp(message, AkinatorConfig.MAX_IDLE_TIME_SECONDS);
