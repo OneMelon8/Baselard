@@ -101,6 +101,7 @@ public class AkinatorCmd extends CommandHandler implements ReactionHandler {
 
 		try {
 			message = bot.editMessage(msg, akinator.getAnswerEmbeded(answer));
+			akinator.setMessageId(message.getId());
 
 			MessageEmbed embeded = akinator.next(answer);
 			message = bot.editMessage(message, embeded);

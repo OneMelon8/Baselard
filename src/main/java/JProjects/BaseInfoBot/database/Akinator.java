@@ -124,7 +124,7 @@ public class Akinator {
 		builder.addField("**" + this.question.getQuestion() + "**",
 				"***1** = No / **2** = Probably Not / **3** = Don't Know / **4** = Probably / **5** = Yes*", false);
 		if (this.messageId != null && !this.messageId.isEmpty())
-			builder.setDescription("Show choices (Copy & Paste): /aki show " + this.messageId);
+			builder.setFooter("Show choices (Copy & Paste): /aki show " + this.messageId, AkinatorConfig.IMAGE_ICON);
 		return builder.build();
 	}
 
