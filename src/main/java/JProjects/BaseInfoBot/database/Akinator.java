@@ -50,6 +50,7 @@ public class Akinator {
 
 		this.log = new LinkedHashMap<String, Integer>();
 		this.failedGuesses = new ArrayList<String>();
+		this.guesses = new ArrayList<Guess>();
 		this.round = 1;
 		this.isActive = true;
 		this.question = aw.getCurrentQuestion();
@@ -109,6 +110,8 @@ public class Akinator {
 	}
 
 	private List<Guess> refineGuesses(List<Guess> list) {
+		if (list.isEmpty())
+			return list;
 		for (int a = list.size() - 1; a >= 0; a--) {
 			Guess guess = list.get(a);
 			if (!failedGuesses.contains(guess.getName()))
