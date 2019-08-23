@@ -69,6 +69,7 @@ public class Akinator {
 		this.isGuessing = false;
 		this.round++;
 		this.log.put(this.question.getQuestion(), answer);
+		this.guesses = refineGuesses(guesses);
 
 		if (!this.isStuck) {
 			if (answer <= 4) {
