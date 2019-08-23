@@ -73,7 +73,7 @@ public class AkinatorCmd extends CommandHandler implements ReactionHandler {
 
 	@Override
 	public void onReact(User user, ReactionEmote emote, Message msg, MessageChannel channel, Guild guild) {
-		if (!akinator.isActive())
+		if (!akinator.isActive() || !user.getId().equals(akinator.getUser().getId()))
 			return;
 		if (msg.getEmbeds() == null || msg.getEmbeds().size() == 0)
 			return;
