@@ -1,6 +1,7 @@
 package JProjects.BaseInfoBot.database;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,8 @@ public class Akinator {
 	private long startTime;
 	private boolean isActive;
 
-	private LinkedHashMap<Question, Integer> log;
+	private LinkedHashMap<String, Integer> log;
+	private ArrayList<String> failedGuesses;
 	private int round;
 	private boolean isStuck;
 	private boolean isGuessing;
@@ -46,7 +48,8 @@ public class Akinator {
 		this.startTime = System.currentTimeMillis();
 		this.aw = new AkiwrapperBuilder().build();
 
-		this.log = new LinkedHashMap<Question, Integer>();
+		this.log = new LinkedHashMap<String, Integer>();
+		this.failedGuesses = new ArrayList<String>();
 		this.round = 1;
 		this.isActive = true;
 		this.question = aw.getCurrentQuestion();
@@ -57,17 +60,21 @@ public class Akinator {
 	public MessageEmbed next(int answer) throws IOException {
 		if (answer == 6) {
 			this.isActive = false;
+			this.log.put(this.guess.getName(), answer);
 			return this.getLoseEmbeded();
+		} else if (answer == 5) {
+			this.failedGuesses.add(this.guess.getName());
+			this.log.put(this.guess.getName(), answer);
 		}
 		this.isGuessing = false;
 		this.round++;
-		this.log.put(this.question, answer);
+		this.log.put(this.question.getQuestion(), answer);
 
 		if (!this.isStuck) {
 			if (answer <= 4) {
 				this.isGuessing = false;
 				this.question = this.aw.answerCurrentQuestion(this.getAnswerFromIndex(answer));
-				this.guesses = this.aw.getGuessesAboveProbability(AkinatorConfig.CONFIDENCE);
+				this.guesses = refineGuesses(this.aw.getGuessesAboveProbability(AkinatorConfig.CONFIDENCE));
 			}
 
 			if (!this.guesses.isEmpty()) {
@@ -81,11 +88,12 @@ public class Akinator {
 		if (this.question == null && !this.isStuck) {
 			this.isStuck = true;
 			this.isGuessing = true;
-			this.guesses = this.aw.getGuesses(); // get all guesses regardless of probability
+			this.guesses = refineGuesses(this.aw.getGuesses()); // get all guesses regardless of probability
 		}
 		// Handle stuck
 		if (this.isStuck) {
 			this.isGuessing = true;
+			this.guesses = this.refineGuesses(this.guesses);
 			if (this.guesses.isEmpty()) {
 				this.isActive = false;
 				return this.getWinEmbeded(); // return win embeded!
@@ -97,6 +105,16 @@ public class Akinator {
 		}
 
 		return this.getQuestionEmbeded();
+	}
+
+	private List<Guess> refineGuesses(List<Guess> list) {
+		for (int a = list.size() - 1; a >= 0; a--) {
+			Guess guess = list.get(a);
+			if (!failedGuesses.contains(guess.getName()))
+				continue;
+			list.remove(guess);
+		}
+		return list;
 	}
 
 	public MessageEmbed getAnswerEmbeded(int answer) {
@@ -138,7 +156,7 @@ public class Akinator {
 		builder.addField("**I think of:**", "**" + this.guess.getName() + "** -- " + this.guess.getDescription(),
 				false);
 		if (this.messageId != null && !this.messageId.isEmpty())
-			builder.setDescription("Show choices (Copy & Paste): /aki show " + this.messageId);
+			builder.setFooter("Show choices (Copy & Paste): /aki show " + this.messageId, AkinatorConfig.IMAGE_ICON);
 		return builder.build();
 	}
 
@@ -177,9 +195,8 @@ public class Akinator {
 	public String getHistoryUrl() {
 		StringBuilder sb = new StringBuilder("Total Rounds: " + this.getRound());
 		int count = 1;
-		for (Map.Entry<Question, Integer> entry : this.getLog().entrySet()) {
-			sb.append("\nRound " + count + ": " + entry.getKey().getQuestion() + " -- "
-					+ getAnswerStringFromIndex(entry.getValue()));
+		for (Map.Entry<String, Integer> entry : this.getLog().entrySet()) {
+			sb.append("\nRound " + count + ": " + entry.getKey() + " -- " + getAnswerStringFromIndex(entry.getValue()));
 			count++;
 		}
 		return PastebinSpider.uploadText(this.getUser().getAsTag() + "'s Akinator Game", sb.toString());
@@ -244,8 +261,12 @@ public class Akinator {
 		return aw;
 	}
 
-	public LinkedHashMap<Question, Integer> getLog() {
+	public LinkedHashMap<String, Integer> getLog() {
 		return log;
+	}
+
+	public ArrayList<String> getFailedGuesses() {
+		return failedGuesses;
 	}
 
 	public int getRound() {
@@ -288,7 +309,7 @@ public class Akinator {
 		this.aw = aw;
 	}
 
-	public void setLog(LinkedHashMap<Question, Integer> log) {
+	public void setLog(LinkedHashMap<String, Integer> log) {
 		this.log = log;
 	}
 

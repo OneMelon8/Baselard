@@ -73,10 +73,17 @@ public class AkinatorCmd extends CommandHandler implements ReactionHandler {
 
 	@Override
 	public void onReact(User user, ReactionEmote emote, Message msg, MessageChannel channel, Guild guild) {
-		if (!akinator.isActive() || !user.getId().equals(akinator.getUser().getId()))
+		if (!akinator.isActive())
 			return;
 		if (msg.getEmbeds() == null || msg.getEmbeds().size() == 0)
 			return;
+
+		if (!user.getId().equals(akinator.getUser().getId())) {
+			ReactionDispatcher.register(message, this, AkinatorConfig.MAX_IDLE_TIME_SECONDS, Emojis.NUMBER_1,
+					Emojis.NUMBER_2, Emojis.NUMBER_3, Emojis.NUMBER_4, Emojis.NUMBER_5, Emojis.CROSS, Emojis.CHECK);
+			return;
+		}
+
 		bot.removeAllReactions(msg);
 		lastActiveTimestamp = System.currentTimeMillis();
 		String emoteName = emote.getName();
