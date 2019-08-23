@@ -2,6 +2,7 @@ package JProjects.BaseInfoBot.commands.bandori;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.Map.Entry;
 
 import JProjects.BaseInfoBot.App;
@@ -90,7 +91,14 @@ public class BandoriMultiLive extends CommandHandler implements ReactionHandler,
 				bot.sendMessage(author.getAsMention() + " You are not in a multi-live room!", channel);
 				return;
 			}
-			bot.sendMessage(room.getEmbededMessage(), channel);
+			message = bot.sendMessage(room.getEmbededMessage(), channel);
+
+			// Show boost symbol if still join-able
+			if (room.getParticipantsCount() < room.getCapacity()) {
+				bot.addReaction(message, bot.getEmote(Emotes.LIVE_BOOST));
+				ReactionDispatcher.register(message, this, 60, "live_boost");
+				ReactionDispatcher.registerCleanUp(message, 60);
+			}
 		} else if (args.length == 1 && (sub.equals("ping") || sub.equals("mention"))) {
 			BandoriRoom room = getRoomByUser(authorId, guild);
 			if (room == null) {
@@ -158,15 +166,13 @@ public class BandoriMultiLive extends CommandHandler implements ReactionHandler,
 		} else if (emoteName.equals(Emojis.CHECK) && reactionIntent.containsKey(message.getId())) {
 			// If this reaction is caused by chat intent detection
 			ChatIntent intent = reactionIntent.get(message.getId());
-			if (intent == null)
+			if (intent == null || message.getMentionedMembers().isEmpty())
 				return;
 			String authorId = user.getId();
 			if (!message.getMentionedMembers().get(0).getUser().getId().equals(authorId))
 				return;
-
 			reactionIntent.remove(message.getId());
 			bot.removeAllReactions(message);
-			bot.editMessage(message, user.getAsMention() + " Creating a new room...");
 
 			// Get room ID from intent
 			String roomId = (String) intent.getData("ROOM_ID");
@@ -192,7 +198,7 @@ public class BandoriMultiLive extends CommandHandler implements ReactionHandler,
 		} else if (emoteName.equals(Emojis.CROSS) && reactionIntent.containsKey(message.getId())) {
 			// If this reaction is caused by chat intent detection
 			ChatIntent intent = reactionIntent.get(message.getId());
-			if (intent == null)
+			if (intent == null || message.getMentionedMembers().isEmpty())
 				return;
 			String authorId = user.getId();
 			if (!message.getMentionedMembers().get(0).getUser().getId().equals(authorId))
@@ -255,16 +261,22 @@ public class BandoriMultiLive extends CommandHandler implements ReactionHandler,
 		multiRooms.put(guild.getId(), data);
 	}
 
-	private static void updateChannelTopic(Guild guild) {
+	private static void updateChannelTopic(final Guild guild) {
 		if (!guild.getId().equals("423512363765989378"))
 			return;
-		TextChannel tc = App.bot.getJDA().getTextChannelById("605289350447759403");
-		StringBuilder sb = new StringBuilder("Multi Rooms (/m r): ");
-		HashMap<String, BandoriRoom> multiRooms = getOrCreateServerRooms(guild);
-		for (BandoriRoom room : multiRooms.values())
-			sb.append(room.getId() + " (" + room.getParticipantsDisplayTaskBar(guild) + "), ");
-		sb.delete(sb.length() - 2, sb.length());
-		tc.getManager().setTopic(sb.substring(0, Math.min(sb.length(), 950)).toString()).queue();
+
+		App.bot.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				TextChannel tc = App.bot.getJDA().getTextChannelById("605289350447759403");
+				StringBuilder sb = new StringBuilder("Multi Rooms (/m r): ");
+				HashMap<String, BandoriRoom> multiRooms = getOrCreateServerRooms(guild);
+				for (BandoriRoom room : multiRooms.values())
+					sb.append(room.getId() + " (" + room.getParticipantsDisplayTaskBar(guild) + "), ");
+				sb.delete(sb.length() - 2, sb.length());
+				tc.getManager().setTopic(sb.substring(0, Math.min(sb.length(), 950)).toString()).queue();
+			}
+		}, 3000);
 	}
 
 	/**

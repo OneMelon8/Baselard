@@ -1,7 +1,7 @@
 package JProjects.BaseInfoBot.database;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public class Akinator {
 	private long startTime;
 	private boolean isActive;
 
-	private HashMap<Question, Integer> log;
+	private LinkedHashMap<Question, Integer> log;
 	private int round;
 	private boolean isStuck;
 	private boolean isGuessing;
@@ -45,7 +45,7 @@ public class Akinator {
 		this.startTime = System.currentTimeMillis();
 		this.aw = new AkiwrapperBuilder().build();
 
-		this.log = new HashMap<Question, Integer>();
+		this.log = new LinkedHashMap<Question, Integer>();
 		this.round = 1;
 		this.isActive = true;
 		this.question = aw.getCurrentQuestion();
@@ -239,7 +239,7 @@ public class Akinator {
 		return aw;
 	}
 
-	public HashMap<Question, Integer> getLog() {
+	public LinkedHashMap<Question, Integer> getLog() {
 		return log;
 	}
 
@@ -279,7 +279,7 @@ public class Akinator {
 		this.aw = aw;
 	}
 
-	public void setLog(HashMap<Question, Integer> log) {
+	public void setLog(LinkedHashMap<Question, Integer> log) {
 		this.log = log;
 	}
 

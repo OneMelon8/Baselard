@@ -47,7 +47,7 @@ import net.dv8tion.jda.core.entities.User;
 public class BaseInfoBot {
 
 	private JDA api;
-	private Timer timer;
+	public Timer timer;
 
 	public static ArrayList<String> admins = new ArrayList<String>(); // A list of ID's
 	private static String version;
@@ -71,6 +71,10 @@ public class BaseInfoBot {
 				BandoriMultiLive.autoDisband();
 			}
 		}, 0, 1000);
+	}
+
+	public void schedule(TimerTask task, long delay) {
+		this.timer.schedule(task, delay);
 	}
 
 	public void scheduleDelayedTask(TimerTask task, long delay) {
