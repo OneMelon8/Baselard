@@ -8,6 +8,7 @@ import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.commands.helpers.ReactionDispatcher;
 import JProjects.BaseInfoBot.commands.helpers.ReactionHandler;
 import JProjects.BaseInfoBot.database.Akinator;
+import JProjects.BaseInfoBot.database.Emojis;
 import JProjects.BaseInfoBot.database.config.AkinatorConfig;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.tools.EmbededUtil;
@@ -34,6 +35,20 @@ public class AkinatorCmd extends CommandHandler implements ReactionHandler {
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
 			Guild guild) {
 		if (akinator != null && akinator.isActive()) {
+			if (args.length == 2 && args[0].equals("show")) {
+				String messageId = args[1];
+				Message msg = channel.getMessageById(messageId).complete();
+				if (!msg.getAuthor().getId().equals(BotConfig.BOT_ID) || msg.getEmbeds().isEmpty())
+					return;
+				if (akinator.isGuessing())
+					bot.addReaction(message, Emojis.CROSS, Emojis.CHECK);
+				else
+					bot.addReaction(msg, Emojis.NUMBER_1, Emojis.NUMBER_2, Emojis.NUMBER_3, Emojis.NUMBER_4,
+							Emojis.NUMBER_5);
+				bot.addReaction(message, Emojis.CHECK);
+				return;
+			}
+
 			bot.reactWait(message);
 			return;
 		}
@@ -43,9 +58,12 @@ public class AkinatorCmd extends CommandHandler implements ReactionHandler {
 			lastActiveTimestamp = System.currentTimeMillis();
 
 			AkinatorCmd.message = bot.sendMessage(akinator.getQuestionEmbeded(), channel);
-			bot.addReaction(AkinatorCmd.message, "1⃣", "2⃣", "3⃣", "4⃣", "5⃣");
+			akinator.setMessageId(AkinatorCmd.message.getId());
+			bot.addReaction(AkinatorCmd.message, Emojis.NUMBER_1, Emojis.NUMBER_2, Emojis.NUMBER_3, Emojis.NUMBER_4,
+					Emojis.NUMBER_5);
 
-			ReactionDispatcher.register(AkinatorCmd.message, this, "1⃣", "2⃣", "3⃣", "4⃣", "5⃣");
+			ReactionDispatcher.register(AkinatorCmd.message, this, Emojis.NUMBER_1, Emojis.NUMBER_2, Emojis.NUMBER_3,
+					Emojis.NUMBER_4, Emojis.NUMBER_5);
 			ReactionDispatcher.registerCleanUp(AkinatorCmd.message, AkinatorConfig.MAX_IDLE_TIME_SECONDS);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -64,19 +82,19 @@ public class AkinatorCmd extends CommandHandler implements ReactionHandler {
 		String emoteName = emote.getName();
 		// 1⃣ 2⃣ 3⃣ 4⃣ 5⃣ ❌ ✔
 		int answer = -1;
-		if (emoteName.equals("1⃣"))
+		if (emoteName.equals(Emojis.NUMBER_1))
 			answer = 0;
-		else if (emoteName.equals("2⃣"))
+		else if (emoteName.equals(Emojis.NUMBER_2))
 			answer = 1;
-		else if (emoteName.equals("3⃣"))
+		else if (emoteName.equals(Emojis.NUMBER_3))
 			answer = 2;
-		else if (emoteName.equals("4⃣"))
+		else if (emoteName.equals(Emojis.NUMBER_4))
 			answer = 3;
-		else if (emoteName.equals("5⃣"))
+		else if (emoteName.equals(Emojis.NUMBER_5))
 			answer = 4;
-		else if (emoteName.equals("❌"))
+		else if (emoteName.equals(Emojis.CROSS))
 			answer = 5;
-		else if (emoteName.equals("✔"))
+		else if (emoteName.equals(Emojis.CHECK))
 			answer = 6;
 		else
 			return;
@@ -89,11 +107,13 @@ public class AkinatorCmd extends CommandHandler implements ReactionHandler {
 
 			if (akinator.isActive())
 				if (akinator.isGuessing()) {
-					bot.addReaction(message, "❌", "✔");
-					ReactionDispatcher.register(message, this, "❌", "✔");
+					bot.addReaction(message, Emojis.CROSS, Emojis.CHECK);
+					ReactionDispatcher.register(message, this, Emojis.CROSS, Emojis.CHECK);
 				} else {
-					bot.addReaction(message, "1⃣", "2⃣", "3⃣", "4⃣", "5⃣");
-					ReactionDispatcher.register(message, this, "1⃣", "2⃣", "3⃣", "4⃣", "5⃣");
+					bot.addReaction(message, Emojis.NUMBER_1, Emojis.NUMBER_2, Emojis.NUMBER_3, Emojis.NUMBER_4,
+							Emojis.NUMBER_5);
+					ReactionDispatcher.register(message, this, Emojis.NUMBER_1, Emojis.NUMBER_2, Emojis.NUMBER_3,
+							Emojis.NUMBER_4, Emojis.NUMBER_5);
 				}
 
 			ReactionDispatcher.registerCleanUp(message, AkinatorConfig.MAX_IDLE_TIME_SECONDS);

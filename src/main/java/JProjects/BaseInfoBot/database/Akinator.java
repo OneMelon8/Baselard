@@ -22,6 +22,7 @@ public class Akinator {
 
 	private Akiwrapper aw;
 	private User user;
+	private String messageId;
 
 	private long startTime;
 	private boolean isActive;
@@ -122,6 +123,8 @@ public class Akinator {
 
 		builder.addField("**" + this.question.getQuestion() + "**",
 				"***1** = No / **2** = Probably Not / **3** = Don't Know / **4** = Probably / **5** = Yes*", false);
+		if (this.messageId != null && !this.messageId.isEmpty())
+			builder.setDescription("Show choices (Copy & Paste): /aki show " + this.messageId);
 		return builder.build();
 	}
 
@@ -134,6 +137,8 @@ public class Akinator {
 			builder.setImage(this.guess.getImage().toString());
 		builder.addField("**I think of:**", "**" + this.guess.getName() + "** -- " + this.guess.getDescription(),
 				false);
+		if (this.messageId != null && !this.messageId.isEmpty())
+			builder.setDescription("Show choices (Copy & Paste): /aki show " + this.messageId);
 		return builder.build();
 	}
 
@@ -265,6 +270,10 @@ public class Akinator {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public void setMessageId(String id) {
+		this.messageId = id;
 	}
 
 	public void setStartTime(long startTime) {

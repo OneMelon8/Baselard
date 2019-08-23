@@ -11,4 +11,10 @@ public class Emojis {
 	public static final String SPARKLING_HEART = "💖";
 	public static final String SHIELD = "🛡";
 
+	public static final String NUMBER_1 = "1⃣";
+	public static final String NUMBER_2 = "2⃣";
+	public static final String NUMBER_3 = "3⃣";
+	public static final String NUMBER_4 = "4⃣";
+	public static final String NUMBER_5 = "5⃣";
+
 }
