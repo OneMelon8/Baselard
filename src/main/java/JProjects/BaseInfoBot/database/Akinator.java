@@ -61,11 +61,11 @@ public class Akinator {
 	public MessageEmbed next(int answer) throws IOException {
 		if (answer == 6) {
 			this.isActive = false;
-			this.log.put(this.guess.getName(), answer);
+			this.log.put("Guess: " + this.guess.getName() + "(" + this.guess.getDescription() + ")", answer);
 			return this.getLoseEmbeded();
 		} else if (answer == 5) {
 			this.failedGuesses.add(this.guess.getName());
-			this.log.put(this.guess.getName(), answer);
+			this.log.put("Guess: " + this.guess.getName() + "(" + this.guess.getDescription() + ")", answer);
 		}
 		this.isGuessing = false;
 		this.round++;

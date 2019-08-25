@@ -17,7 +17,7 @@ public class BandoriCard {
 
 	private int index = 0; // Only used in card querying
 	private int total = 0; // Only used in card querying
-	private String notes = ""; // Only used in card querying
+	private String notes = "Happy! Lucky!"; // Only used in card querying
 
 	private String name;
 	private BandoriAttribute attr;
@@ -79,10 +79,10 @@ public class BandoriCard {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Versions: " + this.getVersionsEmotes());
 		sb.append("\nSkill: **" + this.getSkillName() + "**");
-		sb.append("\nDetail: **" + this.getSkillType().getEmote() + " " + this.getSkillDesc() + "**");
-		builder.addField(
-				new Field(this.getMember().getEmote() + "・" + this.getAttr().getEmote() + "・" + this.getRarityStars(),
-						sb.toString(), false));
+		sb.append("\nDetail: **" + this.getSkillType().getEmote() + " "
+				+ (this.getMember() == null ? this.getSkillDescRaw() : this.getSkillDesc()) + "**");
+		builder.addField(new Field((this.getMember() == null ? "" : this.getMember().getEmote() + "・")
+				+ this.getAttr().getEmote() + "・" + this.getRarityStars(), sb.toString(), false));
 		if (showFooter)
 			builder.setFooter((index + 1) + "/" + (total == 0 ? index + 1 : total) + " - " + notes,
 					BandoriConfig.URL_CRAFT_EGG);
@@ -97,7 +97,8 @@ public class BandoriCard {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("Versions: " + this.getVersionsEmotes());
-		sb.append("\nMember: **" + this.getMember().getEmote() + " " + this.getMember().getDisplayName() + "**");
+		if (this.getMember() != null)
+			sb.append("\nMember: **" + this.getMember().getEmote() + " " + this.getMember().getDisplayName() + "**");
 		sb.append("\nRarity: **" + this.getRarityStars() + "**");
 		sb.append("\nAttribute: **" + this.getAttr().getEmote() + " " + this.getAttr().getDisplayName() + "**");
 		builder.addField(new Field("**Information:**", sb.toString(), false));
@@ -105,7 +106,7 @@ public class BandoriCard {
 		sb = new StringBuilder();
 		sb.append("Type: **" + this.getSkillType().getEmote() + " " + this.getSkillType().getDisplayName() + "**");
 		sb.append("\nName: **" + this.getSkillName() + "**");
-		sb.append("\nDesc: **" + this.getSkillDesc() + "**");
+		sb.append("\nDesc: **" + (this.getMember() == null ? this.getSkillDescRaw() : this.getSkillDesc()) + "**");
 		builder.addField(new Field("**Skill Info:**", sb.toString(), false));
 
 		sb = new StringBuilder();
@@ -270,6 +271,10 @@ public class BandoriCard {
 		return sb.toString().trim();
 	}
 
+	public String getSkillDescRaw() {
+		return this.skillDesc;
+	}
+
 	public String getIconUrl() {
 		return iconUrl;
 	}
@@ -345,6 +350,10 @@ public class BandoriCard {
 				Integer.valueOf(color.substring(4, 6), 16));
 	}
 
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
 	public void setRarity(int rarity) {
 		this.rarity = rarity;
 	}
@@ -360,6 +369,10 @@ public class BandoriCard {
 	public void setSkillDesc(String skillDesc) {
 		this.skillDesc = skillDesc;
 		this.skillType = BandoriSkillType.fromClutterString(skillDesc);
+	}
+
+	public void setSkillType(BandoriSkillType type) {
+		this.skillType = type;
 	}
 
 	public void setIconUrl(String iconUrl) {

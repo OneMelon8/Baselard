@@ -23,6 +23,7 @@ import JProjects.BaseInfoBot.commands.bandori.BandoriMembers;
 import JProjects.BaseInfoBot.commands.bandori.BandoriMultiLive;
 import JProjects.BaseInfoBot.commands.bandori.BandoriReady;
 import JProjects.BaseInfoBot.commands.bandori.BandoriRole;
+import JProjects.BaseInfoBot.commands.bandori.BandoriUserCards;
 import JProjects.BaseInfoBot.commands.fun.AkinatorCmd;
 import JProjects.BaseInfoBot.commands.fun.Fortune;
 import JProjects.BaseInfoBot.commands.fun.Pat;
@@ -105,6 +106,7 @@ public class BaseInfoBot {
 		new BandoriReady(this);
 		new BandoriMultiLive(this);
 		new BandoriRole(this);
+		new BandoriUserCards(this);
 		// new BandoriComics(this);
 
 		// Beta

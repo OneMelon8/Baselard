@@ -1,6 +1,7 @@
 package JProjects.BaseInfoBot.tools;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import JProjects.BaseInfoBot.App;
+import JProjects.BaseInfoBot.commands.bandori.BandoriUserCards;
 import JProjects.BaseInfoBot.database.files.assets.ImageAssets;
 
 public class ImageTools {
@@ -52,13 +54,13 @@ public class ImageTools {
 		Graphics2D g2d = concatImage.createGraphics();
 
 		// Create background
-		g2d.drawImage(ImageAssets.getImage(ImageAssets.GARUPA_BACKGROUND), 0, 0, null);
+		g2d.drawImage(ImageAssets.getImage(ImageAssets.MULTI_ROOM_BACKGROUND), 0, 0, null);
 
 		// Create users
 		int x = 0;
 		for (int a = 0; a < participants.size(); a++) {
-			g2d.drawImage(getImageFromUrl(App.bot.getJDA().getUserById(participants.get(a)).getAvatarUrl()), x, 0,
-					null);
+			BufferedImage avatar = BandoriUserCards.generateUserCardImage(App.bot.getUserById(participants.get(a)));
+			g2d.drawImage(avatar.getScaledInstance(128, 128, Image.SCALE_DEFAULT), x, 0, null);
 			x += 128;
 		}
 
