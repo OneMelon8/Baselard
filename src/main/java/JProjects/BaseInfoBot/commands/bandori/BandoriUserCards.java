@@ -114,7 +114,8 @@ public class BandoriUserCards extends CommandHandler {
 			}
 
 			g2d.dispose();
-		} catch (IOException e) {
+		} catch (IOException ex) {
+			ex.printStackTrace();
 			return null;
 		}
 		return icon;
