@@ -148,14 +148,14 @@ public class BandoriUserCards extends CommandHandler {
 
 		BandoriCard ref;
 		try {
-			ref = BandoriCardSpider.queryCard("", r.nextInt(628));
+			ref = BandoriCardSpider.queryCard("", r.nextInt(200));
 			card.setSkillName(ref.getSkillName());
 			card.setSkillDesc(ref.getSkillDesc());
 			card.setSkillType(ref.getSkillType());
 
-			card.setPerformance(ref.getPerformance());
-			card.setTechnique(ref.getTechnique());
-			card.setVisual(ref.getVisual());
+			card.setPerformance(r.nextInt(BandoriConfig.PERFORMANCE_MAX) + 1);
+			card.setTechnique(r.nextInt(BandoriConfig.TECHNIQUE_MAX) + 1);
+			card.setVisual(r.nextInt(BandoriConfig.VISUAL_MAX) + 1);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			card.setSkillName("Discord Power!");
