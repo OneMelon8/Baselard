@@ -45,7 +45,7 @@ public class BandoriUserCards extends CommandHandler {
 
 	public static BufferedImage generateUserCardImage(User user) {
 		String id = user.getId();
-		BandoriAttribute attr = BandoriAttribute.fromIndex(Integer.parseInt(id.substring(0, 2)) % 4);
+		BandoriAttribute attr = BandoriAttribute.fromIndex(Integer.parseInt(id.substring(0, 2)) % 4 + 1);
 		int rarity = (Integer.parseInt(id.substring(2, 4)) + 2) % 4;
 		int band = Integer.parseInt(id.substring(4, 6)) % 5;
 
@@ -130,7 +130,7 @@ public class BandoriUserCards extends CommandHandler {
 		String id = user.getId();
 		BandoriCard card = new BandoriCard();
 		card.setName(user.getAsTag());
-		card.setAttr(BandoriAttribute.fromIndex(Integer.parseInt(id.substring(0, 2)) % 4));
+		card.setAttr(BandoriAttribute.fromIndex(Integer.parseInt(id.substring(0, 2)) % 4 + 1));
 		int rarity = (Integer.parseInt(id.substring(2, 4)) + 2) % 4;
 		card.setRarity(rarity);
 		card.setVersions("English");
