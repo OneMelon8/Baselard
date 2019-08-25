@@ -25,6 +25,7 @@ public class ImageAssets {
 	public static final String LOGO_PASTEL_PALETTES = "LogoPastelPalettes.png";
 	public static final String LOGO_ROSELIA = "LogoRoselia.png";
 	public static final String LOGO_HELLO_HAPPY_WORLD = "LogoHelloHappyWorld.png";
+	public static final String LOGO_RAISE_A_SUILEN = "LogoRaiseASuilen.png";
 
 	public static final String ATTR_PURE = "AttrPure.png";
 	public static final String ATTR_POWERFUL = "AttrPowerful.png";

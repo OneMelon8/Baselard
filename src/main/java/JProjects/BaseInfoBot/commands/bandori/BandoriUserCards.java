@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Random;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
@@ -44,10 +45,10 @@ public class BandoriUserCards extends CommandHandler {
 	}
 
 	public static BufferedImage generateUserCardImage(User user) {
-		String id = user.getId();
-		BandoriAttribute attr = BandoriAttribute.fromIndex(Integer.parseInt(id.substring(0, 2)) % 4 + 1);
-		int rarity = (Integer.parseInt(id.substring(2, 4)) + 2) % 4;
-		int band = Integer.parseInt(id.substring(4, 6)) % 5;
+		Random r = new Random(user.getIdLong());
+		BandoriAttribute attr = BandoriAttribute.fromIndex(r.nextInt(4) + 1); // 1-4
+		int rarity = r.nextInt(4); // 0-3
+		int band = r.nextInt(6); // 0-5
 
 		BufferedImage icon = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2d = icon.createGraphics();
@@ -88,20 +89,23 @@ public class BandoriUserCards extends CommandHandler {
 				break;
 			}
 			switch (band) {
-			case 4:
+			case 0:
 				g2d.drawImage(ImageAssets.getImage(ImageAssets.LOGO_POPPIN_PARTY), 1, 2, null);
 				break;
-			case 3:
+			case 1:
 				g2d.drawImage(ImageAssets.getImage(ImageAssets.LOGO_AFTERGLOW), 1, 2, null);
 				break;
 			case 2:
 				g2d.drawImage(ImageAssets.getImage(ImageAssets.LOGO_PASTEL_PALETTES), 1, 2, null);
 				break;
-			case 1:
+			case 3:
 				g2d.drawImage(ImageAssets.getImage(ImageAssets.LOGO_ROSELIA), 1, 2, null);
 				break;
-			case 0:
+			case 4:
 				g2d.drawImage(ImageAssets.getImage(ImageAssets.LOGO_HELLO_HAPPY_WORLD), 1, 2, null);
+				break;
+			case 5:
+				g2d.drawImage(ImageAssets.getImage(ImageAssets.LOGO_RAISE_A_SUILEN), 1, 2, null);
 				break;
 			}
 			switch (rarity) {
@@ -127,17 +131,21 @@ public class BandoriUserCards extends CommandHandler {
 	}
 
 	private MessageEmbed generateUserCard(User user) {
-		String id = user.getId();
+		Random r = new Random(user.getIdLong());
+
 		BandoriCard card = new BandoriCard();
 		card.setName(user.getAsTag());
-		card.setAttr(BandoriAttribute.fromIndex(Integer.parseInt(id.substring(0, 2)) % 4 + 1));
-		int rarity = (Integer.parseInt(id.substring(2, 4)) + 2) % 4;
+		BandoriAttribute attr = BandoriAttribute.fromIndex(r.nextInt(4) + 1); // 1-4
+		card.setAttr(attr);
+		int rarity = r.nextInt(4); // 0-3
 		card.setRarity(rarity + 1);
 		card.setVersions("English");
 
+		r.nextInt(6); // Skip to the next number based on seed
+
 		BandoriCard ref;
 		try {
-			ref = BandoriCardSpider.queryCard("", Integer.parseInt(id.substring(6, 8)));
+			ref = BandoriCardSpider.queryCard("", r.nextInt(628));
 			card.setSkillName(ref.getSkillName());
 			card.setSkillDesc(ref.getSkillDesc());
 			card.setSkillType(ref.getSkillType());
@@ -151,8 +159,8 @@ public class BandoriUserCards extends CommandHandler {
 			card.setSkillDesc(
 					"Perfect lock (Score up) All GOOD notes turn into PERFECT notes and boosts score of all notes by 20.0% for the next 5 seconds");
 			card.setPerformance((int) (BandoriConfig.PERFORMANCE_MAX * 0.8));
-			card.setTechnique((int) (BandoriConfig.TECHNIQUE_MAX * 0.8));
-			card.setVisual((int) (BandoriConfig.VISUAL_MAX * 0.8));
+			card.setTechnique((int) (BandoriConfig.TECHNIQUE_MAX * 0.6));
+			card.setVisual((int) (BandoriConfig.VISUAL_MAX * 0.7));
 		}
 		BufferedImage icon = generateUserCardImage(user);
 		if (icon != null)

@@ -1,7 +1,6 @@
 package JProjects.BaseInfoBot.tools;
 
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -59,17 +58,16 @@ public class ImageTools {
 		// Create users
 		int x = 0;
 		for (int a = 0; a < participants.size(); a++) {
-			BufferedImage avatar = BandoriUserCards.generateUserCardImage(App.bot.getUserById(participants.get(a)));
-			g2d.drawImage(avatar.getScaledInstance(128, 128, Image.SCALE_DEFAULT), x, 0, null);
+			g2d.drawImage(BandoriUserCards.generateUserCardImage(App.bot.getUserById(participants.get(a))), x, 0, null);
 			x += 128;
 		}
 
 		// Create overlays
 		x = 0;
-		g2d.drawImage(ImageAssets.getImage(ImageAssets.RAINBOW_FRAME), x, 0, null);
+//		g2d.drawImage(ImageAssets.getImage(ImageAssets.RAINBOW_FRAME), x, 0, null);
 		x += 128;
 		for (int a = 1; a < participants.size(); a++) {
-			g2d.drawImage(ImageAssets.getImage(ImageAssets.GOLD_FRAME), x, 0, null);
+//			g2d.drawImage(ImageAssets.getImage(ImageAssets.GOLD_FRAME), x, 0, null);
 			x += 128;
 		}
 		for (int a = 0; a < 5 - participants.size(); a++) {
