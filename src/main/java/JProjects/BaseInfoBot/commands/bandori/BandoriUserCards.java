@@ -34,6 +34,12 @@ public class BandoriUserCards extends CommandHandler {
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
 			Guild guild) {
 		bot.sendThinkingPacket(channel);
+		if (args.length > 0 && !message.getMentionedMembers().isEmpty()) {
+			User mentioned = message.getMentionedMembers().get(0).getUser();
+			bot.sendMessage(generateUserCard(mentioned), channel);
+			return;
+		}
+
 		bot.sendMessage(generateUserCard(author), channel);
 	}
 
