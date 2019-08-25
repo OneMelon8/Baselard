@@ -54,6 +54,9 @@ public class BandoriUserCards extends CommandHandler {
 		Graphics2D g2d = icon.createGraphics();
 
 		try {
+			// LAYER 0 -- User profile picture
+			g2d.drawImage(ImageAssets.getImage(ImageAssets.BACKGROUND_CARD), 0, 0, null);
+
 			// LAYER 1 -- User profile picture
 			g2d.drawImage(
 					ImageTools.getImageFromUrl(user.getAvatarUrl()).getScaledInstance(128, 128, Image.SCALE_DEFAULT), 0,

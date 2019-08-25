@@ -53,7 +53,7 @@ public class ImageTools {
 		Graphics2D g2d = concatImage.createGraphics();
 
 		// Create background
-		g2d.drawImage(ImageAssets.getImage(ImageAssets.MULTI_ROOM_BACKGROUND), 0, 0, null);
+		g2d.drawImage(ImageAssets.getImage(ImageAssets.BACKGROUND_MULTI_ROOM), 0, 0, null);
 
 		// Create users
 		int x = 0;

@@ -10,7 +10,8 @@ public class ImageAssets {
 
 	public static final String PREFIX_PATH = "./assets/";
 
-	public static final String MULTI_ROOM_BACKGROUND = "MultiRoomBackground.png";
+	public static final String BACKGROUND_MULTI_ROOM = "BackgroundMultiRoom.png";
+	public static final String BACKGROUND_CARD = "BackgroundCard.png";
 
 	public static final String RAINBOW_FRAME = "RainbowFrame.png";
 	public static final String GOLD_FRAME = "GoldFrame.png";
