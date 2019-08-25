@@ -132,7 +132,7 @@ public class BandoriUserCards extends CommandHandler {
 		card.setName(user.getAsTag());
 		card.setAttr(BandoriAttribute.fromIndex(Integer.parseInt(id.substring(0, 2)) % 4 + 1));
 		int rarity = (Integer.parseInt(id.substring(2, 4)) + 2) % 4;
-		card.setRarity(rarity);
+		card.setRarity(rarity + 1);
 		card.setVersions("English");
 
 		BandoriCard ref;
