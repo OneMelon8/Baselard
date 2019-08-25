@@ -108,7 +108,7 @@ public class BandoriUserCards extends CommandHandler {
 			case 1:
 				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR), 5, 85, null);
 			case 0:
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR), 5, 100, null);
+				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR), 5, 104, null);
 				break;
 			case 3:
 				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR_PREMIUM), 5, 47, null);

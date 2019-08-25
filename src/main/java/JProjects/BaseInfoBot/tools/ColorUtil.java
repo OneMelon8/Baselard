@@ -51,7 +51,14 @@ public class ColorUtil {
 		});
 		Map.Entry<Integer, Integer> me = (Map.Entry<Integer, Integer>) list.get(list.size() - 1);
 		int[] rgb = getRGBArr((Integer) me.getKey());
-		return Integer.toHexString(rgb[0]) + "" + Integer.toHexString(rgb[1]) + "" + Integer.toHexString(rgb[2]);
+		return toHexString(rgb[0]) + "" + toHexString(rgb[1]) + "" + toHexString(rgb[2]);
+	}
+
+	private static String toHexString(int a) {
+		String hex = Integer.toHexString(a);
+		if (hex.length() == 1)
+			hex = "0" + hex;
+		return hex;
 	}
 
 	private static int[] getRGBArr(int pixel) {
