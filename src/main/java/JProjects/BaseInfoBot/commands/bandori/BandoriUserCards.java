@@ -139,7 +139,7 @@ public class BandoriUserCards extends CommandHandler {
 			card.setPerformance(ref.getPerformance());
 			card.setTechnique(ref.getTechnique());
 			card.setVisual(ref.getVisual());
-		} catch (NumberFormatException | IOException ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 			card.setSkillName("Discord Power!");
 			card.setSkillDesc(
