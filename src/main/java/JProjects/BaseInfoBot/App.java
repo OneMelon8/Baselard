@@ -14,7 +14,7 @@ public class App {
 	public static void main(String[] args) {
 		try {
 			System.out.println("Hello, Happy World!");
-			bot = new BaseInfoBot("3.3.2.3.1.11");
+			bot = new BaseInfoBot("3.3.2.3.1.12");
 			bot.addListener(new ChatEventListener());
 
 			// initGoogle();
