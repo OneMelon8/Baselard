@@ -10,6 +10,7 @@ import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.database.bandori.BandoriAttribute;
 import JProjects.BaseInfoBot.database.bandori.BandoriCard;
+import JProjects.BaseInfoBot.database.bandori.BandoriSkillType;
 import JProjects.BaseInfoBot.database.config.BandoriConfig;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.database.files.assets.ImageAssets;
@@ -165,6 +166,14 @@ public class BandoriUserCards extends CommandHandler {
 			card.setTechnique((int) (BandoriConfig.TECHNIQUE_MAX * 0.6));
 			card.setVisual((int) (BandoriConfig.VISUAL_MAX * 0.7));
 		}
+		// Easter egg?
+		if (user.getId().equals("245924814781415424")) {
+			card.setSkillName("Gotta go fast!");
+			card.setSkillDesc(
+					"Temporarily increases beatmap note count by *100.0%* and boosts score of all notes by *50.0%* for the next *5* seconds");
+			card.setSkillType(BandoriSkillType.SCORE_UP);
+		}
+
 		BufferedImage icon = generateUserCardImage(user);
 		if (icon != null)
 			card.setColor(ColorUtil.getDominantColor(icon));
