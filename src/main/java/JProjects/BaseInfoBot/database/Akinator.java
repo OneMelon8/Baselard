@@ -145,8 +145,10 @@ public class Akinator {
 
 		builder.addField("**" + this.question.getQuestion() + "**",
 				"***1** = No / **2** = Probably Not / **3** = Don't Know / **4** = Probably / **5** = Yes*", false);
-		if (this.messageId != null && !this.messageId.isEmpty())
-			builder.setFooter("Show choices (Copy & Paste): /aki show " + this.messageId, AkinatorConfig.IMAGE_ICON);
+		if (this.messageId != null && !this.messageId.isEmpty()) {
+			builder.addField("", "Show choices (Copy & Paste): ", false);
+			builder.setFooter("/aki show " + this.messageId, AkinatorConfig.IMAGE_ICON);
+		}
 		return builder.build();
 	}
 
@@ -159,8 +161,10 @@ public class Akinator {
 			builder.setImage(this.guess.getImage().toString());
 		builder.addField("**I think of:**", "**" + this.guess.getName() + "** -- " + this.guess.getDescription(),
 				false);
-		if (this.messageId != null && !this.messageId.isEmpty())
-			builder.setFooter("Show choices (Copy & Paste): /aki show " + this.messageId, AkinatorConfig.IMAGE_ICON);
+		if (this.messageId != null && !this.messageId.isEmpty()) {
+			builder.addField("", "**Show choices (Copy & Paste):**", false);
+			builder.setFooter("/aki show " + this.messageId, AkinatorConfig.IMAGE_ICON);
+		}
 		return builder.build();
 	}
 
