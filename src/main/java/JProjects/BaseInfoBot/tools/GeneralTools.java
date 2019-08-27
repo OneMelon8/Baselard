@@ -57,11 +57,12 @@ public class GeneralTools {
 
 	public static String getBar(double current, double max, double length) {
 		length -= 2;
-		double percentage = Math.round(current / max * 100D) / 100D;
-		int hashCount = (int) (percentage * length);
-		int dashCount = (int) (length - hashCount);
+		final double percentage = Math.min(1.0, Math.round(current / max * 100D) / 100D);
+		final int hashCount = (int) (percentage * length);
+		final int dashCount = (int) (length - hashCount);
+
 		StringBuilder sb = new StringBuilder("[");
-		for (int a = 0; a < hashCount; a++)
+		for (int a = 0; a <= hashCount; a++)
 			sb.append("#");
 		for (int a = 0; a < dashCount; a++)
 			sb.append("-");

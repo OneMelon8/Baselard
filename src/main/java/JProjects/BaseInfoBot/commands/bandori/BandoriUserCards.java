@@ -166,12 +166,16 @@ public class BandoriUserCards extends CommandHandler {
 			card.setTechnique((int) (BandoriConfig.TECHNIQUE_MAX * 0.6));
 			card.setVisual((int) (BandoriConfig.VISUAL_MAX * 0.7));
 		}
+
 		// Easter egg?
-		if (user.getId().equals("245924814781415424")) {
-			card.setSkillName("Gotta go fast!");
+		if (user.getId().equals(BotConfig.BOT_ID)) {
+			card.setSkillName("Kono Tensei Base-sama!");
 			card.setSkillDesc(
-					"Temporarily increases beatmap note count by *100.0%* and boosts score of all notes by *50.0%* for the next *5* seconds");
+					"Increases beatmap difficulty randomly by *1-5* levels and boosts score of all notes by *30.0%* for the next *5* seconds");
 			card.setSkillType(BandoriSkillType.SCORE_UP);
+			card.setPerformance(BandoriConfig.PERFORMANCE_MAX);
+			card.setTechnique(BandoriConfig.TECHNIQUE_MAX);
+			card.setVisual(BandoriConfig.VISUAL_MAX);
 		}
 
 		BufferedImage icon = generateUserCardImage(user);
