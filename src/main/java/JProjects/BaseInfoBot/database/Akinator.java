@@ -236,9 +236,9 @@ public class Akinator {
 		case 4:
 			return "Yes";
 		case 5:
-			return "You are wrong";
+			return "Incorrect guess";
 		case 6:
-			return "You are right";
+			return "Correct guess";
 		default:
 			return "Invalid answer";
 		}

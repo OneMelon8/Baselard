@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
-import JProjects.BaseInfoBot.database.Emotes;
+import JProjects.BaseInfoBot.database.bandori.BandoriBand;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.spider.bandori.BandoriMemberSpider;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -46,18 +46,15 @@ public class BandoriMembers extends CommandHandler {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("All Bands in Bandori");
-		builder.setDescription("Poppin' Party, Afterglow, Pastel✽Palettes, Roselia, Hello Happy World");
-		builder.addField(new Field(Emotes.POPPIN_PARTY + " **Poppin' Party:**",
-				"Kasumi Toyama, Tae Hanazono, Rimi Ushigome, Saaya Yamabuki, Arisa Ichigaya", false));
-		builder.addField(new Field(Emotes.AFTERGLOW + " **Afterglow:**",
-				"Ran Mitake, Moca Aoba, Himari Uehara, Tomoe Udagawa, Tsugumi Hazawa", false));
-		builder.addField(new Field(Emotes.PASTEL_PALETTES + " **Pastel✽Palettes:**",
-				"Aya Maruyama, Hina Hikawa, Chisato Shirasagi, Maya Yamato, Eve Wakamiya", false));
-		builder.addField(new Field(Emotes.ROSELIA + " **Roselia:**",
-				"Yukina Minato, Sayo Hikawa, Lisa Imai, Ako Udagawa, Rinko Shirokane", false));
-		builder.addField(new Field(Emotes.HELLO_HAPPY_WORLD + " **Hello, Happy World!:**",
-				"Kokoro Tsurumaki, Kaoru Seta, Hagumi Kitazawa, Kanon Matsubara, Misaki Okusawa", false));
-		builder.addField(new Field(Emotes.HELLO_HAPPY_WORLD + " **RAISE A SUILEN:**", "1, 2, 3, 4, 5", false));
+		builder.setDescription(
+				"Poppin' Party, Afterglow, Pastel✽Palettes, Roselia, Hello, Happy World!, Raise A Suilen");
+
+		builder.addField(BandoriBand.POPPIN_PARTY.getBandMembersField());
+		builder.addField(BandoriBand.AFTERGLOW.getBandMembersField());
+		builder.addField(BandoriBand.PASTEL_PALETTES.getBandMembersField());
+		builder.addField(BandoriBand.ROSELIA.getBandMembersField());
+		builder.addField(BandoriBand.HELLO_HAPPY_WORLD.getBandMembersField());
+		builder.addField(BandoriBand.RAISE_A_SUILEN.getBandMembersField());
 		return builder.build();
 	}
 

@@ -9,6 +9,7 @@ import java.util.Random;
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.database.bandori.BandoriAttribute;
+import JProjects.BaseInfoBot.database.bandori.BandoriBand;
 import JProjects.BaseInfoBot.database.bandori.BandoriCard;
 import JProjects.BaseInfoBot.database.bandori.BandoriSkillType;
 import JProjects.BaseInfoBot.database.config.BandoriConfig;
@@ -49,7 +50,7 @@ public class BandoriUserCards extends CommandHandler {
 		Random r = new Random(user.getIdLong());
 		BandoriAttribute attr = BandoriAttribute.fromIndex(r.nextInt(4) + 1); // 1-4
 		int rarity = r.nextInt(4); // 0-3
-		int band = r.nextInt(6); // 0-5
+		BandoriBand band = BandoriBand.fromIndex(r.nextInt(6)); // 0-5
 
 		BufferedImage icon = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2d = icon.createGraphics();
@@ -78,40 +79,9 @@ public class BandoriUserCards extends CommandHandler {
 			}
 
 			// LAYER 3 -- Band, attribute, stars
-			switch (attr) {
-			case PURE:
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.ATTR_PURE), 94, 2, null);
-				break;
-			case COOL:
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.ATTR_COOL), 94, 2, null);
-				break;
-			case HAPPY:
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.ATTR_HAPPY), 94, 2, null);
-				break;
-			case POWER:
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.ATTR_POWERFUL), 94, 2, null);
-				break;
-			}
-			switch (band) {
-			case 0:
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.LOGO_POPPIN_PARTY), 1, 2, null);
-				break;
-			case 1:
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.LOGO_AFTERGLOW), 1, 2, null);
-				break;
-			case 2:
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.LOGO_PASTEL_PALETTES), 1, 2, null);
-				break;
-			case 3:
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.LOGO_ROSELIA), 1, 2, null);
-				break;
-			case 4:
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.LOGO_HELLO_HAPPY_WORLD), 1, 2, null);
-				break;
-			case 5:
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.LOGO_RAISE_A_SUILEN), 1, 2, null);
-				break;
-			}
+			g2d.drawImage(attr.getBufferedImage(), 94, 2, null);
+			g2d.drawImage(band.getBufferedImage(), 1, 2, null);
+
 			switch (rarity) {
 			case 1:
 				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR), 5, 85, null);

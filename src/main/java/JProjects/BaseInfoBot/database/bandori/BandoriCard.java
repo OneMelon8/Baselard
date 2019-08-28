@@ -110,10 +110,13 @@ public class BandoriCard {
 		builder.addField(new Field("**Skill Info:**", sb.toString(), false));
 
 		sb = new StringBuilder();
-		sb.append("Performance: **" + this.getPerformance() + "**");
-		sb.append("\nTechnique: **" + this.getTechnique() + "**");
-		sb.append("\nVisual: **" + this.getVisual() + "**");
-		sb.append("\nOverall: **" + this.getOverall() + "**");
+		sb.append("Performance: **"
+				+ (this.getPerformance() >= BandoriConfig.OVERALL_MAX ? "MAX" : this.getPerformance()) + "**");
+		sb.append("\nTechnique: **" + (this.getTechnique() >= BandoriConfig.OVERALL_MAX ? "MAX" : this.getTechnique())
+				+ "**");
+		sb.append("\nVisual: **" + (this.getVisual() >= BandoriConfig.OVERALL_MAX ? "MAX" : this.getVisual()) + "**");
+		sb.append(
+				"\nOverall: **" + (this.getOverall() >= BandoriConfig.OVERALL_MAX ? "MAX" : this.getOverall()) + "**");
 		builder.addField(new Field("**Statistics:**", sb.toString(), true));
 
 		sb = new StringBuilder();
@@ -190,10 +193,10 @@ public class BandoriCard {
 		StringBuilder sb = new StringBuilder();
 		if (this.rarity >= 3)
 			for (int a = 0; a < this.rarity; a++)
-				sb.append(Emotes.BANDORI_STAR);
+				sb.append(Emotes.BANDORI_STAR_PREMIUM);
 		else
 			for (int a = 0; a < this.rarity; a++)
-				sb.append(Emotes.BANDORI_STAR2);
+				sb.append(Emotes.BANDORI_STAR);
 		return sb.toString();
 	}
 

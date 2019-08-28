@@ -36,8 +36,13 @@ public class ImageAssets {
 	public static final String BANDORI_STAR = "BandoriStar.png";
 	public static final String BANDORI_STAR_PREMIUM = "BandoriStarPremium.png";
 
-	public static BufferedImage getImage(String name) throws IOException {
-		return ImageIO.read(new File(PREFIX_PATH + name));
+	public static BufferedImage getImage(String name) {
+		try {
+			return ImageIO.read(new File(PREFIX_PATH + name));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

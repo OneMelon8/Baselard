@@ -7,7 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import JProjects.BaseInfoBot.database.Emotes;
+import JProjects.BaseInfoBot.database.bandori.BandoriBand;
 import JProjects.BaseInfoBot.database.bandori.BandoriMember;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
@@ -45,11 +45,9 @@ public class BandoriMemberSpider {
 		builder.setThumbnail(icon.getImageUrl());
 
 		StringBuilder sb = new StringBuilder();
-		String bandStr = table.select("tr[data-field=band]").select("td").get(1).select("a").attr("data-ajax-title")
-				.trim();
-		if (bandStr.equals("Poppin&#39;Party"))
-			bandStr = "Poppin'Party";
-		sb.append("Band: **" + Emotes.getBandEmote(bandStr) + " " + bandStr + "**\n");
+		BandoriBand band = BandoriBand.fromString(
+				table.select("tr[data-field=band]").select("td").get(1).select("a").attr("data-ajax-title").trim());
+		sb.append("Band: **" + band.getEmote() + " " + band.getDisplayName() + "**\n");
 		sb.append("School: **"
 				+ table.select("tr[data-field=school]").select("td").get(1).text().replace("&#39;", "'").trim()
 				+ "**\n");
