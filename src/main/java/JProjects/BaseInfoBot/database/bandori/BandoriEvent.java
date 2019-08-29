@@ -121,6 +121,8 @@ public class BandoriEvent {
 	}
 
 	public Calendar getEndTime() {
+		if (this.endTime == null)
+			return this.startTime;
 		return endTime;
 	}
 
