@@ -111,10 +111,10 @@ public class BandoriCard {
 
 		sb = new StringBuilder();
 		sb.append("Performance: **"
-				+ (this.getPerformance() >= BandoriConfig.OVERALL_MAX ? "MAX" : this.getPerformance()) + "**");
-		sb.append("\nTechnique: **" + (this.getTechnique() >= BandoriConfig.OVERALL_MAX ? "MAX" : this.getTechnique())
+				+ (this.getPerformance() >= BandoriConfig.PERFORMANCE_MAX ? "MAX" : this.getPerformance()) + "**");
+		sb.append("\nTechnique: **" + (this.getTechnique() >= BandoriConfig.TECHNIQUE_MAX ? "MAX" : this.getTechnique())
 				+ "**");
-		sb.append("\nVisual: **" + (this.getVisual() >= BandoriConfig.OVERALL_MAX ? "MAX" : this.getVisual()) + "**");
+		sb.append("\nVisual: **" + (this.getVisual() >= BandoriConfig.VISUAL_MAX ? "MAX" : this.getVisual()) + "**");
 		sb.append(
 				"\nOverall: **" + (this.getOverall() >= BandoriConfig.OVERALL_MAX ? "MAX" : this.getOverall()) + "**");
 		builder.addField(new Field("**Statistics:**", sb.toString(), true));
