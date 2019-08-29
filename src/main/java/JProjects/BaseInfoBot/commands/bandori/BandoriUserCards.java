@@ -124,9 +124,15 @@ public class BandoriUserCards extends CommandHandler {
 			card.setSkillDesc(ref.getSkillDesc());
 			card.setSkillType(ref.getSkillType());
 
-			card.setPerformance(r.nextInt(BandoriConfig.PERFORMANCE_MAX) + 1);
-			card.setTechnique(r.nextInt(BandoriConfig.TECHNIQUE_MAX) + 1);
-			card.setVisual(r.nextInt(BandoriConfig.VISUAL_MAX) + 1);
+			int overallMax = r.nextInt(BandoriConfig.OVERALL_MAX);
+			double perfRatio = r.nextDouble(), techRatio = r.nextDouble(), visRatio = r.nextDouble();
+			double normalizeRatio = 1 / (perfRatio + techRatio + visRatio);
+			perfRatio *= normalizeRatio;
+			techRatio *= normalizeRatio;
+			visRatio *= normalizeRatio;
+			card.setPerformance((int) (overallMax * perfRatio));
+			card.setTechnique((int) (overallMax * techRatio));
+			card.setVisual((int) (overallMax * visRatio));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			card.setSkillName("Discord Power!");
