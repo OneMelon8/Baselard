@@ -57,7 +57,7 @@ public class Gamemode extends CommandHandler {
 			bot.sendMessage(author.getAsMention() + deathMessages[new Random().nextInt(deathMessages.length)], channel);
 			return;
 		}
-		bot.addReaction(message, bot.getJDA().getEmoteById(reaction));
+		bot.addReaction(message, bot.getEmote(reaction));
 	}
 
 	public void toggleAdminMode(boolean admin, String id) {

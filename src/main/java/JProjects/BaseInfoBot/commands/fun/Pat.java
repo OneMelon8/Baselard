@@ -40,7 +40,7 @@ public class Pat extends CommandHandler implements ReactionHandler {
 	long totalPats = 0;
 
 	private static final String[] responses = new String[] { "Hehe~ Fuwa fwah~", "Hehe~ Thanks!",
-			"Happy! Lucky! Smile! Yay! Thanks for the pat!", " " + Emotes.KOKORON_SPARKLE };
+			"Happy! Lucky! Smile! Yay! Thanks for the pat!", " " + Emotes.KOKORO_SPARKLE };
 
 	public Pat(BaseInfoBot bot) {
 		super(bot, "pat", new String[] { "pats", "headpat", "patpat" }, "Pat base");
@@ -173,13 +173,13 @@ public class Pat extends CommandHandler implements ReactionHandler {
 			ex.printStackTrace();
 		}
 		if (patData == null || !patData.containsKey("total_pats")) {
-			bot.sendMessage("Nobody has patted me yet " + Emotes.KOKORON_WUT_3, channel);
+			bot.sendMessage("Nobody has patted me yet " + Emotes.KOKORO_WUT_3, channel);
 			return;
 		}
 		totalPats = Long.valueOf(patData.get("total_pats").toString());
 		JSONObject serversPatData = (JSONObject) patData.get("server_pats");
 		if (serversPatData == null || !serversPatData.containsKey(serverId)) {
-			bot.sendMessage("Nobody has patted me yet " + Emotes.KOKORON_WUT_3, channel);
+			bot.sendMessage("Nobody has patted me yet " + Emotes.KOKORO_WUT_3, channel);
 			return;
 		}
 		JSONObject usersPatData = (JSONObject) serversPatData.get(serverId);
@@ -238,7 +238,7 @@ public class Pat extends CommandHandler implements ReactionHandler {
 		int cooldownTime = 5 * 60 * 1000 + r.nextInt(25 * 60 * 1000); // 5-60 minutes
 		if (r.nextInt(20) == 0) {
 			bot.sendMessage("Saaya: Thanks for the pat~ " + Emotes.SAAYA_MELT, channel);
-			bot.sendMessage("Where's my pat? " + Emotes.KOKORON_WUT_3, channel);
+			bot.sendMessage("Where's my pat? " + Emotes.KOKORO_WUT_3, channel);
 			return;
 		}
 		cooldown.put(serverId, System.currentTimeMillis() + cooldownTime);

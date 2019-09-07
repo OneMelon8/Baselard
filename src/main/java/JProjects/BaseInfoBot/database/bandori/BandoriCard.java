@@ -67,7 +67,6 @@ public class BandoriCard {
 		this.performance = 0;
 		this.technique = 0;
 		this.visual = 0;
-		this.overall = this.performance + this.technique + this.visual;
 	}
 
 	public MessageEmbed getEmbededMessage(boolean showFooter) {
@@ -110,13 +109,10 @@ public class BandoriCard {
 		builder.addField(new Field("**Skill Info:**", sb.toString(), false));
 
 		sb = new StringBuilder();
-		sb.append("Performance: **"
-				+ (this.getPerformance() >= BandoriConfig.PERFORMANCE_MAX ? "MAX" : this.getPerformance()) + "**");
-		sb.append("\nTechnique: **" + (this.getTechnique() >= BandoriConfig.TECHNIQUE_MAX ? "MAX" : this.getTechnique())
-				+ "**");
-		sb.append("\nVisual: **" + (this.getVisual() >= BandoriConfig.VISUAL_MAX ? "MAX" : this.getVisual()) + "**");
-		sb.append(
-				"\nOverall: **" + (this.getOverall() >= BandoriConfig.OVERALL_MAX ? "MAX" : this.getOverall()) + "**");
+		sb.append("Performance: **" + this.getPerformance() + "**");
+		sb.append("\nTechnique: **" + this.getTechnique() + "**");
+		sb.append("\nVisual: **" + this.getVisual() + "**");
+		sb.append("\nOverall: **" + this.getOverall() + "**");
 		builder.addField(new Field("**Statistics:**", sb.toString(), true));
 
 		sb = new StringBuilder();

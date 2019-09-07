@@ -9,6 +9,7 @@ import JProjects.BaseInfoBot.commands.helpers.ReactionDispatcher;
 import JProjects.BaseInfoBot.commands.helpers.ReactionHandler;
 import JProjects.BaseInfoBot.database.Emojis;
 import JProjects.BaseInfoBot.database.bandori.BandoriEvent;
+import JProjects.BaseInfoBot.database.config.BandoriConfig;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.spider.bandori.BandoriEventSpider;
 import JProjects.BaseInfoBot.tools.TimeFormatter;
@@ -90,11 +91,10 @@ public class BandoriEvents extends CommandHandler implements ReactionHandler {
 			page = 1;
 		}
 
-		if (emoteName.equals("▶")) {
+		if (emoteName.equals("▶"))
 			page++;
-		} else if (emoteName.equals("◀")) {
+		else if (emoteName.equals("◀"))
 			page = Math.max(page - 1, 0);
-		}
 
 		try {
 			message = bot.editMessage(message, getEventsEmbeded(page));
@@ -110,18 +110,26 @@ public class BandoriEvents extends CommandHandler implements ReactionHandler {
 	}
 
 	public MessageEmbed getEventsEmbeded(int page) throws IOException {
-		ArrayList<BandoriEvent> events = BandoriEventSpider.queryEventList(page);
+		// Page = banpaPage * 3 + subPage
+		int banpaPage = (int) Math.floor(page / 3);
+		int subPage = page % 3;
+
+		ArrayList<BandoriEvent> events = BandoriEventSpider.queryEventList(banpaPage);
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Event List in Chronological Order");
 		builder.setDescription("These events are arranged in chronological order for the Bandori global server");
-		for (BandoriEvent event : events) {
+
+		int start = (int) (Math.floor(events.size() / 3) * subPage);
+		int limit = (int) Math.floor(events.size() / 3) * (subPage + 1);
+		for (int a = start; a < limit; a++) {
+			BandoriEvent event = events.get(a);
 			StringBuilder sb = new StringBuilder();
 			sb.append("\\" + Emojis.CALENDAR + " " + TimeFormatter.formatCalendar(event.getStartTime()));
 			sb.append("\n\\" + Emojis.CLOCK_3 + " " + event.getCountdown(true));
 			builder.addField("**" + event.getName() + "**", sb.toString(), false);
 		}
-		builder.setFooter("Page " + page, "https://cdn.discordapp.com/emojis/432981158670630924.png");
+		builder.setFooter("Page " + page, BandoriConfig.URL_CRAFT_EGG);
 		return builder.build();
 	}
 

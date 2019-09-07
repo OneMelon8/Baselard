@@ -4,13 +4,11 @@ import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
-import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 
 public class Test extends CommandHandler {
@@ -33,20 +31,6 @@ public class Test extends CommandHandler {
 		bot.sendMessage(msg, channel);
 		System.out.println(msg);
 		bot.deleteMessage(message);
-	}
-
-	public void getPermissions(Guild guild) {
-		for (Role role : guild.getRoles()) {
-			System.err.println("Role: " + role.getName());
-			for (Permission perm : role.getPermissions())
-				System.out.println(" - " + perm.getName());
-			System.out.println("\n\n");
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	@Override

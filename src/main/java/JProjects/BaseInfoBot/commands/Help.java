@@ -67,14 +67,6 @@ public class Help extends CommandHandler implements ReactionHandler {
 		sb.append("```");
 		builder.addField(new Field("**General Commands:**", sb.toString(), false));
 
-//		sb = new StringBuilder("```");
-//		sb.append(String.format("%-8s >> %s", "stat", "Display statistics for a suit\n"));
-//		sb.append(String.format("%-8s >> %s", "sc", "Compare the stats for two different suits\n"));
-//		sb.append(String.format("%-8s >> %s", "top", "List the top suits for certain stats\n"));
-//		sb.append(String.format("%-8s >> %s", "codex", "List all suits in the database\n"));
-//		sb.append("```");
-//		builder.addField(new Field("**Suit Statistics Commands:**", sb.toString(), false));
-
 		sb = new StringBuilder("```");
 		sb.append(String.format("%-8s >> %s", "event", "Show event list or a specific event\n"));
 		sb.append(String.format("%-8s >> %s", "card", "Search for a specific (or random) card\n"));

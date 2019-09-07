@@ -45,11 +45,11 @@ public class BandoriRole extends CommandHandler {
 		if (guild.getMembersWithRoles(role).contains(member)) {
 			// LEAVE ROLE
 			controller.removeSingleRoleFromMember(member, role).queue();
-			bot.addReaction(message, bot.getEmote(Emotes.KOKORON_ERROR));
+			bot.addReaction(message, bot.getEmote(Emotes.KOKORO_ERROR));
 		} else {
 			// JOIN ROLE
 			controller.addSingleRoleToMember(member, role).queue();
-			bot.addReaction(message, bot.getEmote(Emotes.KOKORON_SPARKLE));
+			bot.addReaction(message, bot.getEmote(Emotes.KOKORO_SPARKLE));
 		}
 	}
 

@@ -32,7 +32,7 @@ public class Lookup extends CommandHandler {
 			bot.sendMessage("No users found!", channel);
 			return;
 		}
-		bot.sendMessage("Found " + result.getAsMention(), channel);
+		bot.sendMessage("Found " + result.getAsTag(), channel);
 	}
 
 	@Override

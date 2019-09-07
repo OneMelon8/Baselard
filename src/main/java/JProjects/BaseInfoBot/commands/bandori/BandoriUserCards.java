@@ -29,6 +29,16 @@ import net.dv8tion.jda.core.entities.User;
 
 public class BandoriUserCards extends CommandHandler {
 
+	/**
+	 * Random Generation Pattern <br>
+	 * 1. Attribute <br>
+	 * 2. Rarity <br>
+	 * 3. Band <br>
+	 * 4. Performance statistics <br>
+	 * 5. Technique statistics <br>
+	 * 6. Visual statistics <br>
+	 */
+
 	public BandoriUserCards(BaseInfoBot bot) {
 		super(bot, "ucard", new String[] { "pcard", "mcard" }, "Create a card using the player's data");
 	}
@@ -56,7 +66,7 @@ public class BandoriUserCards extends CommandHandler {
 		Graphics2D g2d = icon.createGraphics();
 
 		try {
-			// LAYER 0 -- User profile picture
+			// LAYER 0 -- Universal card background (for transparent images)
 			g2d.drawImage(ImageAssets.getImage(ImageAssets.BACKGROUND_CARD), 0, 0, null);
 
 			// LAYER 1 -- User profile picture
@@ -78,27 +88,33 @@ public class BandoriUserCards extends CommandHandler {
 				break;
 			}
 
-			// LAYER 3 -- Band, attribute, stars
+			// LAYER 3 -- Band, attribute, star icons
 			g2d.drawImage(attr.getBufferedImage(), 94, 2, null);
 			g2d.drawImage(band.getBufferedImage(), 1, 2, null);
 
 			switch (rarity) {
+			// Normal stars (level 1-2)
 			case 1:
+				// 2 stars
 				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR), 5, 85, null);
 			case 0:
+				// 1 star
 				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR), 5, 104, null);
 				break;
+			// Premium stars (level 3+)
 			case 3:
+				// 4 stars
 				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR_PREMIUM), 5, 47, null);
 			case 2:
+				// 3 stars
 				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR_PREMIUM), 5, 66, null);
 				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR_PREMIUM), 5, 85, null);
 				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR_PREMIUM), 5, 104, null);
 				break;
 			}
-
-			g2d.dispose();
 		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
 			g2d.dispose();
 		}
 		return icon;
@@ -109,10 +125,13 @@ public class BandoriUserCards extends CommandHandler {
 
 		BandoriCard card = new BandoriCard();
 		card.setName(user.getAsTag());
+
 		BandoriAttribute attr = BandoriAttribute.fromIndex(r.nextInt(4) + 1); // 1-4
 		card.setAttr(attr);
+
 		int rarity = r.nextInt(4); // 0-3
 		card.setRarity(rarity + 1);
+
 		card.setVersions("English");
 
 		r.nextInt(6); // Skip to the next number based on seed
@@ -123,31 +142,30 @@ public class BandoriUserCards extends CommandHandler {
 			card.setSkillName(ref.getSkillName());
 			card.setSkillDesc(ref.getSkillDesc());
 			card.setSkillType(ref.getSkillType());
-
-			int overallMax = r.nextInt(BandoriConfig.OVERALL_MAX);
-			double perfRatio = r.nextDouble(), techRatio = r.nextDouble(), visRatio = r.nextDouble();
-			double normalizeRatio = 1 / (perfRatio + techRatio + visRatio);
-			perfRatio *= normalizeRatio;
-			techRatio *= normalizeRatio;
-			visRatio *= normalizeRatio;
-			card.setPerformance((int) (overallMax * perfRatio));
-			card.setTechnique((int) (overallMax * techRatio));
-			card.setVisual((int) (overallMax * visRatio));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			card.setSkillName("Discord Power!");
-			card.setSkillDesc(
-					"Perfect lock (Score up) All GOOD notes turn into PERFECT notes and boosts score of all notes by 20.0% for the next 5 seconds");
-			card.setPerformance((int) (BandoriConfig.PERFORMANCE_MAX * 0.8));
-			card.setTechnique((int) (BandoriConfig.TECHNIQUE_MAX * 0.6));
-			card.setVisual((int) (BandoriConfig.VISUAL_MAX * 0.7));
+			card.setSkillDesc("Perfect lock (Score up) All GOOD notes turn into PERFECT notes "
+					+ "and boosts score of all notes by 20.0% for the next 5 seconds");
 		}
+
+		int performance = r.nextInt(BandoriConfig.PERFORMANCE_MAX);
+		int technique = r.nextInt(BandoriConfig.TECHNIQUE_MAX);
+		int visual = r.nextInt(BandoriConfig.VISUAL_MAX);
+		int overall = performance + technique + visual;
+		double scale = overall / BandoriConfig.OVERALL_MAX;
+
+		card.setPerformance((int) (performance / (scale > 1 ? scale : 1)));
+		card.setTechnique((int) (technique / (scale > 1 ? scale : 1)));
+		card.setVisual((int) (visual / (scale > 1 ? scale : 1)));
 
 		// Easter egg?
 		if (user.getId().equals(BotConfig.BOT_ID)) {
+			card.setAttr(BandoriAttribute.HAPPY);
+			card.setRarity(4);
 			card.setSkillName("Kono Tensei Base-sama!");
 			card.setSkillDesc(
-					"Increases beatmap difficulty randomly by *1-5* levels and boosts score of all notes by *30.0%* for the next *5* seconds");
+					"Increases beatmap difficulty by *3* levels and boosts score of all notes by *50.0%* for the next *5* seconds");
 			card.setSkillType(BandoriSkillType.SCORE_UP);
 			card.setPerformance(BandoriConfig.PERFORMANCE_MAX);
 			card.setTechnique(BandoriConfig.TECHNIQUE_MAX);
@@ -158,10 +176,11 @@ public class BandoriUserCards extends CommandHandler {
 		if (icon != null)
 			card.setColor(ColorUtil.getDominantColor(icon));
 		String url = ImgbbSpider.uploadImage(icon);
-		if (url == null)
-			url = "https://i.imgur.com/vWUaliR.png";
+		if (url == null) {
+			url = "https://i.imgur.com/vWUaliR.png"; // Discord icon
+			card.setColor(BotConfig.COLOR_MISC);
+		}
 		card.setIconUrl(url);
-
 		return card.getDetailedEmbededMessage();
 	}
 

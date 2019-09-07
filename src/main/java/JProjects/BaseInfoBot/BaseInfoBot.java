@@ -27,7 +27,6 @@ import JProjects.BaseInfoBot.commands.bandori.BandoriUserCards;
 import JProjects.BaseInfoBot.commands.fun.AkinatorCmd;
 import JProjects.BaseInfoBot.commands.fun.Fortune;
 import JProjects.BaseInfoBot.commands.fun.Pat;
-import JProjects.BaseInfoBot.commands.fun.TableFlip;
 import JProjects.BaseInfoBot.commands.helpers.ChatEventListener;
 import JProjects.BaseInfoBot.commands.helpers.ReactionDispatcher;
 import JProjects.BaseInfoBot.database.Emojis;
@@ -112,7 +111,6 @@ public class BaseInfoBot {
 		// Beta
 
 		// Fun
-		new TableFlip(this);
 		new Pat(this);
 		new Fortune(this);
 		new AkinatorCmd(this);
@@ -179,7 +177,7 @@ public class BaseInfoBot {
 
 	public void removeReaction(Message msg, String reaction) {
 		for (MessageReaction r : msg.getReactions()) {
-			if (!r.getReactionEmote().getName().equals(reaction))
+			if (!r.getReactionEmote().getName().equalsIgnoreCase(reaction))
 				continue;
 			r.removeReaction().queue();
 			break;
@@ -199,27 +197,27 @@ public class BaseInfoBot {
 	}
 
 	public void reactQuestion(Message msg) {
-		addReaction(msg, getJDA().getEmoteById(Emotes.getId(Emotes.KOKORON_WUT)));
+		addReaction(msg, getJDA().getEmoteById(Emotes.getId(Emotes.KOKORO_WUT)));
 	}
 
 	public void reactWait(Message msg) {
-		addReaction(msg, "⌛");
+		addReaction(msg, Emojis.HOUR_GLASS);
 	}
 
 	public void reactDetails(Message msg) {
-		addReaction(msg, "🔍");
+		addReaction(msg, Emojis.MAGNIYFING_GLASS);
 	}
 
 	public void reactPrev(Message msg) {
-		addReaction(msg, "◀");
+		addReaction(msg, Emojis.ARROW_LEFT);
 	}
 
 	public void reactNext(Message msg) {
-		addReaction(msg, "▶");
+		addReaction(msg, Emojis.ARROW_RIGHT);
 	}
 
 	public void reactError(Message msg) {
-		addReaction(msg, getJDA().getEmoteById(Emotes.getId(Emotes.KOKORON_ERROR)));
+		addReaction(msg, getJDA().getEmoteById(Emotes.getId(Emotes.KOKORO_ERROR)));
 	}
 
 	public Message sendFile(File file, MessageChannel channel) {
@@ -244,7 +242,11 @@ public class BaseInfoBot {
 
 	public String getUserDisplayName(String id, Guild guild) {
 		Member m = guild.getMember(getUserById(id));
-		return m.getNickname() == null ? m.getUser().getName() : m.getNickname();
+		return m.getEffectiveName();
+	}
+
+	public String getUserDisplayName(Member m) {
+		return m.getEffectiveName();
 	}
 
 	public void setMuted(boolean mute) {

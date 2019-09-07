@@ -20,7 +20,6 @@ public class Version extends CommandHandler {
 	@Override
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
 			Guild guild) {
-		bot.sendThinkingPacket(channel);
 		bot.sendMessage("Base ver " + BaseInfoBot.getVersion(), channel);
 	}
 
@@ -29,7 +28,7 @@ public class Version extends CommandHandler {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(BotConfig.COLOR_MISC);
 		builder.setAuthor("Version Template");
-		builder.setDescription("Use the following template to get my version");
+		builder.setDescription("Use the following template to get my current version");
 		builder.addField(new Field("Copy & Paste:", "```" + BotConfig.PREFIX + command + "```", false));
 		return builder.build();
 	}

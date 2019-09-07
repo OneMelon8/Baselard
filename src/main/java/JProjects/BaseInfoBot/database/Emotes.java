@@ -3,10 +3,10 @@ package JProjects.BaseInfoBot.database;
 public class Emotes {
 
 	public static final String RODY_BEAT = "<:rodybeat:552017882905575424>";
-	public static final String KOKORON_WUT = "<:kokoron_wut:598387497155821579>";
-	public static final String KOKORON_WUT_3 = "<:kokoron_wut_3:599596808930459649>";
-	public static final String KOKORON_ERROR = "<:kokoron_error:598824542978441232>";
-	public static final String KOKORON_SPARKLE = "<:kokoron_sparkle:601045739203854364>";
+	public static final String KOKORO_WUT = "<:kokoron_wut:598387497155821579>";
+	public static final String KOKORO_WUT_3 = "<:kokoron_wut_3:599596808930459649>";
+	public static final String KOKORO_ERROR = "<:kokoron_error:598824542978441232>";
+	public static final String KOKORO_SPARKLE = "<:kokoron_sparkle:601045739203854364>";
 	public static final String SAAYA_MELT = "<:saaya_melt:600851841152188426>";
 
 	public static final String MINECRAFT_GRASS = "<:mc_grass:575908022346579969>";
@@ -48,7 +48,7 @@ public class Emotes {
 	public static final String TSUGUMI_HAZAWA = "<:tsugumi_hazawa:580849036387549296>";
 	public static final String HIMARI_UEHARA = "<:himari_uehara:580849036102467604>";
 
-	// HAROHAPI
+	// HHW
 	public static final String KOKORO_TSURUMAKI = "<:kokoro_tsurumaki:580849364444905473>";
 	public static final String HAGUMI_KITAZAWA = "<:hagumi_kitazawa:580849364105166918>";
 	public static final String MISAKI_OKUSAWA = "<:misaki_okusawa:580849364570734592>";
@@ -69,6 +69,9 @@ public class Emotes {
 	public static final String SAYO_HIKAWA = "<:sayo_hikawa:580850110364385297>";
 	public static final String RINKO_SHIROKANE = "<:rinko_shirokane:580850110590746626>";
 
+	/*
+	 * Specific Getters
+	 */
 	public static String getRarityEmote(int rarity) {
 		switch (rarity) {
 		case 1:
@@ -98,6 +101,9 @@ public class Emotes {
 		return null;
 	}
 
+	/*
+	 * Generic Getters
+	 */
 	public static String getId(String emote) {
 		emote = emote.replace(">", "");
 		return emote.split(":")[2];
