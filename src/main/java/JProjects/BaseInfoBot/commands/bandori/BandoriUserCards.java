@@ -14,18 +14,18 @@ import JProjects.BaseInfoBot.database.bandori.BandoriCard;
 import JProjects.BaseInfoBot.database.bandori.BandoriSkillType;
 import JProjects.BaseInfoBot.database.config.BandoriConfig;
 import JProjects.BaseInfoBot.database.config.BotConfig;
-import JProjects.BaseInfoBot.database.files.assets.ImageAssets;
+import JProjects.BaseInfoBot.database.files.assets.BandoriImageAssets;
 import JProjects.BaseInfoBot.spider.ImgbbSpider;
 import JProjects.BaseInfoBot.spider.bandori.BandoriCardSpider;
 import JProjects.BaseInfoBot.tools.ColorUtil;
 import JProjects.BaseInfoBot.tools.ImageTools;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageEmbed.Field;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageEmbed.Field;
+import net.dv8tion.jda.api.entities.User;
 
 public class BandoriUserCards extends CommandHandler {
 
@@ -67,7 +67,7 @@ public class BandoriUserCards extends CommandHandler {
 
 		try {
 			// LAYER 0 -- Universal card background (for transparent images)
-			g2d.drawImage(ImageAssets.getImage(ImageAssets.BACKGROUND_CARD), 0, 0, null);
+			g2d.drawImage(BandoriImageAssets.getImage(BandoriImageAssets.CARD_BACKGROUND), 0, 0, null);
 
 			// LAYER 1 -- User profile picture
 			g2d.drawImage(
@@ -78,13 +78,13 @@ public class BandoriUserCards extends CommandHandler {
 			switch (rarity) {
 			case 0:
 			case 1:
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.SILVER_CARD_FRAME), 0, 0, null);
+				g2d.drawImage(BandoriImageAssets.getImage(BandoriImageAssets.CARD_FRAME_SILVER), 0, 0, null);
 				break;
 			case 2:
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.GOLD_CARD_FRAME), 0, 0, null);
+				g2d.drawImage(BandoriImageAssets.getImage(BandoriImageAssets.CARD_FRAME_GOLD), 0, 0, null);
 				break;
 			case 3:
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.RAINBOW_CARD_FRAME), 0, 0, null);
+				g2d.drawImage(BandoriImageAssets.getImage(BandoriImageAssets.CARD_FRAME_RAINBOW), 0, 0, null);
 				break;
 			}
 
@@ -96,20 +96,20 @@ public class BandoriUserCards extends CommandHandler {
 			// Normal stars (level 1-2)
 			case 1:
 				// 2 stars
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR), 5, 85, null);
+				g2d.drawImage(BandoriImageAssets.getImage(BandoriImageAssets.BANDORI_STAR), 5, 85, null);
 			case 0:
 				// 1 star
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR), 5, 104, null);
+				g2d.drawImage(BandoriImageAssets.getImage(BandoriImageAssets.BANDORI_STAR), 5, 104, null);
 				break;
 			// Premium stars (level 3+)
 			case 3:
 				// 4 stars
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR_PREMIUM), 5, 47, null);
+				g2d.drawImage(BandoriImageAssets.getImage(BandoriImageAssets.BANDORI_STAR_PREMIUM), 5, 47, null);
 			case 2:
 				// 3 stars
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR_PREMIUM), 5, 66, null);
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR_PREMIUM), 5, 85, null);
-				g2d.drawImage(ImageAssets.getImage(ImageAssets.BANDORI_STAR_PREMIUM), 5, 104, null);
+				g2d.drawImage(BandoriImageAssets.getImage(BandoriImageAssets.BANDORI_STAR_PREMIUM), 5, 66, null);
+				g2d.drawImage(BandoriImageAssets.getImage(BandoriImageAssets.BANDORI_STAR_PREMIUM), 5, 85, null);
+				g2d.drawImage(BandoriImageAssets.getImage(BandoriImageAssets.BANDORI_STAR_PREMIUM), 5, 104, null);
 				break;
 			}
 		} catch (IOException ex) {

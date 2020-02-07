@@ -2,8 +2,8 @@ package JProjects.BaseInfoBot.tools;
 
 import java.util.List;
 
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageReaction;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageReaction;
 
 public class ReactionUtil {
 

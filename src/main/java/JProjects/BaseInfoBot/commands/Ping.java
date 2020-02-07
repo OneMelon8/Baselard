@@ -4,13 +4,13 @@ import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.config.BotConfig;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageEmbed.Field;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageEmbed.Field;
+import net.dv8tion.jda.api.entities.User;
 
 public class Ping extends CommandHandler {
 
@@ -22,7 +22,7 @@ public class Ping extends CommandHandler {
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
 			Guild guild) {
 		bot.sendThinkingPacket(channel);
-		bot.sendMessage(Emotes.RODY_BEAT + " Heartbeat " + Math.round(bot.getJDA().getPing()) + "ms", channel);
+		bot.sendMessage(Emotes.RODY_BEAT + " Heartbeat " + Math.round(bot.getJDA().getGatewayPing()) + "ms", channel);
 	}
 
 	@Override

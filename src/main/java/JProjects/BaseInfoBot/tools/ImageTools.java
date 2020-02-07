@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 
 import JProjects.BaseInfoBot.App;
 import JProjects.BaseInfoBot.commands.bandori.BandoriUserCards;
-import JProjects.BaseInfoBot.database.files.assets.ImageAssets;
+import JProjects.BaseInfoBot.database.files.assets.BandoriImageAssets;
 
 public class ImageTools {
 
@@ -53,7 +53,7 @@ public class ImageTools {
 		Graphics2D g2d = concatImage.createGraphics();
 
 		// Create background
-		g2d.drawImage(ImageAssets.getImage(ImageAssets.BACKGROUND_MULTI_ROOM), 0, 0, null);
+		g2d.drawImage(BandoriImageAssets.getImage(BandoriImageAssets.BACKGROUND_MULTI_ROOM), 0, 0, null);
 
 		// Create users
 		int x = 0;
@@ -71,7 +71,7 @@ public class ImageTools {
 			x += 128;
 		}
 		for (int a = 0; a < 5 - participants.size(); a++) {
-			g2d.drawImage(ImageAssets.getImage(ImageAssets.SILVER_FRAME), x, 0, null);
+			g2d.drawImage(BandoriImageAssets.getImage(BandoriImageAssets.BACKGROUND_NO_USER), x, 0, null);
 			x += 128;
 		}
 

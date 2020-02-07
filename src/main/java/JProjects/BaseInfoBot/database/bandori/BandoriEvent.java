@@ -6,9 +6,9 @@ import java.util.List;
 
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.tools.TimeFormatter;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageEmbed.Field;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 
 public class BandoriEvent {
 

@@ -13,12 +13,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import JProjects.BaseInfoBot.App;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.tools.GeneralTools;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageReaction;
-import net.dv8tion.jda.core.entities.MessageReaction.ReactionEmote;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageReaction;
+import net.dv8tion.jda.api.entities.MessageReaction.ReactionEmote;
+import net.dv8tion.jda.api.entities.User;
 
 public class ReactionDispatcher {
 
@@ -74,27 +74,21 @@ public class ReactionDispatcher {
 	public static void fire(User user, ReactionEmote emo, String messageId, MessageChannel channel, Guild guild) {
 		if (user.isBot())
 			return;
-		Message msg = channel.getMessageById(messageId).complete();
+		Message msg = channel.retrieveMessageById(messageId).complete();
 		List<MessageReaction> reactions = msg.getReactions();
 		boolean botReacted = false;
 		for (MessageReaction reaction : reactions) {
 			if (!reaction.getReactionEmote().getName().equals(emo.getName()))
 				continue;
-			String botId = App.bot.getJDA().getSelfUser().getId();
-			for (User u : reaction.getUsers()) {
-				if (!u.getId().equals(botId))
-					continue;
-				botReacted = true;
-				break;
-			}
+			botReacted = reaction.isSelf();
 			break;
 		}
 		if (!botReacted)
 			return;
 
-		long time = msg.getCreationTime().toEpochSecond();
-		if (msg.getEditedTime() != null)
-			time = msg.getEditedTime().toEpochSecond();
+		long time = msg.getTimeCreated().toEpochSecond();
+		if (msg.getTimeEdited() != null)
+			time = msg.getTimeEdited().toEpochSecond();
 		boolean timedOut = System.currentTimeMillis() / 1000 - time > BotConfig.REACTION_TIME_OUT;
 		if (timedOut)
 			return;

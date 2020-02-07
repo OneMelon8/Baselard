@@ -3,8 +3,8 @@ package JProjects.BaseInfoBot.database.bandori;
 import java.awt.image.BufferedImage;
 
 import JProjects.BaseInfoBot.database.Emotes;
-import JProjects.BaseInfoBot.database.files.assets.ImageAssets;
-import net.dv8tion.jda.core.entities.MessageEmbed.Field;
+import JProjects.BaseInfoBot.database.files.assets.BandoriImageAssets;
+import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 
 public enum BandoriBand {
 	POPPIN_PARTY, AFTERGLOW, PASTEL_PALETTES, ROSELIA, HELLO_HAPPY_WORLD, RAISE_A_SUILEN;
@@ -127,24 +127,24 @@ public enum BandoriBand {
 		String name = null;
 		switch (this) {
 		case POPPIN_PARTY:
-			name = ImageAssets.LOGO_POPPIN_PARTY;
+			name = BandoriImageAssets.LOGO_POPPIN_PARTY;
 			break;
 		case AFTERGLOW:
-			name = ImageAssets.LOGO_AFTERGLOW;
+			name = BandoriImageAssets.LOGO_AFTERGLOW;
 			break;
 		case PASTEL_PALETTES:
-			name = ImageAssets.LOGO_PASTEL_PALETTES;
+			name = BandoriImageAssets.LOGO_PASTEL_PALETTES;
 			break;
 		case ROSELIA:
-			name = ImageAssets.LOGO_ROSELIA;
+			name = BandoriImageAssets.LOGO_ROSELIA;
 			break;
 		case HELLO_HAPPY_WORLD:
-			name = ImageAssets.LOGO_HELLO_HAPPY_WORLD;
+			name = BandoriImageAssets.LOGO_HELLO_HAPPY_WORLD;
 			break;
 		case RAISE_A_SUILEN:
-			name = ImageAssets.LOGO_RAISE_A_SUILEN;
+			name = BandoriImageAssets.LOGO_RAISE_A_SUILEN;
 			break;
 		}
-		return ImageAssets.getImage(name);
+		return BandoriImageAssets.getImage(name);
 	}
 }

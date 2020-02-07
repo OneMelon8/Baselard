@@ -15,9 +15,9 @@ import com.markozajc.akiwrapper.core.entities.Question;
 import JProjects.BaseInfoBot.database.config.AkinatorConfig;
 import JProjects.BaseInfoBot.spider.PastebinSpider;
 import JProjects.BaseInfoBot.tools.GeneralTools;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
 
 public class Akinator {
 

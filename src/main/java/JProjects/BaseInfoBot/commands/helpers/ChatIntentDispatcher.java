@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import JProjects.BaseInfoBot.tools.GeneralTools;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class ChatIntentDispatcher {
 

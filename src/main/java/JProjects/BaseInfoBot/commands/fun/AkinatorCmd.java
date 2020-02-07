@@ -12,14 +12,14 @@ import JProjects.BaseInfoBot.database.Emojis;
 import JProjects.BaseInfoBot.database.config.AkinatorConfig;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.tools.EmbededUtil;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageEmbed.Field;
-import net.dv8tion.jda.core.entities.MessageReaction.ReactionEmote;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageEmbed.Field;
+import net.dv8tion.jda.api.entities.MessageReaction.ReactionEmote;
+import net.dv8tion.jda.api.entities.User;
 
 public class AkinatorCmd extends CommandHandler implements ReactionHandler {
 
@@ -37,7 +37,7 @@ public class AkinatorCmd extends CommandHandler implements ReactionHandler {
 		if (akinator != null && akinator.isActive()) {
 			if (args.length == 2 && args[0].equals("show")) {
 				String messageId = args[1];
-				Message msg = channel.getMessageById(messageId).complete();
+				Message msg = channel.retrieveMessageById(messageId).complete();
 				if (!msg.getAuthor().getId().equals(BotConfig.BOT_ID) || msg.getEmbeds().isEmpty())
 					return;
 				if (akinator.isGuessing())

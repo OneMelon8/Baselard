@@ -9,11 +9,11 @@ import org.jsoup.nodes.Element;
 
 import JProjects.BaseInfoBot.database.bandori.BandoriBand;
 import JProjects.BaseInfoBot.database.bandori.BandoriMember;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Emote;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageEmbed.Field;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 
 public class BandoriMemberSpider {
 

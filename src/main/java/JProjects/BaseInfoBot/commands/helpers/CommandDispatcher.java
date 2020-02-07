@@ -11,11 +11,11 @@ import JProjects.BaseInfoBot.commands.Help;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.tools.GeneralTools;
 import JProjects.BaseInfoBot.tools.StringTools;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandDispatcher {
 
@@ -38,12 +38,12 @@ public class CommandDispatcher {
 		String userCmd = msgArr[0].substring(BotConfig.PREFIX.length()).toLowerCase();
 		System.out.println(GeneralTools.getTime() + " >> " + e.getAuthor().getAsTag() + " executed " + msg);
 
-		if (ChatEventListener.mute && userCmd.equalsIgnoreCase("toggle")) {
+		if (JdaEventListener.mute && userCmd.equalsIgnoreCase("toggle")) {
 			registeredListeners.get("toggle").onCommand(e.getAuthor(), userCmd, null, e.getMessage(), e.getChannel(),
 					e.getGuild());
 			return;
 		}
-		if (ChatEventListener.mute)
+		if (JdaEventListener.mute)
 			return;
 
 		if (e.getChannel().getId().equals("562766797032652800")
@@ -67,7 +67,7 @@ public class CommandDispatcher {
 		// Loop thru all the registered commands
 		for (String cmd : registeredCommands.keySet()) {
 			ArrayList<String> aliases = new ArrayList<String>(Arrays.asList(registeredCommands.get(cmd)));
-			if ((userCmd.equals(cmd) || aliases.contains(userCmd)) && !ChatEventListener.mute) {
+			if ((userCmd.equals(cmd) || aliases.contains(userCmd)) && !JdaEventListener.mute) {
 				// Dispatch command
 				registeredListeners.get(cmd).onCommand(e.getAuthor(), userCmd, args, e.getMessage(), e.getChannel(),
 						e.getGuild());

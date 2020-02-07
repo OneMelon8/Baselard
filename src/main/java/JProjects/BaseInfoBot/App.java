@@ -1,7 +1,10 @@
 package JProjects.BaseInfoBot;
 
+import java.util.HashMap;
+
 import JProjects.BaseInfoBot.commands.fun.Pat;
-import JProjects.BaseInfoBot.commands.helpers.ChatEventListener;
+import JProjects.BaseInfoBot.commands.fun.tkon.TkonCmd;
+import JProjects.BaseInfoBot.commands.helpers.JdaEventListener;
 import JProjects.BaseInfoBot.database.config.ServerChannelConfig;
 
 public class App {
@@ -11,8 +14,8 @@ public class App {
 		try {
 			System.out.println("Hello, Happy World!");
 			bot = new BaseInfoBot("3.3.2.3.2");
-			bot.addListener(new ChatEventListener());
-
+			bot.addListener(new JdaEventListener());
+			
 			initShutDown();
 			ServerChannelConfig.init();
 		} catch (Exception e) {
@@ -25,7 +28,9 @@ public class App {
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 			@Override
 			public void run() {
+				bot.teardown();
 				Pat.export();
+				TkonCmd.saveTkons();
 			}
 		}));
 	}

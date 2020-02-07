@@ -1,16 +1,16 @@
 package JProjects.BaseInfoBot.commands.admin;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.ChatEventListener;
+import JProjects.BaseInfoBot.commands.helpers.JdaEventListener;
 import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.database.config.BotConfig;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageEmbed.Field;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageEmbed.Field;
+import net.dv8tion.jda.api.entities.User;
 
 public class Toggle extends CommandHandler {
 
@@ -25,7 +25,7 @@ public class Toggle extends CommandHandler {
 			bot.reactCross(message);
 			return;
 		}
-		ChatEventListener.mute = !ChatEventListener.mute;
+		JdaEventListener.mute = !JdaEventListener.mute;
 		bot.reactCheck(message);
 	}
 

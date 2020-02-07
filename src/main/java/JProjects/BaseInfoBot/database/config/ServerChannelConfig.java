@@ -9,7 +9,7 @@ public class ServerChannelConfig {
 
 	public static void init() {
 		// Master of Eternity Global Server
-		whitelistedChannels.put("423512363765989378", new ArrayList<String>(
-				Arrays.asList("453918676022722561", "439773791023792130", "562766797032652800", "605289350447759403")));
+		whitelistedChannels.put("423512363765989378", new ArrayList<String>(Arrays.asList("453918676022722561",
+				"439773791023792130", "562766797032652800", "605289350447759403", "617346677908439088")));
 	}
 }

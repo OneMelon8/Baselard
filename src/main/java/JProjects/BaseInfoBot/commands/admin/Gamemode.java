@@ -5,16 +5,15 @@ import java.util.Random;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
 import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
-import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.tools.EnviroHandler;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageEmbed.Field;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageEmbed.Field;
+import net.dv8tion.jda.api.entities.User;
 
 public class Gamemode extends CommandHandler {
 
@@ -36,28 +35,23 @@ public class Gamemode extends CommandHandler {
 	@Override
 	public void onCommand(User author, String command, String[] args, Message message, MessageChannel channel,
 			Guild guild) {
-		String reaction = null;
 		if (args.length == 0) {
 			bot.reactQuestion(message);
 			return;
 		}
 		if (args[0].equals("0") || args[0].equals("s") || args[0].equals("survival")) {
-			reaction = Emotes.getId(Emotes.MINECRAFT_GRASS);
 			if (admins.contains(author.getId()))
 				toggleAdminMode(false, author.getId());
 		} else if (args[0].equals("1") || args[0].equals("c") || args[0].equals("creative")) {
-			reaction = Emotes.getId(Emotes.MINECRAFT_COMMAND_BLOCK);
 			if (admins.contains(author.getId()))
 				toggleAdminMode(true, author.getId());
 		} else if (args[0].equals("2") || args[0].equals("a") || args[0].equals("adventure")) {
-			reaction = Emotes.getId(Emotes.MINECRAFT_COBBLESTONE);
 		} else if (args[0].equals("3") || args[0].equals("sp") || args[0].equals("spectator")) {
-			reaction = Emotes.getId(Emotes.MINECRAFT_GLASS);
 		} else {
 			bot.sendMessage(author.getAsMention() + deathMessages[new Random().nextInt(deathMessages.length)], channel);
 			return;
 		}
-		bot.addReaction(message, bot.getEmote(reaction));
+//		bot.addReaction(message, bot.getEmote(reaction));
 	}
 
 	public void toggleAdminMode(boolean admin, String id) {

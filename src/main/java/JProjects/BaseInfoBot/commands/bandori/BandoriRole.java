@@ -7,16 +7,15 @@ import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.database.bandori.BandoriRoom;
 import JProjects.BaseInfoBot.database.config.BotConfig;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageEmbed.Field;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.managers.GuildController;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageEmbed.Field;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 
 public class BandoriRole extends CommandHandler {
 
@@ -41,14 +40,13 @@ public class BandoriRole extends CommandHandler {
 	private void toggleBandori(Message message, User user, Guild guild) {
 		Role role = guild.getRolesByName("Bang Dream", true).get(0);
 		Member member = guild.getMember(user);
-		GuildController controller = guild.getController();
 		if (guild.getMembersWithRoles(role).contains(member)) {
 			// LEAVE ROLE
-			controller.removeSingleRoleFromMember(member, role).queue();
+			guild.removeRoleFromMember(member, role).queue();
 			bot.addReaction(message, bot.getEmote(Emotes.KOKORO_ERROR));
 		} else {
 			// JOIN ROLE
-			controller.addSingleRoleToMember(member, role).queue();
+			guild.addRoleToMember(member, role).queue();
 			bot.addReaction(message, bot.getEmote(Emotes.KOKORO_SPARKLE));
 		}
 	}

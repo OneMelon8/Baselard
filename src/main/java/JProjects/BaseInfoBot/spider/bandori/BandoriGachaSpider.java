@@ -12,9 +12,9 @@ import org.jsoup.select.Elements;
 
 import JProjects.BaseInfoBot.database.bandori.BandoriAttribute;
 import JProjects.BaseInfoBot.database.config.BotConfig;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageEmbed.Field;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 
 public class BandoriGachaSpider {
 

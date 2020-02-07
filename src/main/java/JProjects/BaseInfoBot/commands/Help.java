@@ -1,18 +1,18 @@
 package JProjects.BaseInfoBot.commands;
 
 import JProjects.BaseInfoBot.BaseInfoBot;
-import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.commands.helpers.CommandDispatcher;
+import JProjects.BaseInfoBot.commands.helpers.CommandHandler;
 import JProjects.BaseInfoBot.commands.helpers.ReactionHandler;
 import JProjects.BaseInfoBot.database.config.BotConfig;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageEmbed.Field;
-import net.dv8tion.jda.core.entities.MessageReaction.ReactionEmote;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageEmbed.Field;
+import net.dv8tion.jda.api.entities.MessageReaction.ReactionEmote;
+import net.dv8tion.jda.api.entities.User;
 
 public class Help extends CommandHandler implements ReactionHandler {
 
@@ -71,6 +71,7 @@ public class Help extends CommandHandler implements ReactionHandler {
 		sb.append(String.format("%-8s >> %s", "event", "Show event list or a specific event\n"));
 		sb.append(String.format("%-8s >> %s", "card", "Search for a specific (or random) card\n"));
 		sb.append(String.format("%-8s >> %s", "member", "Show member list or a specific member\n"));
+		sb.append(String.format("%-8s >> %s", "pcard", "Show the Bandori card representing you\n"));
 		sb.append(String.format("%-8s >> %s", "multi", "Show help for the multi-live command\n"));
 		sb.append("```");
 		builder.addField(new Field("**Bandori Commands:**", sb.toString(), false));

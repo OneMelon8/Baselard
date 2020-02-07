@@ -9,11 +9,6 @@ public class Emotes {
 	public static final String KOKORO_SPARKLE = "<:kokoron_sparkle:601045739203854364>";
 	public static final String SAAYA_MELT = "<:saaya_melt:600851841152188426>";
 
-	public static final String MINECRAFT_GRASS = "<:mc_grass:575908022346579969>";
-	public static final String MINECRAFT_COMMAND_BLOCK = "<:mc_command:575908475888992266>";
-	public static final String MINECRAFT_COBBLESTONE = "<:mc_cobble:575908019783598130>";
-	public static final String MINECRAFT_GLASS = "<:mc_glass:575908022526672916>";
-
 	public static final String ATTR_PURE = "<:attr_pure:578337887146213382>";
 	public static final String ATTR_POWER = "<:attr_power:578337887112658954>";
 	public static final String ATTR_HAPPY = "<:attr_happy:578337887238488074>";
@@ -68,6 +63,11 @@ public class Emotes {
 	public static final String AKO_UDAGAWA = "<:ako_udagawa:580850110506729493>";
 	public static final String SAYO_HIKAWA = "<:sayo_hikawa:580850110364385297>";
 	public static final String RINKO_SHIROKANE = "<:rinko_shirokane:580850110590746626>";
+
+	// POKE-TKON
+	public static final String PLUS = "<:plus:621873710940553237>";
+	public static final String MINUS = "<:minus:621873698898706433>";
+	public static final String EQUALS = "<:equals:621873698982330388>";
 
 	/*
 	 * Specific Getters

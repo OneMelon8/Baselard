@@ -11,7 +11,7 @@ import org.jsoup.select.Elements;
 import JProjects.BaseInfoBot.database.bandori.BandoriAttribute;
 import JProjects.BaseInfoBot.database.bandori.BandoriCard;
 import JProjects.BaseInfoBot.database.bandori.BandoriMember;
-import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class BandoriComicSpider {
 

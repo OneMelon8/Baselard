@@ -2,8 +2,8 @@ package JProjects.BaseInfoBot.commands.bandori;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.TimerTask;
 import java.util.Map.Entry;
+import java.util.TimerTask;
 
 import JProjects.BaseInfoBot.App;
 import JProjects.BaseInfoBot.BaseInfoBot;
@@ -20,18 +20,17 @@ import JProjects.BaseInfoBot.database.bandori.BandoriRoom;
 import JProjects.BaseInfoBot.database.config.BandoriConfig;
 import JProjects.BaseInfoBot.database.config.BotConfig;
 import JProjects.BaseInfoBot.tools.GeneralTools;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageEmbed.Field;
-import net.dv8tion.jda.core.entities.MessageReaction.ReactionEmote;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.managers.GuildController;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageEmbed.Field;
+import net.dv8tion.jda.api.entities.MessageReaction.ReactionEmote;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 
 public class BandoriMultiLive extends CommandHandler implements ReactionHandler, ChatIntentHandler {
 
@@ -395,14 +394,13 @@ public class BandoriMultiLive extends CommandHandler implements ReactionHandler,
 	}
 
 	private static boolean toggleReady(User user, Guild guild, boolean ready) {
-		GuildController controller = new GuildController(guild);
-		Role readyRole = guild.getRolesByName("Bang Dream", true).get(0);
-		Member userMember = guild.getMember(user);
+		Role role = guild.getRolesByName("Bang Dream", true).get(0);
+		Member member = guild.getMember(user);
 		if (ready) {
-			controller.removeSingleRoleFromMember(userMember, readyRole).queue();
+			guild.removeRoleFromMember(member, role).queue();
 			return false;
 		} else {
-			controller.addSingleRoleToMember(userMember, readyRole).queue();
+			guild.addRoleToMember(member, role).queue();
 			return true;
 		}
 	}

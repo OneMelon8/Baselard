@@ -3,7 +3,7 @@ package JProjects.BaseInfoBot.database.bandori;
 import java.awt.image.BufferedImage;
 
 import JProjects.BaseInfoBot.database.Emotes;
-import JProjects.BaseInfoBot.database.files.assets.ImageAssets;
+import JProjects.BaseInfoBot.database.files.assets.BandoriImageAssets;
 
 public enum BandoriAttribute {
 	PURE, HAPPY, COOL, POWER;
@@ -91,18 +91,18 @@ public enum BandoriAttribute {
 		String name = null;
 		switch (this) {
 		case COOL:
-			name = ImageAssets.ATTR_COOL;
+			name = BandoriImageAssets.ATTR_COOL;
 			break;
 		case HAPPY:
-			name = ImageAssets.ATTR_HAPPY;
+			name = BandoriImageAssets.ATTR_HAPPY;
 			break;
 		case PURE:
-			name = ImageAssets.ATTR_PURE;
+			name = BandoriImageAssets.ATTR_PURE;
 			break;
 		case POWER:
-			name = ImageAssets.ATTR_POWERFUL;
+			name = BandoriImageAssets.ATTR_POWERFUL;
 			break;
 		}
-		return ImageAssets.getImage(name);
+		return BandoriImageAssets.getImage(name);
 	}
 }

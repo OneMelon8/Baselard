@@ -7,9 +7,9 @@ import com.google.gson.JsonParser;
 
 import JProjects.BaseInfoBot.database.Emotes;
 import JProjects.BaseInfoBot.spider.HttpRequester;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageEmbed.Field;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 
 public class EmbededUtil {
 
@@ -37,7 +37,7 @@ public class EmbededUtil {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Color.RED);
 		builder.setAuthor("Communication with the suits has been interrupted... ");
-		builder.setDescription("An unexpected exception has occured, please try again later or contact @One");
+		builder.setDescription("An unexpected error has occured, please try again later or contact @One");
 
 		StringBuilder sb = new StringBuilder("```");
 		sb.append("[10:30] We saw a wild Michelle in the woods!!" + "\n[11:00] We have lost track of the Michelle!"
@@ -52,7 +52,7 @@ public class EmbededUtil {
 		EmbedBuilder builder = new EmbedBuilder();
 		builder.setColor(Color.RED);
 		builder.setAuthor("Communication with the suits has been interrupted... ");
-		builder.setDescription("An unexpected exception has occured, please try again later or contact @One");
+		builder.setDescription("An unexpected error has occured, please try again later or contact @One");
 
 		StringBuilder sb = new StringBuilder("```");
 		sb.append(ex.getClass().getName() + "\n" + ex.getMessage());
@@ -67,6 +67,15 @@ public class EmbededUtil {
 		builder.setAuthor("Communication with the suits has been interrupted");
 		builder.setDescription("An unexpected error has occured, please try again later or contact @One");
 		builder.addField(new Field("Last known information:", "```" + errorMessage + "```", false));
+		return builder.build();
+	}
+
+	public static MessageEmbed getNotSupportedEmbeded(String errorMessage) {
+		EmbedBuilder builder = new EmbedBuilder();
+		builder.setColor(Color.RED);
+		builder.setAuthor("The suits' firmware need an upgrade");
+		builder.setDescription("This operation is currently not supported, contact @One for further information");
+		builder.addField(new Field("Information:", "```" + errorMessage + "```", false));
 		return builder.build();
 	}
 

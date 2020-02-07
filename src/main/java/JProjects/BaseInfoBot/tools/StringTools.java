@@ -1,6 +1,15 @@
 package JProjects.BaseInfoBot.tools;
 
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.regex.Pattern;
+
 public class StringTools {
+	public static String truncateAfter(String s, int index) {
+		if (s.length() <= index)
+			return s;
+		return s.substring(0, index);
+	}
 
 	public static String smartReplaceNonEnglish(String s) {
 		String result = s.replaceAll("[^\\x00-\\x7F]", "");
@@ -15,6 +24,71 @@ public class StringTools {
 		while (s.contains("  "))
 			s = s.replace("  ", " ");
 		return s;
+	}
+
+	public static String scrambleVisible(String sentence) {
+		String[] data = sentence.trim().split(" ");
+		StringBuilder sb = new StringBuilder();
+		for (String word : data) {
+			ArrayList<Tuple> puncts = new ArrayList<Tuple>();
+			if (containsRegex("\\W", word)) {
+				for (int a = 0; a < word.length(); a++) {
+					String sub = word.substring(a, a + 1);
+					if (!sub.matches("\\W"))
+						continue;
+					puncts.add(new Tuple(a, sub));
+				}
+				word = word.replaceAll("\\W", "");
+			}
+			if (word.length() <= 3) {
+				sb.append(restorePuncts(word, puncts) + " ");
+				continue;
+			}
+
+			String output = word.charAt(0) + scramble(word.substring(1, word.length() - 1))
+					+ word.charAt(word.length() - 1);
+			sb.append(restorePuncts(output, puncts) + " ");
+		}
+		return sb.toString().trim();
+	}
+
+	public static boolean containsRegex(String pattern, String text) {
+		return Pattern.compile(pattern).matcher(text).find();
+	}
+
+	private static String restorePuncts(String original, ArrayList<Tuple> puncts) {
+		if (puncts.isEmpty())
+			return original;
+		for (Tuple t : puncts) {
+			int index = (int) t.getObj1();
+			String punct = (String) t.getObj2();
+			original = original.substring(0, index) + punct + original.substring(index);
+		}
+		return original;
+	}
+
+	public static void main(String[] args) {
+		String s = "According to a researcher at Cambridge University, "
+				+ "it doesn't matter in what order the letters in a word are, "
+				+ "the only important thing is that the first and last letter be at the right place. "
+				+ "The rest can be a total mess and you can still read it without problem. "
+				+ "This is because the human mind does not read every letter by itself but the word as a whole.";
+		System.out.println(scrambleVisible(s));
+	}
+
+	public static String scramble(String s) {
+		return new String(shuffleCharArray(s.toCharArray()));
+	}
+
+	private static char[] shuffleCharArray(char[] ar) {
+		Random rnd = new Random();
+		for (int i = ar.length - 1; i > 0; i--) {
+			int index = rnd.nextInt(i + 1);
+			char a = ar[index];
+			ar[index] = ar[i];
+			ar[i] = a;
+		}
+		return ar;
 	}
 
 	/**
