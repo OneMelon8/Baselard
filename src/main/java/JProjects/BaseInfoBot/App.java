@@ -1,7 +1,5 @@
 package JProjects.BaseInfoBot;
 
-import java.util.HashMap;
-
 import JProjects.BaseInfoBot.commands.fun.Pat;
 import JProjects.BaseInfoBot.commands.fun.tkon.TkonCmd;
 import JProjects.BaseInfoBot.commands.helpers.JdaEventListener;
@@ -13,9 +11,9 @@ public class App {
 	public static void main(String[] args) {
 		try {
 			System.out.println("Hello, Happy World!");
-			bot = new BaseInfoBot("3.3.2.3.2");
+			bot = new BaseInfoBot("3.3.3");
 			bot.addListener(new JdaEventListener());
-			
+
 			initShutDown();
 			ServerChannelConfig.init();
 		} catch (Exception e) {
